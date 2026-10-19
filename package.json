@@ -1,6 +1,6 @@
 {
   "name": "@komikhq/komikhq-typescript",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.",
   "author": "KomikHQ Team <dev@komikhq.com>",
   "homepage": "https://komikhq.com",

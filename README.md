@@ -1,4 +1,4 @@
-# @komikhq/komikhq-typescript@1.0.0
+# @komikhq/komikhq-typescript@1.1.0
 
 A TypeScript SDK client for the api.komikhq.com API.
 
@@ -205,7 +205,7 @@ This TypeScript SDK client supports the [Fetch API](https://fetch.spec.whatwg.or
 Maintained by the KomikHQ Platform Team.
 
 - API version: `1.0.0`
-- Package version: `1.0.0`
+- Package version: `1.1.0`
 
 The generated npm module supports the following:
 
