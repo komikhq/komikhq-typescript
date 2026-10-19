@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Production build artifacts
+dist/
+
+# Logs and system
+*.log
+.DS_Store
+.env
+.env.*
+
+# IDE and editors
+.vscode/
+.idea/

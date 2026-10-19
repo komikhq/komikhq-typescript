@@ -1,0 +1,28 @@
+{
+  "name": "@komikhq/komikhq-typescript",
+  "version": "1.0.0",
+  "description": "The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.",
+  "author": "KomikHQ Team <dev@komikhq.com>",
+  "homepage": "https://komikhq.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/komikhq/komikhq-typescript.git"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "Apache-2.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.esm.json",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^4.0 || ^5.0"
+  }
+}
