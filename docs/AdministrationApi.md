@@ -165,7 +165,7 @@ async function example() {
     status: status_example,
     // string (optional)
     accessTier: accessTier_example,
-    // AdminCreateComicRequestAlternateTitles (optional)
+    // any (optional)
     alternateTitles: ...,
     // string (optional)
     genreIds: genreIds_example,
@@ -203,7 +203,7 @@ example().catch(console.error);
 | **type** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **status** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **accessTier** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **alternateTitles** | [AdminCreateComicRequestAlternateTitles](AdminCreateComicRequestAlternateTitles.md) |  | [Optional] [Defaults to `undefined`] |
+| **alternateTitles** | `any` |  | [Optional] [Defaults to `undefined`] |
 | **genreIds** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **creator** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **cover** | `Blob` |  | [Optional] [Defaults to `undefined`] |
@@ -1563,7 +1563,7 @@ async function example() {
     status: status_example,
     // string (optional)
     accessTier: accessTier_example,
-    // AdminCreateComicRequestAlternateTitles (optional)
+    // any (optional)
     alternateTitles: ...,
     // string (optional)
     genreIds: genreIds_example,
@@ -1602,7 +1602,7 @@ example().catch(console.error);
 | **type** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **status** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **accessTier** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **alternateTitles** | [AdminCreateComicRequestAlternateTitles](AdminCreateComicRequestAlternateTitles.md) |  | [Optional] [Defaults to `undefined`] |
+| **alternateTitles** | `any` |  | [Optional] [Defaults to `undefined`] |
 | **genreIds** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **creator** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **cover** | `Blob` |  | [Optional] [Defaults to `undefined`] |

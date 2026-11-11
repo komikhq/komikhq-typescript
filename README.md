@@ -1,4 +1,4 @@
-# @komikhq/komikhq-typescript@1.1.0
+# @komikhq/komikhq-typescript@1.1.1
 
 A TypeScript SDK client for the api.komikhq.com API.
 
@@ -137,7 +137,6 @@ All URIs are relative to *https://api.komikhq.com*
 ### Models
 
 - [AdminCreateComic201Response](docs/AdminCreateComic201Response.md)
-- [AdminCreateComicRequestAlternateTitles](docs/AdminCreateComicRequestAlternateTitles.md)
 - [AdminCreateGenre201Response](docs/AdminCreateGenre201Response.md)
 - [AdminCreateGenreRequest](docs/AdminCreateGenreRequest.md)
 - [AdminCreateUserRequest](docs/AdminCreateUserRequest.md)
@@ -205,7 +204,7 @@ This TypeScript SDK client supports the [Fetch API](https://fetch.spec.whatwg.or
 Maintained by the KomikHQ Platform Team.
 
 - API version: `1.0.0`
-- Package version: `1.1.0`
+- Package version: `1.1.1`
 
 The generated npm module supports the following:
 

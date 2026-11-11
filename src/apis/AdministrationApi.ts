@@ -19,11 +19,6 @@ import {
     AdminCreateComic201ResponseToJSON,
 } from '../models/AdminCreateComic201Response';
 import {
-    type AdminCreateComicRequestAlternateTitles,
-    AdminCreateComicRequestAlternateTitlesFromJSON,
-    AdminCreateComicRequestAlternateTitlesToJSON,
-} from '../models/AdminCreateComicRequestAlternateTitles';
-import {
     type AdminCreateGenre201Response,
     AdminCreateGenre201ResponseFromJSON,
     AdminCreateGenre201ResponseToJSON,
@@ -98,7 +93,7 @@ export interface AdminCreateChapterRequest {
     /**
      * 
      */
-    isEarlyAccess?: boolean;
+    isEarlyAccess?: boolean | null;
 }
 
 export interface AdminCreateComicRequest {
@@ -125,7 +120,7 @@ export interface AdminCreateComicRequest {
     /**
      * 
      */
-    alternateTitles?: AdminCreateComicRequestAlternateTitles;
+    alternateTitles?: any | null;
     /**
      * 
      */
@@ -326,7 +321,7 @@ export interface AdminUpdateComicRequest {
     /**
      * 
      */
-    alternateTitles?: AdminCreateComicRequestAlternateTitles;
+    alternateTitles?: any | null;
     /**
      * 
      */
@@ -391,15 +386,15 @@ export interface AdminUploadChapterPageRequest {
     /**
      * 
      */
-    pageNumber?: number;
+    pageNumber?: number | null;
     /**
      * 
      */
-    width?: number;
+    width?: number | null;
     /**
      * 
      */
-    height?: number;
+    height?: number | null;
 }
 
 /**
@@ -570,7 +565,7 @@ export class AdministrationApi extends runtime.BaseAPI {
         }
 
         if (requestParameters['alternateTitles'] != null) {
-            formParams.append('alternateTitles', new Blob([JSON.stringify(AdminCreateComicRequestAlternateTitlesToJSON(requestParameters['alternateTitles']))], { type: "application/json", }));
+            formParams.append('alternateTitles', new Blob([JSON.stringify(runtime.anyToJSON(requestParameters['alternateTitles']))], { type: "application/json", }));
                     }
 
         if (requestParameters['genreIds'] != null) {
@@ -1598,7 +1593,7 @@ export class AdministrationApi extends runtime.BaseAPI {
         }
 
         if (requestParameters['alternateTitles'] != null) {
-            formParams.append('alternateTitles', new Blob([JSON.stringify(AdminCreateComicRequestAlternateTitlesToJSON(requestParameters['alternateTitles']))], { type: "application/json", }));
+            formParams.append('alternateTitles', new Blob([JSON.stringify(runtime.anyToJSON(requestParameters['alternateTitles']))], { type: "application/json", }));
                     }
 
         if (requestParameters['genreIds'] != null) {

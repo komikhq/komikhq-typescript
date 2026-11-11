@@ -2,7 +2,6 @@
 .npmignore
 README.md
 docs/AdminCreateComic201Response.md
-docs/AdminCreateComicRequestAlternateTitles.md
 docs/AdminCreateGenre201Response.md
 docs/AdminCreateGenreRequest.md
 docs/AdminCreateUserRequest.md
@@ -81,7 +80,6 @@ src/apis/ViewsApi.ts
 src/apis/index.ts
 src/index.ts
 src/models/AdminCreateComic201Response.ts
-src/models/AdminCreateComicRequestAlternateTitles.ts
 src/models/AdminCreateGenre201Response.ts
 src/models/AdminCreateGenreRequest.ts
 src/models/AdminCreateUserRequest.ts

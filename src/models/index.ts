@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './AdminCreateComic201Response';
-export * from './AdminCreateComicRequestAlternateTitles';
 export * from './AdminCreateGenre201Response';
 export * from './AdminCreateGenreRequest';
 export * from './AdminCreateUserRequest';
