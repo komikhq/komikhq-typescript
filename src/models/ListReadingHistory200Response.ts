@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ReadingHistory } from './ReadingHistory';
+import {
+    ReadingHistoryFromJSON,
+    ReadingHistoryFromJSONTyped,
+    ReadingHistoryToJSON,
+    ReadingHistoryToJSONTyped,
+} from './ReadingHistory';
+
 /**
  * 
  * @export
@@ -22,14 +30,17 @@ export interface ListReadingHistory200Response {
     /**
      * 
      */
-    history: Array<any | null>;
+    status?: string;
+    /**
+     * 
+     */
+    data?: Array<ReadingHistory>;
 }
 
 /**
  * Check if a given object implements the ListReadingHistory200Response interface.
  */
 export function instanceOfListReadingHistory200Response(value: object): value is ListReadingHistory200Response {
-    if (!('history' in value) || value['history'] === undefined) return false;
     return true;
 }
 
@@ -43,7 +54,8 @@ export function ListReadingHistory200ResponseFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'history': json['history'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'data': json['data'] == null ? undefined : ((json['data'] as Array<any>).map(ReadingHistoryFromJSON)),
     };
 }
 
@@ -58,7 +70,8 @@ export function ListReadingHistory200ResponseToJSONTyped(value?: ListReadingHist
 
     return {
         
-        'history': value['history'],
+        'status': value['status'],
+        'data': value['data'] == null ? undefined : ((value['data'] as Array<any>).map(ReadingHistoryToJSON)),
     };
 }
 

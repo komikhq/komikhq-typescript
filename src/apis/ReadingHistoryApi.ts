@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -14,11 +14,6 @@
 
 import * as runtime from '../runtime';
 import {
-    type DeleteUserAccount200Response,
-    DeleteUserAccount200ResponseFromJSON,
-    DeleteUserAccount200ResponseToJSON,
-} from '../models/DeleteUserAccount200Response';
-import {
     type ErrorResponse,
     ErrorResponseFromJSON,
     ErrorResponseToJSON,
@@ -29,22 +24,94 @@ import {
     ListReadingHistory200ResponseToJSON,
 } from '../models/ListReadingHistory200Response';
 import {
-    type RecordReadingProgressRequest,
-    RecordReadingProgressRequestFromJSON,
-    RecordReadingProgressRequestToJSON,
-} from '../models/RecordReadingProgressRequest';
+    type RecordReadingHistory200Response,
+    RecordReadingHistory200ResponseFromJSON,
+    RecordReadingHistory200ResponseToJSON,
+} from '../models/RecordReadingHistory200Response';
+import {
+    type RecordReadingHistoryRequest,
+    RecordReadingHistoryRequestFromJSON,
+    RecordReadingHistoryRequestToJSON,
+} from '../models/RecordReadingHistoryRequest';
+import {
+    type SuccessResponse,
+    SuccessResponseFromJSON,
+    SuccessResponseToJSON,
+} from '../models/SuccessResponse';
 
-export interface RecordReadingProgressOperationRequest {
+export interface DeleteReadingHistoryRequest {
+    /**
+     * Comic ID
+     */
+    comicId: string;
+}
+
+export interface RecordReadingHistoryOperationRequest {
     /**
      * 
      */
-    recordReadingProgressRequest?: RecordReadingProgressRequest;
+    recordReadingHistoryRequest: RecordReadingHistoryRequest;
 }
 
 /**
  * 
  */
 export class ReadingHistoryApi extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for deleteReadingHistory without sending the request
+     */
+    async deleteReadingHistoryRequestOpts(requestParameters: DeleteReadingHistoryRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['comicId'] == null) {
+            throw new runtime.RequiredError(
+                'comicId',
+                'Required parameter "comicId" was null or undefined when calling deleteReadingHistory().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/history/{comicId}`;
+        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Removes reading history records for a specific comic.
+     * Clear reading history for comic
+     */
+    async deleteReadingHistoryRaw(requestParameters: DeleteReadingHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
+        const requestOptions = await this.deleteReadingHistoryRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Removes reading history records for a specific comic.
+     * Clear reading history for comic
+     */
+    async deleteReadingHistory(requestParameters: DeleteReadingHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
+        const response = await this.deleteReadingHistoryRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates request options for listReadingHistory without sending the request
@@ -63,7 +130,7 @@ export class ReadingHistoryApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/history`;
+        let urlPath = `/history`;
 
         return {
             path: urlPath,
@@ -74,8 +141,8 @@ export class ReadingHistoryApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns the authenticated user\'s reading history, including resolved comic media URLs.
-     * List the current user\'s reading history
+     * Returns reading history entries and chapter progress for the authenticated user.
+     * List user reading history
      */
     async listReadingHistoryRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListReadingHistory200Response>> {
         const requestOptions = await this.listReadingHistoryRequestOpts();
@@ -85,8 +152,8 @@ export class ReadingHistoryApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns the authenticated user\'s reading history, including resolved comic media URLs.
-     * List the current user\'s reading history
+     * Returns reading history entries and chapter progress for the authenticated user.
+     * List user reading history
      */
     async listReadingHistory(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListReadingHistory200Response> {
         const response = await this.listReadingHistoryRaw(initOverrides);
@@ -94,9 +161,16 @@ export class ReadingHistoryApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates request options for recordReadingProgress without sending the request
+     * Creates request options for recordReadingHistory without sending the request
      */
-    async recordReadingProgressRequestOpts(requestParameters: RecordReadingProgressOperationRequest): Promise<runtime.RequestOpts> {
+    async recordReadingHistoryRequestOpts(requestParameters: RecordReadingHistoryOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['recordReadingHistoryRequest'] == null) {
+            throw new runtime.RequiredError(
+                'recordReadingHistoryRequest',
+                'Required parameter "recordReadingHistoryRequest" was null or undefined when calling recordReadingHistory().'
+            );
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -112,34 +186,34 @@ export class ReadingHistoryApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/history`;
+        let urlPath = `/history`;
 
         return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RecordReadingProgressRequestToJSON(requestParameters['recordReadingProgressRequest']),
+            body: RecordReadingHistoryRequestToJSON(requestParameters['recordReadingHistoryRequest']),
         };
     }
 
     /**
-     * Creates or updates reading progress for the authenticated user.
-     * Record reading progress
+     * Saves or updates reading progress, last read page, and completion status for a comic chapter.
+     * Record chapter reading progress
      */
-    async recordReadingProgressRaw(requestParameters: RecordReadingProgressOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DeleteUserAccount200Response>> {
-        const requestOptions = await this.recordReadingProgressRequestOpts(requestParameters);
+    async recordReadingHistoryRaw(requestParameters: RecordReadingHistoryOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RecordReadingHistory200Response>> {
+        const requestOptions = await this.recordReadingHistoryRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteUserAccount200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => RecordReadingHistory200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Creates or updates reading progress for the authenticated user.
-     * Record reading progress
+     * Saves or updates reading progress, last read page, and completion status for a comic chapter.
+     * Record chapter reading progress
      */
-    async recordReadingProgress(requestParameters: RecordReadingProgressOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DeleteUserAccount200Response> {
-        const response = await this.recordReadingProgressRaw(requestParameters, initOverrides);
+    async recordReadingHistory(requestParameters: RecordReadingHistoryOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RecordReadingHistory200Response> {
+        const response = await this.recordReadingHistoryRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -1,24 +1,24 @@
 # CommentsApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**createComment**](CommentsApi.md#createcommentoperation) | **POST** /v1/comments | Post a comment |
-| [**deleteComment**](CommentsApi.md#deletecomment) | **DELETE** /v1/comments/{commentId} | Delete a comment |
-| [**listComments**](CommentsApi.md#listcomments) | **GET** /v1/comments | List comments |
-| [**reportComment**](CommentsApi.md#reportcommentoperation) | **POST** /v1/comments/{commentId}/report | Report a comment |
-| [**toggleCommentLike**](CommentsApi.md#togglecommentlike) | **POST** /v1/comments/{commentId}/like | Toggle a comment like |
+| [**createComment**](CommentsApi.md#createcommentoperation) | **POST** /comments | Post a comment or reply |
+| [**deleteComment**](CommentsApi.md#deletecomment) | **DELETE** /comments/{id} | Delete comment |
+| [**listComments**](CommentsApi.md#listcomments) | **GET** /comments | List comments for comic or chapter |
+| [**reportComment**](CommentsApi.md#reportcommentoperation) | **POST** /comments/{id}/report | Report an inappropriate comment |
+| [**toggleCommentLike**](CommentsApi.md#togglecommentlike) | **POST** /comments/{id}/like | Toggle like on comment |
 
 
 
 ## createComment
 
-> CreateComment201Response createComment(createCommentRequest)
+> CreateComment200Response createComment(createCommentRequest)
 
-Post a comment
+Post a comment or reply
 
-Creates a comment as an authenticated user or as a guest with guestName and guestEmail.
+Posts a new comment or nested reply for a comic or specific chapter.
 
 ### Example
 
@@ -34,7 +34,7 @@ async function example() {
   const api = new CommentsApi();
 
   const body = {
-    // CreateCommentRequest (optional)
+    // CreateCommentRequest
     createCommentRequest: ...,
   } satisfies CreateCommentOperationRequest;
 
@@ -55,11 +55,11 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **createCommentRequest** | [CreateCommentRequest](CreateCommentRequest.md) |  | [Optional] |
+| **createCommentRequest** | [CreateCommentRequest](CreateCommentRequest.md) |  | |
 
 ### Return type
 
-[**CreateComment201Response**](CreateComment201Response.md)
+[**CreateComment200Response**](CreateComment200Response.md)
 
 ### Authorization
 
@@ -74,24 +74,19 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | The comment was created. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Comment created successfully. |  -  |
+| **400** | Invalid payload. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## deleteComment
 
-> CreateComment201Response deleteComment(commentId)
+> SuccessResponse deleteComment(id)
 
-Delete a comment
+Delete comment
 
-Deletes a comment owned by the authenticated user or an administrator.
+Deletes a comment. Only the author or an administrator can perform this action.
 
 ### Example
 
@@ -113,8 +108,8 @@ async function example() {
   const api = new CommentsApi(config);
 
   const body = {
-    // string
-    commentId: commentId_example,
+    // string | Comment ID
+    id: id_example,
   } satisfies DeleteCommentRequest;
 
   try {
@@ -134,11 +129,11 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **commentId** | `string` |  | [Defaults to `undefined`] |
+| **id** | `string` | Comment ID | [Defaults to `undefined`] |
 
 ### Return type
 
-[**CreateComment201Response**](CreateComment201Response.md)
+[**SuccessResponse**](SuccessResponse.md)
 
 ### Authorization
 
@@ -153,13 +148,10 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The comment was deleted. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Comment deleted successfully. |  -  |
+| **401** | Unauthorized. |  -  |
+| **403** | Forbidden. |  -  |
+| **404** | Comment not found. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -168,9 +160,9 @@ example().catch(console.error);
 
 > ListComments200Response listComments(comicId, chapterId)
 
-List comments
+List comments for comic or chapter
 
-Returns comments for a comic or chapter.
+Returns nested threaded comments with like states and author information.
 
 ### Example
 
@@ -186,10 +178,10 @@ async function example() {
   const api = new CommentsApi();
 
   const body = {
-    // string (optional)
-    comicId: comicId_example,
-    // string (optional)
-    chapterId: chapterId_example,
+    // string | Comic ID
+    comicId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // string | Optional chapter ID filter (optional)
+    chapterId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
   } satisfies ListCommentsRequest;
 
   try {
@@ -209,8 +201,8 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **comicId** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **chapterId** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **comicId** | `string` | Comic ID | [Defaults to `undefined`] |
+| **chapterId** | `string` | Optional chapter ID filter | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -229,24 +221,19 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The matching comments. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Comments thread list. |  -  |
+| **400** | comicId is missing. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## reportComment
 
-> ReportComment201Response reportComment(commentId, reportCommentRequest)
+> SuccessResponse reportComment(id, reportCommentRequest)
 
-Report a comment
+Report an inappropriate comment
 
-Submits a moderation report. Guest reporter details may be supplied.
+Submits a moderation report for a comment with a specific violation reason.
 
 ### Example
 
@@ -262,9 +249,9 @@ async function example() {
   const api = new CommentsApi();
 
   const body = {
-    // string
-    commentId: commentId_example,
-    // ReportCommentRequest (optional)
+    // string | Comment ID
+    id: id_example,
+    // ReportCommentRequest
     reportCommentRequest: ...,
   } satisfies ReportCommentOperationRequest;
 
@@ -285,12 +272,12 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **commentId** | `string` |  | [Defaults to `undefined`] |
-| **reportCommentRequest** | [ReportCommentRequest](ReportCommentRequest.md) |  | [Optional] |
+| **id** | `string` | Comment ID | [Defaults to `undefined`] |
+| **reportCommentRequest** | [ReportCommentRequest](ReportCommentRequest.md) |  | |
 
 ### Return type
 
-[**ReportComment201Response**](ReportComment201Response.md)
+[**SuccessResponse**](SuccessResponse.md)
 
 ### Authorization
 
@@ -305,24 +292,19 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | The report was submitted. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Report submitted. |  -  |
+| **400** | Invalid payload. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## toggleCommentLike
 
-> PurgeOrphanedStorageFiles200Response toggleCommentLike(commentId)
+> ToggleCommentLike200Response toggleCommentLike(id)
 
-Toggle a comment like
+Toggle like on comment
 
-Adds or removes the authenticated user\&#39;s like on a comment.
+Adds or removes a like on the specified comment for the authenticated user.
 
 ### Example
 
@@ -344,8 +326,8 @@ async function example() {
   const api = new CommentsApi(config);
 
   const body = {
-    // string
-    commentId: commentId_example,
+    // string | Comment ID
+    id: id_example,
   } satisfies ToggleCommentLikeRequest;
 
   try {
@@ -365,11 +347,11 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **commentId** | `string` |  | [Defaults to `undefined`] |
+| **id** | `string` | Comment ID | [Defaults to `undefined`] |
 
 ### Return type
 
-[**PurgeOrphanedStorageFiles200Response**](PurgeOrphanedStorageFiles200Response.md)
+[**ToggleCommentLike200Response**](ToggleCommentLike200Response.md)
 
 ### Authorization
 
@@ -384,13 +366,8 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The like state was updated. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Like status toggled. |  -  |
+| **401** | Unauthorized. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

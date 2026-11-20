@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -26,6 +26,10 @@ export interface AdminCreateGenreRequest {
     /**
      * 
      */
+    slug: string;
+    /**
+     * 
+     */
     description?: string;
 }
 
@@ -34,6 +38,7 @@ export interface AdminCreateGenreRequest {
  */
 export function instanceOfAdminCreateGenreRequest(value: object): value is AdminCreateGenreRequest {
     if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('slug' in value) || value['slug'] === undefined) return false;
     return true;
 }
 
@@ -48,6 +53,7 @@ export function AdminCreateGenreRequestFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'name': json['name'],
+        'slug': json['slug'],
         'description': json['description'] == null ? undefined : json['description'],
     };
 }
@@ -64,6 +70,7 @@ export function AdminCreateGenreRequestToJSONTyped(value?: AdminCreateGenreReque
     return {
         
         'name': value['name'],
+        'slug': value['slug'],
         'description': value['description'],
     };
 }

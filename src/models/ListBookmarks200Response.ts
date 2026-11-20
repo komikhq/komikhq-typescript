@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { Bookmark } from './Bookmark';
+import {
+    BookmarkFromJSON,
+    BookmarkFromJSONTyped,
+    BookmarkToJSON,
+    BookmarkToJSONTyped,
+} from './Bookmark';
+
 /**
  * 
  * @export
@@ -22,14 +30,17 @@ export interface ListBookmarks200Response {
     /**
      * 
      */
-    bookmarks: Array<any | null>;
+    status?: string;
+    /**
+     * 
+     */
+    data?: Array<Bookmark>;
 }
 
 /**
  * Check if a given object implements the ListBookmarks200Response interface.
  */
 export function instanceOfListBookmarks200Response(value: object): value is ListBookmarks200Response {
-    if (!('bookmarks' in value) || value['bookmarks'] === undefined) return false;
     return true;
 }
 
@@ -43,7 +54,8 @@ export function ListBookmarks200ResponseFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'bookmarks': json['bookmarks'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'data': json['data'] == null ? undefined : ((json['data'] as Array<any>).map(BookmarkFromJSON)),
     };
 }
 
@@ -58,7 +70,8 @@ export function ListBookmarks200ResponseToJSONTyped(value?: ListBookmarks200Resp
 
     return {
         
-        'bookmarks': value['bookmarks'],
+        'status': value['status'],
+        'data': value['data'] == null ? undefined : ((value['data'] as Array<any>).map(BookmarkToJSON)),
     };
 }
 

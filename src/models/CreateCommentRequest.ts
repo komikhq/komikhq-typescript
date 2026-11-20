@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -19,11 +19,10 @@ import { mapValues } from '../runtime';
  * @interface CreateCommentRequest
  */
 export interface CreateCommentRequest {
-    [key: string]: any | any;
     /**
      * 
      */
-    comicId?: string;
+    comicId: string;
     /**
      * 
      */
@@ -32,6 +31,14 @@ export interface CreateCommentRequest {
      * 
      */
     content: string;
+    /**
+     * 
+     */
+    isSpoiler?: boolean;
+    /**
+     * 
+     */
+    parentId?: string;
     /**
      * 
      */
@@ -46,6 +53,7 @@ export interface CreateCommentRequest {
  * Check if a given object implements the CreateCommentRequest interface.
  */
 export function instanceOfCreateCommentRequest(value: object): value is CreateCommentRequest {
+    if (!('comicId' in value) || value['comicId'] === undefined) return false;
     if (!('content' in value) || value['content'] === undefined) return false;
     return true;
 }
@@ -60,10 +68,11 @@ export function CreateCommentRequestFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-            ...json,
-        'comicId': json['comicId'] == null ? undefined : json['comicId'],
+        'comicId': json['comicId'],
         'chapterId': json['chapterId'] == null ? undefined : json['chapterId'],
         'content': json['content'],
+        'isSpoiler': json['isSpoiler'] == null ? undefined : json['isSpoiler'],
+        'parentId': json['parentId'] == null ? undefined : json['parentId'],
         'guestName': json['guestName'] == null ? undefined : json['guestName'],
         'guestEmail': json['guestEmail'] == null ? undefined : json['guestEmail'],
     };
@@ -80,10 +89,11 @@ export function CreateCommentRequestToJSONTyped(value?: CreateCommentRequest | n
 
     return {
         
-            ...value,
         'comicId': value['comicId'],
         'chapterId': value['chapterId'],
         'content': value['content'],
+        'isSpoiler': value['isSpoiler'],
+        'parentId': value['parentId'],
         'guestName': value['guestName'],
         'guestEmail': value['guestEmail'],
     };

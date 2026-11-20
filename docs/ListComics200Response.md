@@ -6,9 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`query` | any
-`comics` | Array&lt;any | null&gt;
-`pagination` | any
+`status` | string
+`data` | [ListComics200ResponseData](ListComics200ResponseData.md)
 
 ## Example
 
@@ -17,9 +16,8 @@ import type { ListComics200Response } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
-  "query": null,
-  "comics": null,
-  "pagination": null,
+  "status": ok,
+  "data": null,
 } satisfies ListComics200Response
 
 console.log(example)

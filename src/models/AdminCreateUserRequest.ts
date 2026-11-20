@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -19,7 +19,6 @@ import { mapValues } from '../runtime';
  * @interface AdminCreateUserRequest
  */
 export interface AdminCreateUserRequest {
-    [key: string]: any | any;
     /**
      * 
      */
@@ -32,7 +31,22 @@ export interface AdminCreateUserRequest {
      * 
      */
     password: string;
+    /**
+     * 
+     */
+    role?: AdminCreateUserRequestRoleEnum;
 }
+
+
+/**
+ * @export
+ */
+export const AdminCreateUserRequestRoleEnum = {
+    User: 'user',
+    Admin: 'admin',
+} as const;
+export type AdminCreateUserRequestRoleEnum = typeof AdminCreateUserRequestRoleEnum[keyof typeof AdminCreateUserRequestRoleEnum];
+
 
 /**
  * Check if a given object implements the AdminCreateUserRequest interface.
@@ -54,10 +68,10 @@ export function AdminCreateUserRequestFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-            ...json,
         'name': json['name'],
         'email': json['email'],
         'password': json['password'],
+        'role': json['role'] == null ? undefined : json['role'],
     };
 }
 
@@ -72,10 +86,10 @@ export function AdminCreateUserRequestToJSONTyped(value?: AdminCreateUserRequest
 
     return {
         
-            ...value,
         'name': value['name'],
         'email': value['email'],
         'password': value['password'],
+        'role': value['role'],
     };
 }
 

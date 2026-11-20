@@ -9,6 +9,7 @@ Name | Type
 `name` | string
 `email` | string
 `password` | string
+`role` | string
 
 ## Example
 
@@ -17,9 +18,10 @@ import type { AdminCreateUserRequest } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
-  "name": null,
-  "email": null,
+  "name": John Doe,
+  "email": user@example.com,
   "password": null,
+  "role": null,
 } satisfies AdminCreateUserRequest
 
 console.log(example)

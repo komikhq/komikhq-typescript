@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -14,15 +14,30 @@
 
 import * as runtime from '../runtime';
 import {
-    type AdminCreateComic201Response,
-    AdminCreateComic201ResponseFromJSON,
-    AdminCreateComic201ResponseToJSON,
-} from '../models/AdminCreateComic201Response';
+    type AdminCreateChapter200Response,
+    AdminCreateChapter200ResponseFromJSON,
+    AdminCreateChapter200ResponseToJSON,
+} from '../models/AdminCreateChapter200Response';
 import {
-    type AdminCreateGenre201Response,
-    AdminCreateGenre201ResponseFromJSON,
-    AdminCreateGenre201ResponseToJSON,
-} from '../models/AdminCreateGenre201Response';
+    type AdminCreateChapterPages200Response,
+    AdminCreateChapterPages200ResponseFromJSON,
+    AdminCreateChapterPages200ResponseToJSON,
+} from '../models/AdminCreateChapterPages200Response';
+import {
+    type AdminCreateChapterPagesRequest,
+    AdminCreateChapterPagesRequestFromJSON,
+    AdminCreateChapterPagesRequestToJSON,
+} from '../models/AdminCreateChapterPagesRequest';
+import {
+    type AdminCreateChapterRequest,
+    AdminCreateChapterRequestFromJSON,
+    AdminCreateChapterRequestToJSON,
+} from '../models/AdminCreateChapterRequest';
+import {
+    type AdminCreateComicRequest,
+    AdminCreateComicRequestFromJSON,
+    AdminCreateComicRequestToJSON,
+} from '../models/AdminCreateComicRequest';
 import {
     type AdminCreateGenreRequest,
     AdminCreateGenreRequestFromJSON,
@@ -34,323 +49,152 @@ import {
     AdminCreateUserRequestToJSON,
 } from '../models/AdminCreateUserRequest';
 import {
-    type AdminFinalizeChapterRequest,
-    AdminFinalizeChapterRequestFromJSON,
-    AdminFinalizeChapterRequestToJSON,
-} from '../models/AdminFinalizeChapterRequest';
+    type AdminGetStats200Response,
+    AdminGetStats200ResponseFromJSON,
+    AdminGetStats200ResponseToJSON,
+} from '../models/AdminGetStats200Response';
 import {
-    type AdminInitializeChapterRequest,
-    AdminInitializeChapterRequestFromJSON,
-    AdminInitializeChapterRequestToJSON,
-} from '../models/AdminInitializeChapterRequest';
+    type AdminListUsers200Response,
+    AdminListUsers200ResponseFromJSON,
+    AdminListUsers200ResponseToJSON,
+} from '../models/AdminListUsers200Response';
 import {
-    type AdminListGenres200Response,
-    AdminListGenres200ResponseFromJSON,
-    AdminListGenres200ResponseToJSON,
-} from '../models/AdminListGenres200Response';
+    type AdminUpdateComic200Response,
+    AdminUpdateComic200ResponseFromJSON,
+    AdminUpdateComic200ResponseToJSON,
+} from '../models/AdminUpdateComic200Response';
+import {
+    type AdminUpdateComicRequest,
+    AdminUpdateComicRequestFromJSON,
+    AdminUpdateComicRequestToJSON,
+} from '../models/AdminUpdateComicRequest';
+import {
+    type AdminUpdateGenre200Response,
+    AdminUpdateGenre200ResponseFromJSON,
+    AdminUpdateGenre200ResponseToJSON,
+} from '../models/AdminUpdateGenre200Response';
 import {
     type AdminUpdateGenreRequest,
     AdminUpdateGenreRequestFromJSON,
     AdminUpdateGenreRequestToJSON,
 } from '../models/AdminUpdateGenreRequest';
 import {
-    type DeleteUserAccount200Response,
-    DeleteUserAccount200ResponseFromJSON,
-    DeleteUserAccount200ResponseToJSON,
-} from '../models/DeleteUserAccount200Response';
+    type AdminUpdateUser200Response,
+    AdminUpdateUser200ResponseFromJSON,
+    AdminUpdateUser200ResponseToJSON,
+} from '../models/AdminUpdateUser200Response';
+import {
+    type AdminUpdateUserRequest,
+    AdminUpdateUserRequestFromJSON,
+    AdminUpdateUserRequestToJSON,
+} from '../models/AdminUpdateUserRequest';
 import {
     type ErrorResponse,
     ErrorResponseFromJSON,
     ErrorResponseToJSON,
 } from '../models/ErrorResponse';
 import {
-    type PurgeOrphanedStorageFiles200Response,
-    PurgeOrphanedStorageFiles200ResponseFromJSON,
-    PurgeOrphanedStorageFiles200ResponseToJSON,
-} from '../models/PurgeOrphanedStorageFiles200Response';
+    type SuccessResponse,
+    SuccessResponseFromJSON,
+    SuccessResponseToJSON,
+} from '../models/SuccessResponse';
 
-export interface AdminCreateChapterRequest {
+export interface AdminCreateChapterOperationRequest {
     /**
      * 
      */
-    comicId: string;
-    /**
-     * 
-     */
-    chapterNumber: string;
-    /**
-     * 
-     */
-    pages: Array<Blob>;
-    /**
-     * 
-     */
-    title?: string;
-    /**
-     * 
-     */
-    accessTier?: string;
-    /**
-     * 
-     */
-    isEarlyAccess?: boolean | null;
+    adminCreateChapterRequest: AdminCreateChapterRequest;
 }
 
-export interface AdminCreateComicRequest {
+export interface AdminCreateChapterPagesOperationRequest {
+    /**
+     * Chapter ID
+     */
+    id: string;
     /**
      * 
      */
-    title?: string;
+    adminCreateChapterPagesRequest: AdminCreateChapterPagesRequest;
+}
+
+export interface AdminCreateComicOperationRequest {
     /**
      * 
      */
-    synopsis?: string;
-    /**
-     * 
-     */
-    type?: string;
-    /**
-     * 
-     */
-    status?: string;
-    /**
-     * 
-     */
-    accessTier?: string;
-    /**
-     * 
-     */
-    alternateTitles?: any | null;
-    /**
-     * 
-     */
-    genreIds?: string;
-    /**
-     * 
-     */
-    creator?: string;
-    /**
-     * 
-     */
-    cover?: Blob;
-    /**
-     * 
-     */
-    coverUrlSource?: string;
-    /**
-     * 
-     */
-    banner?: Blob;
-    /**
-     * 
-     */
-    bannerUrlSource?: string;
+    adminCreateComicRequest: AdminCreateComicRequest;
 }
 
 export interface AdminCreateGenreOperationRequest {
     /**
      * 
      */
-    adminCreateGenreRequest?: AdminCreateGenreRequest;
+    adminCreateGenreRequest: AdminCreateGenreRequest;
 }
 
 export interface AdminCreateUserOperationRequest {
     /**
      * 
      */
-    adminCreateUserRequest?: AdminCreateUserRequest;
+    adminCreateUserRequest: AdminCreateUserRequest;
 }
 
 export interface AdminDeleteChapterRequest {
     /**
-     * 
-     */
-    comicId: string;
-    /**
-     * 
+     * Chapter ID
      */
     id: string;
 }
 
 export interface AdminDeleteComicRequest {
     /**
-     * 
+     * Comic ID
      */
     id: string;
 }
 
 export interface AdminDeleteGenreRequest {
     /**
-     * 
+     * Genre ID to delete
      */
     id: string;
 }
 
 export interface AdminDeleteUserRequest {
     /**
-     * 
+     * User ID
      */
     id: string;
-}
-
-export interface AdminFinalizeChapterOperationRequest {
-    /**
-     * 
-     */
-    comicId: string;
-    /**
-     * 
-     */
-    id: string;
-    /**
-     * 
-     */
-    adminFinalizeChapterRequest?: AdminFinalizeChapterRequest;
-}
-
-export interface AdminGetChapterRequest {
-    /**
-     * 
-     */
-    comicId: string;
-    /**
-     * 
-     */
-    id: string;
-}
-
-export interface AdminGetComicRequest {
-    /**
-     * 
-     */
-    id: string;
-}
-
-export interface AdminInitializeChapterOperationRequest {
-    /**
-     * 
-     */
-    comicId: string;
-    /**
-     * 
-     */
-    adminInitializeChapterRequest?: AdminInitializeChapterRequest;
-}
-
-export interface AdminListChaptersRequest {
-    /**
-     * 
-     */
-    comicId: string;
-}
-
-export interface AdminListComicsRequest {
-    /**
-     * 
-     */
-    q?: string;
-    /**
-     * 
-     */
-    status?: string;
-    /**
-     * 
-     */
-    page?: string;
-    /**
-     * 
-     */
-    limit?: string;
 }
 
 export interface AdminListUsersRequest {
     /**
-     * 
+     * Search keyword for name or email
      */
     q?: string;
     /**
-     * 
+     * Page number
      */
-    page?: number | null;
+    page?: number;
     /**
-     * 
+     * Items per page
      */
-    limit?: number | null;
+    limit?: number;
 }
 
-export interface AdminUpdateChapterRequest {
+export interface AdminUpdateComicOperationRequest {
     /**
-     * 
-     */
-    comicId: string;
-    /**
-     * 
+     * Comic ID
      */
     id: string;
     /**
      * 
      */
-    requestBody?: { [key: string]: any | null; };
-}
-
-export interface AdminUpdateComicRequest {
-    /**
-     * 
-     */
-    id: string;
-    /**
-     * 
-     */
-    title?: string;
-    /**
-     * 
-     */
-    synopsis?: string;
-    /**
-     * 
-     */
-    type?: string;
-    /**
-     * 
-     */
-    status?: string;
-    /**
-     * 
-     */
-    accessTier?: string;
-    /**
-     * 
-     */
-    alternateTitles?: any | null;
-    /**
-     * 
-     */
-    genreIds?: string;
-    /**
-     * 
-     */
-    creator?: string;
-    /**
-     * 
-     */
-    cover?: Blob;
-    /**
-     * 
-     */
-    coverUrlSource?: string;
-    /**
-     * 
-     */
-    banner?: Blob;
-    /**
-     * 
-     */
-    bannerUrlSource?: string;
+    adminUpdateComicRequest?: AdminUpdateComicRequest;
 }
 
 export interface AdminUpdateGenreOperationRequest {
     /**
-     * 
+     * Genre ID
      */
     id: string;
     /**
@@ -359,42 +203,15 @@ export interface AdminUpdateGenreOperationRequest {
     adminUpdateGenreRequest?: AdminUpdateGenreRequest;
 }
 
-export interface AdminUpdateUserRequest {
+export interface AdminUpdateUserOperationRequest {
     /**
-     * 
+     * User ID
      */
     id: string;
     /**
      * 
      */
-    requestBody?: { [key: string]: any | null; };
-}
-
-export interface AdminUploadChapterPageRequest {
-    /**
-     * 
-     */
-    comicId: string;
-    /**
-     * 
-     */
-    id: string;
-    /**
-     * 
-     */
-    file: Blob;
-    /**
-     * 
-     */
-    pageNumber?: number | null;
-    /**
-     * 
-     */
-    width?: number | null;
-    /**
-     * 
-     */
-    height?: number | null;
+    adminUpdateUserRequest: AdminUpdateUserRequest;
 }
 
 /**
@@ -405,229 +222,14 @@ export class AdministrationApi extends runtime.BaseAPI {
     /**
      * Creates request options for adminCreateChapter without sending the request
      */
-    async adminCreateChapterRequestOpts(requestParameters: AdminCreateChapterRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['comicId'] == null) {
+    async adminCreateChapterRequestOpts(requestParameters: AdminCreateChapterOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['adminCreateChapterRequest'] == null) {
             throw new runtime.RequiredError(
-                'comicId',
-                'Required parameter "comicId" was null or undefined when calling adminCreateChapter().'
+                'adminCreateChapterRequest',
+                'Required parameter "adminCreateChapterRequest" was null or undefined when calling adminCreateChapter().'
             );
         }
 
-        if (requestParameters['chapterNumber'] == null) {
-            throw new runtime.RequiredError(
-                'chapterNumber',
-                'Required parameter "chapterNumber" was null or undefined when calling adminCreateChapter().'
-            );
-        }
-
-        if (requestParameters['pages'] == null) {
-            throw new runtime.RequiredError(
-                'pages',
-                'Required parameter "pages" was null or undefined when calling adminCreateChapter().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters['chapterNumber'] != null) {
-            formParams.append('chapterNumber', requestParameters['chapterNumber'] as any);
-        }
-
-        if (requestParameters['title'] != null) {
-            formParams.append('title', requestParameters['title'] as any);
-        }
-
-        if (requestParameters['accessTier'] != null) {
-            formParams.append('accessTier', requestParameters['accessTier'] as any);
-        }
-
-        if (requestParameters['isEarlyAccess'] != null) {
-            formParams.append('isEarlyAccess', requestParameters['isEarlyAccess'] as any);
-        }
-
-        if (requestParameters['pages'] != null) {
-            requestParameters['pages'].forEach((element) => {
-                formParams.append('pages', element as any);
-            })
-        }
-
-
-        let urlPath = `/v1/admin/comics/{comicId}/chapters`;
-        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
-
-        return {
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: formParams,
-        };
-    }
-
-    /**
-     * Creates a chapter and uploads its pages in one request.
-     * Create a chapter with pages
-     */
-    async adminCreateChapterRaw(requestParameters: AdminCreateChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminCreateChapterRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Creates a chapter and uploads its pages in one request.
-     * Create a chapter with pages
-     */
-    async adminCreateChapter(requestParameters: AdminCreateChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminCreateChapterRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminCreateComic without sending the request
-     */
-    async adminCreateComicRequestOpts(requestParameters: AdminCreateComicRequest): Promise<runtime.RequestOpts> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters['title'] != null) {
-            formParams.append('title', requestParameters['title'] as any);
-        }
-
-        if (requestParameters['synopsis'] != null) {
-            formParams.append('synopsis', requestParameters['synopsis'] as any);
-        }
-
-        if (requestParameters['type'] != null) {
-            formParams.append('type', requestParameters['type'] as any);
-        }
-
-        if (requestParameters['status'] != null) {
-            formParams.append('status', requestParameters['status'] as any);
-        }
-
-        if (requestParameters['accessTier'] != null) {
-            formParams.append('accessTier', requestParameters['accessTier'] as any);
-        }
-
-        if (requestParameters['alternateTitles'] != null) {
-            formParams.append('alternateTitles', new Blob([JSON.stringify(runtime.anyToJSON(requestParameters['alternateTitles']))], { type: "application/json", }));
-                    }
-
-        if (requestParameters['genreIds'] != null) {
-            formParams.append('genreIds', requestParameters['genreIds'] as any);
-        }
-
-        if (requestParameters['creator'] != null) {
-            formParams.append('creator', requestParameters['creator'] as any);
-        }
-
-        if (requestParameters['cover'] != null) {
-            formParams.append('cover', requestParameters['cover'] as any);
-        }
-
-        if (requestParameters['coverUrlSource'] != null) {
-            formParams.append('coverUrlSource', requestParameters['coverUrlSource'] as any);
-        }
-
-        if (requestParameters['banner'] != null) {
-            formParams.append('banner', requestParameters['banner'] as any);
-        }
-
-        if (requestParameters['bannerUrlSource'] != null) {
-            formParams.append('bannerUrlSource', requestParameters['bannerUrlSource'] as any);
-        }
-
-
-        let urlPath = `/v1/admin/comics`;
-
-        return {
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: formParams,
-        };
-    }
-
-    /**
-     * Creates a comic and optionally uploads cover and banner images. Requires administrator access.
-     * Create a comic
-     */
-    async adminCreateComicRaw(requestParameters: AdminCreateComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminCreateComic201Response>> {
-        const requestOptions = await this.adminCreateComicRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => AdminCreateComic201ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Creates a comic and optionally uploads cover and banner images. Requires administrator access.
-     * Create a comic
-     */
-    async adminCreateComic(requestParameters: AdminCreateComicRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminCreateComic201Response> {
-        const response = await this.adminCreateComicRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminCreateGenre without sending the request
-     */
-    async adminCreateGenreRequestOpts(requestParameters: AdminCreateGenreOperationRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -643,7 +245,186 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/genres`;
+        let urlPath = `/admin/chapters`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminCreateChapterRequestToJSON(requestParameters['adminCreateChapterRequest']),
+        };
+    }
+
+    /**
+     * Inserts a new comic chapter into the database. Requires administrator privileges.
+     * Create comic chapter
+     */
+    async adminCreateChapterRaw(requestParameters: AdminCreateChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminCreateChapter200Response>> {
+        const requestOptions = await this.adminCreateChapterRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminCreateChapter200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Inserts a new comic chapter into the database. Requires administrator privileges.
+     * Create comic chapter
+     */
+    async adminCreateChapter(requestParameters: AdminCreateChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminCreateChapter200Response> {
+        const response = await this.adminCreateChapterRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for adminCreateChapterPages without sending the request
+     */
+    async adminCreateChapterPagesRequestOpts(requestParameters: AdminCreateChapterPagesOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling adminCreateChapterPages().'
+            );
+        }
+
+        if (requestParameters['adminCreateChapterPagesRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminCreateChapterPagesRequest',
+                'Required parameter "adminCreateChapterPagesRequest" was null or undefined when calling adminCreateChapterPages().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/chapters/{id}/pages`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminCreateChapterPagesRequestToJSON(requestParameters['adminCreateChapterPagesRequest']),
+        };
+    }
+
+    /**
+     * Replaces and reorders all pages for a chapter. Requires administrator privileges.
+     * Set chapter pages
+     */
+    async adminCreateChapterPagesRaw(requestParameters: AdminCreateChapterPagesOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminCreateChapterPages200Response>> {
+        const requestOptions = await this.adminCreateChapterPagesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminCreateChapterPages200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Replaces and reorders all pages for a chapter. Requires administrator privileges.
+     * Set chapter pages
+     */
+    async adminCreateChapterPages(requestParameters: AdminCreateChapterPagesOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminCreateChapterPages200Response> {
+        const response = await this.adminCreateChapterPagesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for adminCreateComic without sending the request
+     */
+    async adminCreateComicRequestOpts(requestParameters: AdminCreateComicOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['adminCreateComicRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminCreateComicRequest',
+                'Required parameter "adminCreateComicRequest" was null or undefined when calling adminCreateComic().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/comics`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminCreateComicRequestToJSON(requestParameters['adminCreateComicRequest']),
+        };
+    }
+
+    /**
+     * Inserts a new comic record into the catalog. Requires administrator privileges.
+     * Create a new comic
+     */
+    async adminCreateComicRaw(requestParameters: AdminCreateComicOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateComic200Response>> {
+        const requestOptions = await this.adminCreateComicRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminUpdateComic200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Inserts a new comic record into the catalog. Requires administrator privileges.
+     * Create a new comic
+     */
+    async adminCreateComic(requestParameters: AdminCreateComicOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateComic200Response> {
+        const response = await this.adminCreateComicRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for adminCreateGenre without sending the request
+     */
+    async adminCreateGenreRequestOpts(requestParameters: AdminCreateGenreOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['adminCreateGenreRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminCreateGenreRequest',
+                'Required parameter "adminCreateGenreRequest" was null or undefined when calling adminCreateGenre().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/genres`;
 
         return {
             path: urlPath,
@@ -655,21 +436,21 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a genre. Requires administrator access.
-     * Create a genre
+     * Inserts a new comic genre into the database. Requires administrator privileges.
+     * Create a new genre
      */
-    async adminCreateGenreRaw(requestParameters: AdminCreateGenreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminCreateGenre201Response>> {
+    async adminCreateGenreRaw(requestParameters: AdminCreateGenreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateGenre200Response>> {
         const requestOptions = await this.adminCreateGenreRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AdminCreateGenre201ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminUpdateGenre200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Creates a genre. Requires administrator access.
-     * Create a genre
+     * Inserts a new comic genre into the database. Requires administrator privileges.
+     * Create a new genre
      */
-    async adminCreateGenre(requestParameters: AdminCreateGenreOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminCreateGenre201Response> {
+    async adminCreateGenre(requestParameters: AdminCreateGenreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateGenre200Response> {
         const response = await this.adminCreateGenreRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -678,6 +459,13 @@ export class AdministrationApi extends runtime.BaseAPI {
      * Creates request options for adminCreateUser without sending the request
      */
     async adminCreateUserRequestOpts(requestParameters: AdminCreateUserOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['adminCreateUserRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminCreateUserRequest',
+                'Required parameter "adminCreateUserRequest" was null or undefined when calling adminCreateUser().'
+            );
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -693,7 +481,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/users`;
+        let urlPath = `/admin/users`;
 
         return {
             path: urlPath,
@@ -705,21 +493,21 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a user account. Requires administrator access.
-     * Create a user
+     * Provision a new user account with custom credentials and role.
+     * Create new user account (Admin only)
      */
-    async adminCreateUserRaw(requestParameters: AdminCreateUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async adminCreateUserRaw(requestParameters: AdminCreateUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateUser200Response>> {
         const requestOptions = await this.adminCreateUserRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminUpdateUser200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Creates a user account. Requires administrator access.
-     * Create a user
+     * Provision a new user account with custom credentials and role.
+     * Create new user account (Admin only)
      */
-    async adminCreateUser(requestParameters: AdminCreateUserOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async adminCreateUser(requestParameters: AdminCreateUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateUser200Response> {
         const response = await this.adminCreateUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -728,13 +516,6 @@ export class AdministrationApi extends runtime.BaseAPI {
      * Creates request options for adminDeleteChapter without sending the request
      */
     async adminDeleteChapterRequestOpts(requestParameters: AdminDeleteChapterRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['comicId'] == null) {
-            throw new runtime.RequiredError(
-                'comicId',
-                'Required parameter "comicId" was null or undefined when calling adminDeleteChapter().'
-            );
-        }
-
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -755,8 +536,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/comics/{comicId}/chapters/{id}`;
-        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
+        let urlPath = `/admin/chapters/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
@@ -768,21 +548,21 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a chapter and its associated pages.
-     * Delete a chapter
+     * Permanently deletes a chapter record and its pages from the database. Requires administrator privileges.
+     * Delete chapter by ID
      */
-    async adminDeleteChapterRaw(requestParameters: AdminDeleteChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async adminDeleteChapterRaw(requestParameters: AdminDeleteChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
         const requestOptions = await this.adminDeleteChapterRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResponseFromJSON(jsonValue));
     }
 
     /**
-     * Deletes a chapter and its associated pages.
-     * Delete a chapter
+     * Permanently deletes a chapter record and its pages from the database. Requires administrator privileges.
+     * Delete chapter by ID
      */
-    async adminDeleteChapter(requestParameters: AdminDeleteChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async adminDeleteChapter(requestParameters: AdminDeleteChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
         const response = await this.adminDeleteChapterRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -811,7 +591,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/comics/{id}`;
+        let urlPath = `/admin/comics/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
@@ -823,21 +603,21 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a comic. Requires administrator access.
-     * Delete a comic
+     * Permanently deletes a comic record and all its associated chapters. Requires administrator privileges.
+     * Delete comic by ID
      */
-    async adminDeleteComicRaw(requestParameters: AdminDeleteComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DeleteUserAccount200Response>> {
+    async adminDeleteComicRaw(requestParameters: AdminDeleteComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
         const requestOptions = await this.adminDeleteComicRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteUserAccount200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResponseFromJSON(jsonValue));
     }
 
     /**
-     * Deletes a comic. Requires administrator access.
-     * Delete a comic
+     * Permanently deletes a comic record and all its associated chapters. Requires administrator privileges.
+     * Delete comic by ID
      */
-    async adminDeleteComic(requestParameters: AdminDeleteComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DeleteUserAccount200Response> {
+    async adminDeleteComic(requestParameters: AdminDeleteComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
         const response = await this.adminDeleteComicRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -866,7 +646,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/genres/{id}`;
+        let urlPath = `/admin/genres/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
@@ -878,21 +658,21 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a genre by ID. Requires administrator access.
-     * Delete a genre
+     * Permanently delete an existing comic genre.
+     * Delete genre (Admin only)
      */
-    async adminDeleteGenreRaw(requestParameters: AdminDeleteGenreRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DeleteUserAccount200Response>> {
+    async adminDeleteGenreRaw(requestParameters: AdminDeleteGenreRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
         const requestOptions = await this.adminDeleteGenreRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteUserAccount200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResponseFromJSON(jsonValue));
     }
 
     /**
-     * Deletes a genre by ID. Requires administrator access.
-     * Delete a genre
+     * Permanently delete an existing comic genre.
+     * Delete genre (Admin only)
      */
-    async adminDeleteGenre(requestParameters: AdminDeleteGenreRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DeleteUserAccount200Response> {
+    async adminDeleteGenre(requestParameters: AdminDeleteGenreRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
         const response = await this.adminDeleteGenreRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -921,7 +701,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/users/{id}`;
+        let urlPath = `/admin/users/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
@@ -933,109 +713,29 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Permanently deletes a user account by ID. Requires administrator access.
-     * Delete a user
+     * Permanently delete a user account and their storage assets.
+     * Delete user account (Admin only)
      */
-    async adminDeleteUserRaw(requestParameters: AdminDeleteUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async adminDeleteUserRaw(requestParameters: AdminDeleteUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
         const requestOptions = await this.adminDeleteUserRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResponseFromJSON(jsonValue));
     }
 
     /**
-     * Permanently deletes a user account by ID. Requires administrator access.
-     * Delete a user
+     * Permanently delete a user account and their storage assets.
+     * Delete user account (Admin only)
      */
-    async adminDeleteUser(requestParameters: AdminDeleteUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async adminDeleteUser(requestParameters: AdminDeleteUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
         const response = await this.adminDeleteUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Creates request options for adminFinalizeChapter without sending the request
+     * Creates request options for adminGetStats without sending the request
      */
-    async adminFinalizeChapterRequestOpts(requestParameters: AdminFinalizeChapterOperationRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['comicId'] == null) {
-            throw new runtime.RequiredError(
-                'comicId',
-                'Required parameter "comicId" was null or undefined when calling adminFinalizeChapter().'
-            );
-        }
-
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling adminFinalizeChapter().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/comics/{comicId}/chapters/{id}/finalize`;
-        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
-        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
-
-        return {
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: AdminFinalizeChapterRequestToJSON(requestParameters['adminFinalizeChapterRequest']),
-        };
-    }
-
-    /**
-     * Sets the final page count for a chapter.
-     * Finalize a chapter
-     */
-    async adminFinalizeChapterRaw(requestParameters: AdminFinalizeChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminFinalizeChapterRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Sets the final page count for a chapter.
-     * Finalize a chapter
-     */
-    async adminFinalizeChapter(requestParameters: AdminFinalizeChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminFinalizeChapterRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminGetChapter without sending the request
-     */
-    async adminGetChapterRequestOpts(requestParameters: AdminGetChapterRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['comicId'] == null) {
-            throw new runtime.RequiredError(
-                'comicId',
-                'Required parameter "comicId" was null or undefined when calling adminGetChapter().'
-            );
-        }
-
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling adminGetChapter().'
-            );
-        }
-
+    async adminGetStatsRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -1049,9 +749,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/comics/{comicId}/chapters/{id}`;
-        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
-        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+        let urlPath = `/admin/stats`;
 
         return {
             path: urlPath,
@@ -1062,347 +760,22 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets chapter metadata and pages by ID.
-     * Get chapter details
+     * Get aggregate metrics for comics, chapters, users, and comments.
+     * System overview stats (Admin only)
      */
-    async adminGetChapterRaw(requestParameters: AdminGetChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminGetChapterRequestOpts(requestParameters);
+    async adminGetStatsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminGetStats200Response>> {
+        const requestOptions = await this.adminGetStatsRequestOpts();
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminGetStats200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Gets chapter metadata and pages by ID.
-     * Get chapter details
+     * Get aggregate metrics for comics, chapters, users, and comments.
+     * System overview stats (Admin only)
      */
-    async adminGetChapter(requestParameters: AdminGetChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminGetChapterRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminGetComic without sending the request
-     */
-    async adminGetComicRequestOpts(requestParameters: AdminGetComicRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling adminGetComic().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/comics/{id}`;
-        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
-
-        return {
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Gets comic details by ID. Requires administrator access.
-     * Get comic details
-     */
-    async adminGetComicRaw(requestParameters: AdminGetComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminGetComicRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Gets comic details by ID. Requires administrator access.
-     * Get comic details
-     */
-    async adminGetComic(requestParameters: AdminGetComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminGetComicRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminGetPlatformStats without sending the request
-     */
-    async adminGetPlatformStatsRequestOpts(): Promise<runtime.RequestOpts> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/stats`;
-
-        return {
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Returns administrative platform statistics.
-     * Get platform statistics
-     */
-    async adminGetPlatformStatsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminGetPlatformStatsRequestOpts();
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Returns administrative platform statistics.
-     * Get platform statistics
-     */
-    async adminGetPlatformStats(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminGetPlatformStatsRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminInitializeChapter without sending the request
-     */
-    async adminInitializeChapterRequestOpts(requestParameters: AdminInitializeChapterOperationRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['comicId'] == null) {
-            throw new runtime.RequiredError(
-                'comicId',
-                'Required parameter "comicId" was null or undefined when calling adminInitializeChapter().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/comics/{comicId}/chapters/init`;
-        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
-
-        return {
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: AdminInitializeChapterRequestToJSON(requestParameters['adminInitializeChapterRequest']),
-        };
-    }
-
-    /**
-     * Creates chapter metadata before pages are uploaded.
-     * Initialize a chapter upload
-     */
-    async adminInitializeChapterRaw(requestParameters: AdminInitializeChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminInitializeChapterRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Creates chapter metadata before pages are uploaded.
-     * Initialize a chapter upload
-     */
-    async adminInitializeChapter(requestParameters: AdminInitializeChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminInitializeChapterRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminListChapters without sending the request
-     */
-    async adminListChaptersRequestOpts(requestParameters: AdminListChaptersRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['comicId'] == null) {
-            throw new runtime.RequiredError(
-                'comicId',
-                'Required parameter "comicId" was null or undefined when calling adminListChapters().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/comics/{comicId}/chapters`;
-        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
-
-        return {
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Lists chapters for a comic. Requires administrator access.
-     * List comic chapters
-     */
-    async adminListChaptersRaw(requestParameters: AdminListChaptersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminListChaptersRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Lists chapters for a comic. Requires administrator access.
-     * List comic chapters
-     */
-    async adminListChapters(requestParameters: AdminListChaptersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminListChaptersRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminListComics without sending the request
-     */
-    async adminListComicsRequestOpts(requestParameters: AdminListComicsRequest): Promise<runtime.RequestOpts> {
-        const queryParameters: any = {};
-
-        if (requestParameters['q'] != null) {
-            queryParameters['q'] = requestParameters['q'];
-        }
-
-        if (requestParameters['status'] != null) {
-            queryParameters['status'] = requestParameters['status'];
-        }
-
-        if (requestParameters['page'] != null) {
-            queryParameters['page'] = requestParameters['page'];
-        }
-
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/comics`;
-
-        return {
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Lists comics with search, status filtering, and pagination. Requires administrator access.
-     * List comics
-     */
-    async adminListComicsRaw(requestParameters: AdminListComicsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminListComicsRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Lists comics with search, status filtering, and pagination. Requires administrator access.
-     * List comics
-     */
-    async adminListComics(requestParameters: AdminListComicsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminListComicsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminListGenres without sending the request
-     */
-    async adminListGenresRequestOpts(): Promise<runtime.RequestOpts> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/genres`;
-
-        return {
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Returns all genres. Requires administrator access.
-     * List all genres
-     */
-    async adminListGenresRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminListGenres200Response>> {
-        const requestOptions = await this.adminListGenresRequestOpts();
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => AdminListGenres200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Returns all genres. Requires administrator access.
-     * List all genres
-     */
-    async adminListGenres(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListGenres200Response> {
-        const response = await this.adminListGenresRaw(initOverrides);
+    async adminGetStats(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminGetStats200Response> {
+        const response = await this.adminGetStatsRaw(initOverrides);
         return await response.value();
     }
 
@@ -1435,7 +808,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/users`;
+        let urlPath = `/admin/users`;
 
         return {
             path: urlPath,
@@ -1446,40 +819,33 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Searches and returns a paginated user list. Requires administrator access.
-     * List users
+     * Paginated user list with optional search query.
+     * List registered users (Admin only)
      */
-    async adminListUsersRaw(requestParameters: AdminListUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async adminListUsersRaw(requestParameters: AdminListUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminListUsers200Response>> {
         const requestOptions = await this.adminListUsersRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminListUsers200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Searches and returns a paginated user list. Requires administrator access.
-     * List users
+     * Paginated user list with optional search query.
+     * List registered users (Admin only)
      */
-    async adminListUsers(requestParameters: AdminListUsersRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async adminListUsers(requestParameters: AdminListUsersRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListUsers200Response> {
         const response = await this.adminListUsersRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Creates request options for adminUpdateChapter without sending the request
+     * Creates request options for adminUpdateComic without sending the request
      */
-    async adminUpdateChapterRequestOpts(requestParameters: AdminUpdateChapterRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['comicId'] == null) {
-            throw new runtime.RequiredError(
-                'comicId',
-                'Required parameter "comicId" was null or undefined when calling adminUpdateChapter().'
-            );
-        }
-
+    async adminUpdateComicRequestOpts(requestParameters: AdminUpdateComicOperationRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
-                'Required parameter "id" was null or undefined when calling adminUpdateChapter().'
+                'Required parameter "id" was null or undefined when calling adminUpdateComic().'
             );
         }
 
@@ -1498,8 +864,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/comics/{comicId}/chapters/{id}`;
-        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
+        let urlPath = `/admin/comics/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
@@ -1507,148 +872,26 @@ export class AdministrationApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['requestBody'],
+            body: AdminUpdateComicRequestToJSON(requestParameters['adminUpdateComicRequest']),
         };
     }
 
     /**
-     * Updates chapter metadata by ID.
-     * Update chapter metadata
+     * Updates comic metadata by ID. Requires administrator privileges.
+     * Update comic by ID
      */
-    async adminUpdateChapterRaw(requestParameters: AdminUpdateChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminUpdateChapterRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Updates chapter metadata by ID.
-     * Update chapter metadata
-     */
-    async adminUpdateChapter(requestParameters: AdminUpdateChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminUpdateChapterRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminUpdateComic without sending the request
-     */
-    async adminUpdateComicRequestOpts(requestParameters: AdminUpdateComicRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling adminUpdateComic().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters['title'] != null) {
-            formParams.append('title', requestParameters['title'] as any);
-        }
-
-        if (requestParameters['synopsis'] != null) {
-            formParams.append('synopsis', requestParameters['synopsis'] as any);
-        }
-
-        if (requestParameters['type'] != null) {
-            formParams.append('type', requestParameters['type'] as any);
-        }
-
-        if (requestParameters['status'] != null) {
-            formParams.append('status', requestParameters['status'] as any);
-        }
-
-        if (requestParameters['accessTier'] != null) {
-            formParams.append('accessTier', requestParameters['accessTier'] as any);
-        }
-
-        if (requestParameters['alternateTitles'] != null) {
-            formParams.append('alternateTitles', new Blob([JSON.stringify(runtime.anyToJSON(requestParameters['alternateTitles']))], { type: "application/json", }));
-                    }
-
-        if (requestParameters['genreIds'] != null) {
-            formParams.append('genreIds', requestParameters['genreIds'] as any);
-        }
-
-        if (requestParameters['creator'] != null) {
-            formParams.append('creator', requestParameters['creator'] as any);
-        }
-
-        if (requestParameters['cover'] != null) {
-            formParams.append('cover', requestParameters['cover'] as any);
-        }
-
-        if (requestParameters['coverUrlSource'] != null) {
-            formParams.append('coverUrlSource', requestParameters['coverUrlSource'] as any);
-        }
-
-        if (requestParameters['banner'] != null) {
-            formParams.append('banner', requestParameters['banner'] as any);
-        }
-
-        if (requestParameters['bannerUrlSource'] != null) {
-            formParams.append('bannerUrlSource', requestParameters['bannerUrlSource'] as any);
-        }
-
-
-        let urlPath = `/v1/admin/comics/{id}`;
-        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
-
-        return {
-            path: urlPath,
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: formParams,
-        };
-    }
-
-    /**
-     * Updates comic details and optional cover/banner images. Requires administrator access.
-     * Update a comic
-     */
-    async adminUpdateComicRaw(requestParameters: AdminUpdateComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminCreateComic201Response>> {
+    async adminUpdateComicRaw(requestParameters: AdminUpdateComicOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateComic200Response>> {
         const requestOptions = await this.adminUpdateComicRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AdminCreateComic201ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminUpdateComic200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Updates comic details and optional cover/banner images. Requires administrator access.
-     * Update a comic
+     * Updates comic metadata by ID. Requires administrator privileges.
+     * Update comic by ID
      */
-    async adminUpdateComic(requestParameters: AdminUpdateComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminCreateComic201Response> {
+    async adminUpdateComic(requestParameters: AdminUpdateComicOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateComic200Response> {
         const response = await this.adminUpdateComicRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -1679,7 +922,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/genres/{id}`;
+        let urlPath = `/admin/genres/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
@@ -1692,21 +935,21 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates a genre by ID. Requires administrator access.
-     * Update a genre
+     * Modifies genre name, slug, or description. Requires administrator privileges.
+     * Update genre by ID
      */
-    async adminUpdateGenreRaw(requestParameters: AdminUpdateGenreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminCreateGenre201Response>> {
+    async adminUpdateGenreRaw(requestParameters: AdminUpdateGenreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateGenre200Response>> {
         const requestOptions = await this.adminUpdateGenreRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AdminCreateGenre201ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminUpdateGenre200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Updates a genre by ID. Requires administrator access.
-     * Update a genre
+     * Modifies genre name, slug, or description. Requires administrator privileges.
+     * Update genre by ID
      */
-    async adminUpdateGenre(requestParameters: AdminUpdateGenreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminCreateGenre201Response> {
+    async adminUpdateGenre(requestParameters: AdminUpdateGenreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateGenre200Response> {
         const response = await this.adminUpdateGenreRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -1714,11 +957,18 @@ export class AdministrationApi extends runtime.BaseAPI {
     /**
      * Creates request options for adminUpdateUser without sending the request
      */
-    async adminUpdateUserRequestOpts(requestParameters: AdminUpdateUserRequest): Promise<runtime.RequestOpts> {
+    async adminUpdateUserRequestOpts(requestParameters: AdminUpdateUserOperationRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
                 'Required parameter "id" was null or undefined when calling adminUpdateUser().'
+            );
+        }
+
+        if (requestParameters['adminUpdateUserRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminUpdateUserRequest',
+                'Required parameter "adminUpdateUserRequest" was null or undefined when calling adminUpdateUser().'
             );
         }
 
@@ -1737,7 +987,7 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/users/{id}`;
+        let urlPath = `/admin/users/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
@@ -1745,318 +995,27 @@ export class AdministrationApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['requestBody'],
+            body: AdminUpdateUserRequestToJSON(requestParameters['adminUpdateUserRequest']),
         };
     }
 
     /**
-     * Updates user details by ID. Requires administrator access.
-     * Update a user
+     * Update details, role, or reset password for an existing user account.
+     * Update user account (Admin only)
      */
-    async adminUpdateUserRaw(requestParameters: AdminUpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async adminUpdateUserRaw(requestParameters: AdminUpdateUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateUser200Response>> {
         const requestOptions = await this.adminUpdateUserRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminUpdateUser200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Updates user details by ID. Requires administrator access.
-     * Update a user
+     * Update details, role, or reset password for an existing user account.
+     * Update user account (Admin only)
      */
-    async adminUpdateUser(requestParameters: AdminUpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async adminUpdateUser(requestParameters: AdminUpdateUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateUser200Response> {
         const response = await this.adminUpdateUserRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for adminUploadChapterPage without sending the request
-     */
-    async adminUploadChapterPageRequestOpts(requestParameters: AdminUploadChapterPageRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['comicId'] == null) {
-            throw new runtime.RequiredError(
-                'comicId',
-                'Required parameter "comicId" was null or undefined when calling adminUploadChapterPage().'
-            );
-        }
-
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling adminUploadChapterPage().'
-            );
-        }
-
-        if (requestParameters['file'] == null) {
-            throw new runtime.RequiredError(
-                'file',
-                'Required parameter "file" was null or undefined when calling adminUploadChapterPage().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters['pageNumber'] != null) {
-            formParams.append('pageNumber', requestParameters['pageNumber'] as any);
-        }
-
-        if (requestParameters['file'] != null) {
-            formParams.append('file', requestParameters['file'] as any);
-        }
-
-        if (requestParameters['width'] != null) {
-            formParams.append('width', requestParameters['width'] as any);
-        }
-
-        if (requestParameters['height'] != null) {
-            formParams.append('height', requestParameters['height'] as any);
-        }
-
-
-        let urlPath = `/v1/admin/comics/{comicId}/chapters/{id}/pages/upload`;
-        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
-        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
-
-        return {
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: formParams,
-        };
-    }
-
-    /**
-     * Uploads a single page image for a chapter.
-     * Upload a chapter page
-     */
-    async adminUploadChapterPageRaw(requestParameters: AdminUploadChapterPageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminUploadChapterPageRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Uploads a single page image for a chapter.
-     * Upload a chapter page
-     */
-    async adminUploadChapterPage(requestParameters: AdminUploadChapterPageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminUploadChapterPageRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for clearSearchSuggestionCache without sending the request
-     */
-    async clearSearchSuggestionCacheRequestOpts(): Promise<runtime.RequestOpts> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/system/clear-search-cache`;
-
-        return {
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Invalidates cached comic search suggestions. Requires administrator access.
-     * Clear the search suggestion cache
-     */
-    async clearSearchSuggestionCacheRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.clearSearchSuggestionCacheRequestOpts();
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Invalidates cached comic search suggestions. Requires administrator access.
-     * Clear the search suggestion cache
-     */
-    async clearSearchSuggestionCache(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.clearSearchSuggestionCacheRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for getSystemMaintenanceStatus without sending the request
-     */
-    async getSystemMaintenanceStatusRequestOpts(): Promise<runtime.RequestOpts> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/system/maintenance-status`;
-
-        return {
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Returns KV, analytics, storage, and synchronization status. Requires administrator access.
-     * Get system maintenance status
-     */
-    async getSystemMaintenanceStatusRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.getSystemMaintenanceStatusRequestOpts();
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Returns KV, analytics, storage, and synchronization status. Requires administrator access.
-     * Get system maintenance status
-     */
-    async getSystemMaintenanceStatus(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.getSystemMaintenanceStatusRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for purgeOrphanedStorageFiles without sending the request
-     */
-    async purgeOrphanedStorageFilesRequestOpts(): Promise<runtime.RequestOpts> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/storage/purge-orphans`;
-
-        return {
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Deletes storage files not associated with database records. Requires administrator access.
-     * Purge orphaned storage files
-     */
-    async purgeOrphanedStorageFilesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PurgeOrphanedStorageFiles200Response>> {
-        const requestOptions = await this.purgeOrphanedStorageFilesRequestOpts();
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PurgeOrphanedStorageFiles200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Deletes storage files not associated with database records. Requires administrator access.
-     * Purge orphaned storage files
-     */
-    async purgeOrphanedStorageFiles(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PurgeOrphanedStorageFiles200Response> {
-        const response = await this.purgeOrphanedStorageFilesRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for synchronizeViewCounts without sending the request
-     */
-    async synchronizeViewCountsRequestOpts(): Promise<runtime.RequestOpts> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/admin/system/sync-views`;
-
-        return {
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Synchronizes view deltas and refreshes rankings. Requires administrator access.
-     * Synchronize view counts
-     */
-    async synchronizeViewCountsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.synchronizeViewCountsRequestOpts();
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * Synchronizes view deltas and refreshes rankings. Requires administrator access.
-     * Synchronize view counts
-     */
-    async synchronizeViewCounts(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.synchronizeViewCountsRaw(initOverrides);
         return await response.value();
     }
 

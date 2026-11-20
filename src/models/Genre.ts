@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -12,7 +12,7 @@
  * Copyright (c) KomikHQ Platform. All rights reserved.
  */
 
-import { mapValues, parseDate, parseDateTime, serializeDate, serializeDateTime } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -22,39 +22,25 @@ export interface Genre {
     /**
      * 
      */
-    id: string;
+    id?: string;
     /**
      * 
      */
-    name: string;
+    name?: string;
     /**
      * 
      */
-    slug: string;
+    slug?: string;
     /**
      * 
      */
-    description: string | null;
-    /**
-     * 
-     */
-    createdAt: Date;
-    /**
-     * 
-     */
-    updatedAt: Date;
+    description?: string;
 }
 
 /**
  * Check if a given object implements the Genre interface.
  */
 export function instanceOfGenre(value: object): value is Genre {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('slug' in value) || value['slug'] === undefined) return false;
-    if (!('description' in value) || value['description'] === undefined) return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
-    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
 
@@ -68,12 +54,10 @@ export function GenreFromJSONTyped(json: any, ignoreDiscriminator: boolean): Gen
     }
     return {
         
-        'id': json['id'],
-        'name': json['name'],
-        'slug': json['slug'],
-        'description': json['description'],
-        'createdAt': (json['createdAt'] == null ? json['createdAt'] : parseDateTime(json['createdAt'])),
-        'updatedAt': (json['updatedAt'] == null ? json['updatedAt'] : parseDateTime(json['updatedAt'])),
+        'id': json['id'] == null ? undefined : json['id'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'slug': json['slug'] == null ? undefined : json['slug'],
+        'description': json['description'] == null ? undefined : json['description'],
     };
 }
 
@@ -92,8 +76,6 @@ export function GenreToJSONTyped(value?: Genre | null, ignoreDiscriminator: bool
         'name': value['name'],
         'slug': value['slug'],
         'description': value['description'],
-        'createdAt': value['createdAt'] == null ? value['createdAt'] : serializeDateTime(value['createdAt']),
-        'updatedAt': value['updatedAt'] == null ? value['updatedAt'] : serializeDateTime(value['updatedAt']),
     };
 }
 

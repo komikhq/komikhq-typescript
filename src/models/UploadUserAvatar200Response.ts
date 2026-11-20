@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { UploadUserAvatar200ResponseData } from './UploadUserAvatar200ResponseData';
+import {
+    UploadUserAvatar200ResponseDataFromJSON,
+    UploadUserAvatar200ResponseDataFromJSONTyped,
+    UploadUserAvatar200ResponseDataToJSON,
+    UploadUserAvatar200ResponseDataToJSONTyped,
+} from './UploadUserAvatar200ResponseData';
+
 /**
  * 
  * @export
@@ -22,19 +30,17 @@ export interface UploadUserAvatar200Response {
     /**
      * 
      */
-    success: boolean;
+    status?: string;
     /**
      * 
      */
-    avatarUrl: string;
+    data?: UploadUserAvatar200ResponseData;
 }
 
 /**
  * Check if a given object implements the UploadUserAvatar200Response interface.
  */
 export function instanceOfUploadUserAvatar200Response(value: object): value is UploadUserAvatar200Response {
-    if (!('success' in value) || value['success'] === undefined) return false;
-    if (!('avatarUrl' in value) || value['avatarUrl'] === undefined) return false;
     return true;
 }
 
@@ -48,8 +54,8 @@ export function UploadUserAvatar200ResponseFromJSONTyped(json: any, ignoreDiscri
     }
     return {
         
-        'success': json['success'],
-        'avatarUrl': json['avatarUrl'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'data': json['data'] == null ? undefined : UploadUserAvatar200ResponseDataFromJSON(json['data']),
     };
 }
 
@@ -64,8 +70,8 @@ export function UploadUserAvatar200ResponseToJSONTyped(value?: UploadUserAvatar2
 
     return {
         
-        'success': value['success'],
-        'avatarUrl': value['avatarUrl'],
+        'status': value['status'],
+        'data': UploadUserAvatar200ResponseDataToJSON(value['data']),
     };
 }
 

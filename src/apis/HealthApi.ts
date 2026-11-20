@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -14,10 +14,10 @@
 
 import * as runtime from '../runtime';
 import {
-    type GetHealth200Response,
-    GetHealth200ResponseFromJSON,
-    GetHealth200ResponseToJSON,
-} from '../models/GetHealth200Response';
+    type GetHealthStatus200Response,
+    GetHealthStatus200ResponseFromJSON,
+    GetHealthStatus200ResponseToJSON,
+} from '../models/GetHealthStatus200Response';
 
 /**
  * 
@@ -25,9 +25,9 @@ import {
 export class HealthApi extends runtime.BaseAPI {
 
     /**
-     * Creates request options for getHealth without sending the request
+     * Creates request options for getHealthStatus without sending the request
      */
-    async getHealthRequestOpts(): Promise<runtime.RequestOpts> {
+    async getHealthStatusRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -44,22 +44,22 @@ export class HealthApi extends runtime.BaseAPI {
     }
 
     /**
-     * Checks the database, cache binding, and media storage binding.
-     * Check API health
+     * Returns database latency, Node.js runtime compatibility, and Cloudflare resource binding connectivity status.
+     * Service health and runtime environment check
      */
-    async getHealthRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetHealth200Response>> {
-        const requestOptions = await this.getHealthRequestOpts();
+    async getHealthStatusRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetHealthStatus200Response>> {
+        const requestOptions = await this.getHealthStatusRequestOpts();
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetHealth200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetHealthStatus200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Checks the database, cache binding, and media storage binding.
-     * Check API health
+     * Returns database latency, Node.js runtime compatibility, and Cloudflare resource binding connectivity status.
+     * Service health and runtime environment check
      */
-    async getHealth(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetHealth200Response> {
-        const response = await this.getHealthRaw(initOverrides);
+    async getHealthStatus(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetHealthStatus200Response> {
+        const response = await this.getHealthStatusRaw(initOverrides);
         return await response.value();
     }
 

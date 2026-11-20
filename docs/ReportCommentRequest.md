@@ -8,8 +8,8 @@ Name | Type
 ------------ | -------------
 `reason` | string
 `details` | string
-`guestName` | string
-`guestEmail` | string
+`reporterGuestName` | string
+`reporterGuestEmail` | string
 
 ## Example
 
@@ -20,8 +20,8 @@ import type { ReportCommentRequest } from '@komikhq/komikhq-typescript'
 const example = {
   "reason": null,
   "details": null,
-  "guestName": null,
-  "guestEmail": null,
+  "reporterGuestName": null,
+  "reporterGuestEmail": null,
 } satisfies ReportCommentRequest
 
 console.log(example)

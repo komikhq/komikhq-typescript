@@ -1,20 +1,20 @@
 # ViewsApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**recordComicView**](ViewsApi.md#recordcomicviewoperation) | **POST** /v1/view | Record a comic or chapter view |
+| [**recordComicView**](ViewsApi.md#recordcomicviewoperation) | **POST** /view | Record comic/chapter view |
 
 
 
 ## recordComicView
 
-> PurgeOrphanedStorageFiles200Response recordComicView(recordComicViewRequest)
+> RecordComicView200Response recordComicView(recordComicViewRequest)
 
-Record a comic or chapter view
+Record comic/chapter view
 
-Records a view. Requests identified as bots are accepted but not counted.
+Logs a view data point into Cloudflare Analytics Engine dataset.
 
 ### Example
 
@@ -30,7 +30,7 @@ async function example() {
   const api = new ViewsApi();
 
   const body = {
-    // RecordComicViewRequest (optional)
+    // RecordComicViewRequest
     recordComicViewRequest: ...,
   } satisfies RecordComicViewOperationRequest;
 
@@ -51,11 +51,11 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **recordComicViewRequest** | [RecordComicViewRequest](RecordComicViewRequest.md) |  | [Optional] |
+| **recordComicViewRequest** | [RecordComicViewRequest](RecordComicViewRequest.md) |  | |
 
 ### Return type
 
-[**PurgeOrphanedStorageFiles200Response**](PurgeOrphanedStorageFiles200Response.md)
+[**RecordComicView200Response**](RecordComicView200Response.md)
 
 ### Authorization
 
@@ -70,13 +70,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The view was recorded or ignored. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | View recorded successfully. |  -  |
+| **400** | Invalid payload. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

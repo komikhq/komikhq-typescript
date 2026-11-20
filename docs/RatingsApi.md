@@ -1,20 +1,21 @@
 # RatingsApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**submitComicRating**](RatingsApi.md#submitcomicratingoperation) | **POST** /v1/ratings | Submit a comic rating |
+| [**getComicRating**](RatingsApi.md#getcomicrating) | **GET** /ratings/{comicId} | Get comic rating stats and user rating |
+| [**upsertComicRating**](RatingsApi.md#upsertcomicratingoperation) | **POST** /ratings | Rate a comic |
 
 
 
-## submitComicRating
+## getComicRating
 
-> SubmitComicRating200Response submitComicRating(submitComicRatingRequest)
+> GetComicRating200Response getComicRating(comicId)
 
-Submit a comic rating
+Get comic rating stats and user rating
 
-Creates or updates the authenticated user\&#39;s rating for a comic.
+Returns average rating score, total rating count, and user\&#39;s own score if authenticated.
 
 ### Example
 
@@ -23,25 +24,19 @@ import {
   Configuration,
   RatingsApi,
 } from '@komikhq/komikhq-typescript';
-import type { SubmitComicRatingOperationRequest } from '@komikhq/komikhq-typescript';
+import type { GetComicRatingRequest } from '@komikhq/komikhq-typescript';
 
 async function example() {
   console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
-  const config = new Configuration({ 
-    // To configure API key authorization: SessionCookie
-    apiKey: "YOUR API KEY",
-    // Configure HTTP bearer authorization: BearerToken
-    accessToken: "YOUR BEARER TOKEN",
-  });
-  const api = new RatingsApi(config);
+  const api = new RatingsApi();
 
   const body = {
-    // SubmitComicRatingRequest (optional)
-    submitComicRatingRequest: ...,
-  } satisfies SubmitComicRatingOperationRequest;
+    // string | Comic ID
+    comicId: comicId_example,
+  } satisfies GetComicRatingRequest;
 
   try {
-    const data = await api.submitComicRating(body);
+    const data = await api.getComicRating(body);
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -57,11 +52,85 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **submitComicRatingRequest** | [SubmitComicRatingRequest](SubmitComicRatingRequest.md) |  | [Optional] |
+| **comicId** | `string` | Comic ID | [Defaults to `undefined`] |
 
 ### Return type
 
-[**SubmitComicRating200Response**](SubmitComicRating200Response.md)
+[**GetComicRating200Response**](GetComicRating200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Comic rating data. |  -  |
+| **400** | Invalid comicId. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## upsertComicRating
+
+> GetComicRating200Response upsertComicRating(upsertComicRatingRequest)
+
+Rate a comic
+
+Submits a rating score (1-10) and optional review text for a comic.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  RatingsApi,
+} from '@komikhq/komikhq-typescript';
+import type { UpsertComicRatingOperationRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const config = new Configuration({ 
+    // To configure API key authorization: SessionCookie
+    apiKey: "YOUR API KEY",
+    // Configure HTTP bearer authorization: BearerToken
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new RatingsApi(config);
+
+  const body = {
+    // UpsertComicRatingRequest
+    upsertComicRatingRequest: ...,
+  } satisfies UpsertComicRatingOperationRequest;
+
+  try {
+    const data = await api.upsertComicRating(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **upsertComicRatingRequest** | [UpsertComicRatingRequest](UpsertComicRatingRequest.md) |  | |
+
+### Return type
+
+[**GetComicRating200Response**](GetComicRating200Response.md)
 
 ### Authorization
 
@@ -76,13 +145,9 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The rating was recorded. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Rating submitted successfully. |  -  |
+| **400** | Invalid payload. |  -  |
+| **401** | Unauthorized. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

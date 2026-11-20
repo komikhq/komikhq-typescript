@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -14,40 +14,37 @@
 
 import * as runtime from '../runtime';
 import {
-    type AdminResolveModerationReportRequest,
-    AdminResolveModerationReportRequestFromJSON,
-    AdminResolveModerationReportRequestToJSON,
-} from '../models/AdminResolveModerationReportRequest';
+    type AdminListReports200Response,
+    AdminListReports200ResponseFromJSON,
+    AdminListReports200ResponseToJSON,
+} from '../models/AdminListReports200Response';
 import {
-    type ErrorResponse,
-    ErrorResponseFromJSON,
-    ErrorResponseToJSON,
-} from '../models/ErrorResponse';
+    type AdminUpdateReport200Response,
+    AdminUpdateReport200ResponseFromJSON,
+    AdminUpdateReport200ResponseToJSON,
+} from '../models/AdminUpdateReport200Response';
+import {
+    type AdminUpdateReportRequest,
+    AdminUpdateReportRequestFromJSON,
+    AdminUpdateReportRequestToJSON,
+} from '../models/AdminUpdateReportRequest';
 
-export interface AdminListModerationReportsRequest {
+export interface AdminListReportsRequest {
     /**
-     * 
+     * Report review status
      */
-    page?: number | null;
-    /**
-     * 
-     */
-    limit?: number | null;
-    /**
-     * 
-     */
-    status?: string;
+    status?: AdminListReportsStatusEnum;
 }
 
-export interface AdminResolveModerationReportOperationRequest {
+export interface AdminUpdateReportOperationRequest {
     /**
-     * 
+     * Report ID
      */
     id: string;
     /**
      * 
      */
-    adminResolveModerationReportRequest?: AdminResolveModerationReportRequest;
+    adminUpdateReportRequest: AdminUpdateReportRequest;
 }
 
 /**
@@ -56,18 +53,10 @@ export interface AdminResolveModerationReportOperationRequest {
 export class ModerationApi extends runtime.BaseAPI {
 
     /**
-     * Creates request options for adminListModerationReports without sending the request
+     * Creates request options for adminListReports without sending the request
      */
-    async adminListModerationReportsRequestOpts(requestParameters: AdminListModerationReportsRequest): Promise<runtime.RequestOpts> {
+    async adminListReportsRequestOpts(requestParameters: AdminListReportsRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
-
-        if (requestParameters['page'] != null) {
-            queryParameters['page'] = requestParameters['page'];
-        }
-
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
-        }
 
         if (requestParameters['status'] != null) {
             queryParameters['status'] = requestParameters['status'];
@@ -84,7 +73,7 @@ export class ModerationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/reports`;
+        let urlPath = `/admin/reports`;
 
         return {
             path: urlPath,
@@ -95,33 +84,40 @@ export class ModerationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns paginated moderation reports, optionally filtered by status.
-     * List moderation reports
+     * Fetch reported comments and issues filtered by status.
+     * List user reports (Admin only)
      */
-    async adminListModerationReportsRaw(requestParameters: AdminListModerationReportsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminListModerationReportsRequestOpts(requestParameters);
+    async adminListReportsRaw(requestParameters: AdminListReportsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminListReports200Response>> {
+        const requestOptions = await this.adminListReportsRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminListReports200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Returns paginated moderation reports, optionally filtered by status.
-     * List moderation reports
+     * Fetch reported comments and issues filtered by status.
+     * List user reports (Admin only)
      */
-    async adminListModerationReports(requestParameters: AdminListModerationReportsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminListModerationReportsRaw(requestParameters, initOverrides);
+    async adminListReports(requestParameters: AdminListReportsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListReports200Response> {
+        const response = await this.adminListReportsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Creates request options for adminResolveModerationReport without sending the request
+     * Creates request options for adminUpdateReport without sending the request
      */
-    async adminResolveModerationReportRequestOpts(requestParameters: AdminResolveModerationReportOperationRequest): Promise<runtime.RequestOpts> {
+    async adminUpdateReportRequestOpts(requestParameters: AdminUpdateReportOperationRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
-                'Required parameter "id" was null or undefined when calling adminResolveModerationReport().'
+                'Required parameter "id" was null or undefined when calling adminUpdateReport().'
+            );
+        }
+
+        if (requestParameters['adminUpdateReportRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminUpdateReportRequest',
+                'Required parameter "adminUpdateReportRequest" was null or undefined when calling adminUpdateReport().'
             );
         }
 
@@ -140,36 +136,46 @@ export class ModerationApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/admin/reports/{id}/action`;
+        let urlPath = `/admin/reports/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
-            method: 'POST',
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: AdminResolveModerationReportRequestToJSON(requestParameters['adminResolveModerationReportRequest']),
+            body: AdminUpdateReportRequestToJSON(requestParameters['adminUpdateReportRequest']),
         };
     }
 
     /**
-     * Performs a moderation action on a report. Requires administrator access.
-     * Resolve a moderation report
+     * Update resolution status of a reported item.
+     * Update report status (Admin only)
      */
-    async adminResolveModerationReportRaw(requestParameters: AdminResolveModerationReportOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.adminResolveModerationReportRequestOpts(requestParameters);
+    async adminUpdateReportRaw(requestParameters: AdminUpdateReportOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateReport200Response>> {
+        const requestOptions = await this.adminUpdateReportRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminUpdateReport200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Performs a moderation action on a report. Requires administrator access.
-     * Resolve a moderation report
+     * Update resolution status of a reported item.
+     * Update report status (Admin only)
      */
-    async adminResolveModerationReport(requestParameters: AdminResolveModerationReportOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.adminResolveModerationReportRaw(requestParameters, initOverrides);
+    async adminUpdateReport(requestParameters: AdminUpdateReportOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateReport200Response> {
+        const response = await this.adminUpdateReportRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
 }
+
+/**
+ * @export
+ */
+export const AdminListReportsStatusEnum = {
+    Pending: 'PENDING',
+    Resolved: 'RESOLVED',
+    Rejected: 'REJECTED',
+} as const;
+export type AdminListReportsStatusEnum = typeof AdminListReportsStatusEnum[keyof typeof AdminListReportsStatusEnum];

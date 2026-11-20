@@ -1,10 +1,10 @@
 # GenresApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**listGenres**](GenresApi.md#listgenres) | **GET** /v1/genres | List comic genres |
+| [**listGenres**](GenresApi.md#listgenres) | **GET** /genres | List all comic genres |
 
 
 
@@ -12,9 +12,9 @@ All URIs are relative to *https://api.komikhq.com*
 
 > ListGenres200Response listGenres()
 
-List comic genres
+List all comic genres
 
-Returns the public comic genre catalog.
+Returns the full catalog of available comic genres.
 
 ### Example
 
@@ -62,13 +62,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The available genres. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Genre catalog list. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

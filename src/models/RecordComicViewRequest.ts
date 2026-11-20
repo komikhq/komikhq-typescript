@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -26,7 +26,7 @@ export interface RecordComicViewRequest {
     /**
      * 
      */
-    chapterId: string;
+    chapterId?: string;
 }
 
 /**
@@ -34,7 +34,6 @@ export interface RecordComicViewRequest {
  */
 export function instanceOfRecordComicViewRequest(value: object): value is RecordComicViewRequest {
     if (!('comicId' in value) || value['comicId'] === undefined) return false;
-    if (!('chapterId' in value) || value['chapterId'] === undefined) return false;
     return true;
 }
 
@@ -49,7 +48,7 @@ export function RecordComicViewRequestFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'comicId': json['comicId'],
-        'chapterId': json['chapterId'],
+        'chapterId': json['chapterId'] == null ? undefined : json['chapterId'],
     };
 }
 

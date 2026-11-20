@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -19,10 +19,10 @@ import {
     ErrorResponseToJSON,
 } from '../models/ErrorResponse';
 import {
-    type PurgeOrphanedStorageFiles200Response,
-    PurgeOrphanedStorageFiles200ResponseFromJSON,
-    PurgeOrphanedStorageFiles200ResponseToJSON,
-} from '../models/PurgeOrphanedStorageFiles200Response';
+    type RecordComicView200Response,
+    RecordComicView200ResponseFromJSON,
+    RecordComicView200ResponseToJSON,
+} from '../models/RecordComicView200Response';
 import {
     type RecordComicViewRequest,
     RecordComicViewRequestFromJSON,
@@ -33,7 +33,7 @@ export interface RecordComicViewOperationRequest {
     /**
      * 
      */
-    recordComicViewRequest?: RecordComicViewRequest;
+    recordComicViewRequest: RecordComicViewRequest;
 }
 
 /**
@@ -45,6 +45,13 @@ export class ViewsApi extends runtime.BaseAPI {
      * Creates request options for recordComicView without sending the request
      */
     async recordComicViewRequestOpts(requestParameters: RecordComicViewOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['recordComicViewRequest'] == null) {
+            throw new runtime.RequiredError(
+                'recordComicViewRequest',
+                'Required parameter "recordComicViewRequest" was null or undefined when calling recordComicView().'
+            );
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -52,7 +59,7 @@ export class ViewsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
 
-        let urlPath = `/v1/view`;
+        let urlPath = `/view`;
 
         return {
             path: urlPath,
@@ -64,21 +71,21 @@ export class ViewsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Records a view. Requests identified as bots are accepted but not counted.
-     * Record a comic or chapter view
+     * Logs a view data point into Cloudflare Analytics Engine dataset.
+     * Record comic/chapter view
      */
-    async recordComicViewRaw(requestParameters: RecordComicViewOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PurgeOrphanedStorageFiles200Response>> {
+    async recordComicViewRaw(requestParameters: RecordComicViewOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RecordComicView200Response>> {
         const requestOptions = await this.recordComicViewRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => PurgeOrphanedStorageFiles200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => RecordComicView200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Records a view. Requests identified as bots are accepted but not counted.
-     * Record a comic or chapter view
+     * Logs a view data point into Cloudflare Analytics Engine dataset.
+     * Record comic/chapter view
      */
-    async recordComicView(requestParameters: RecordComicViewOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PurgeOrphanedStorageFiles200Response> {
+    async recordComicView(requestParameters: RecordComicViewOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RecordComicView200Response> {
         const response = await this.recordComicViewRaw(requestParameters, initOverrides);
         return await response.value();
     }

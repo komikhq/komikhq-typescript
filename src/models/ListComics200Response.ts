@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ListComics200ResponseData } from './ListComics200ResponseData';
+import {
+    ListComics200ResponseDataFromJSON,
+    ListComics200ResponseDataFromJSONTyped,
+    ListComics200ResponseDataToJSON,
+    ListComics200ResponseDataToJSONTyped,
+} from './ListComics200ResponseData';
+
 /**
  * 
  * @export
@@ -22,22 +30,17 @@ export interface ListComics200Response {
     /**
      * 
      */
-    query?: any | null;
+    status?: string;
     /**
      * 
      */
-    comics: Array<any | null>;
-    /**
-     * 
-     */
-    pagination?: any | null;
+    data?: ListComics200ResponseData;
 }
 
 /**
  * Check if a given object implements the ListComics200Response interface.
  */
 export function instanceOfListComics200Response(value: object): value is ListComics200Response {
-    if (!('comics' in value) || value['comics'] === undefined) return false;
     return true;
 }
 
@@ -51,9 +54,8 @@ export function ListComics200ResponseFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'query': json['query'] === undefined ? undefined : json['query'] === null ? null : json['query'],
-        'comics': json['comics'],
-        'pagination': json['pagination'] === undefined ? undefined : json['pagination'] === null ? null : json['pagination'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'data': json['data'] == null ? undefined : ListComics200ResponseDataFromJSON(json['data']),
     };
 }
 
@@ -68,9 +70,8 @@ export function ListComics200ResponseToJSONTyped(value?: ListComics200Response |
 
     return {
         
-        'query': value['query'],
-        'comics': value['comics'],
-        'pagination': value['pagination'],
+        'status': value['status'],
+        'data': ListComics200ResponseDataToJSON(value['data']),
     };
 }
 

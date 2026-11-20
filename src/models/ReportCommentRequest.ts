@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -19,11 +19,10 @@ import { mapValues } from '../runtime';
  * @interface ReportCommentRequest
  */
 export interface ReportCommentRequest {
-    [key: string]: any | any;
     /**
      * 
      */
-    reason: string;
+    reason: ReportCommentRequestReasonEnum;
     /**
      * 
      */
@@ -31,12 +30,27 @@ export interface ReportCommentRequest {
     /**
      * 
      */
-    guestName?: string;
+    reporterGuestName?: string;
     /**
      * 
      */
-    guestEmail?: string;
+    reporterGuestEmail?: string;
 }
+
+
+/**
+ * @export
+ */
+export const ReportCommentRequestReasonEnum = {
+    Spam: 'spam',
+    Harassment: 'harassment',
+    HateSpeech: 'hate_speech',
+    Inappropriate: 'inappropriate',
+    Spoiler: 'spoiler',
+    Other: 'other',
+} as const;
+export type ReportCommentRequestReasonEnum = typeof ReportCommentRequestReasonEnum[keyof typeof ReportCommentRequestReasonEnum];
+
 
 /**
  * Check if a given object implements the ReportCommentRequest interface.
@@ -56,11 +70,10 @@ export function ReportCommentRequestFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-            ...json,
         'reason': json['reason'],
         'details': json['details'] == null ? undefined : json['details'],
-        'guestName': json['guestName'] == null ? undefined : json['guestName'],
-        'guestEmail': json['guestEmail'] == null ? undefined : json['guestEmail'],
+        'reporterGuestName': json['reporterGuestName'] == null ? undefined : json['reporterGuestName'],
+        'reporterGuestEmail': json['reporterGuestEmail'] == null ? undefined : json['reporterGuestEmail'],
     };
 }
 
@@ -75,11 +88,10 @@ export function ReportCommentRequestToJSONTyped(value?: ReportCommentRequest | n
 
     return {
         
-            ...value,
         'reason': value['reason'],
         'details': value['details'],
-        'guestName': value['guestName'],
-        'guestEmail': value['guestEmail'],
+        'reporterGuestName': value['reporterGuestName'],
+        'reporterGuestEmail': value['reporterGuestEmail'],
     };
 }
 

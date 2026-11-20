@@ -1,117 +1,22 @@
 # ComicsApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**browseComics**](ComicsApi.md#browsecomics) | **GET** /v1/comics/browse | Browse and search comics |
-| [**getComicBySlug**](ComicsApi.md#getcomicbyslug) | **GET** /v1/comics/{slug} | Get a comic by slug |
-| [**listComics**](ComicsApi.md#listcomics) | **GET** /v1/comics | List comics |
-| [**listTrendingComics**](ComicsApi.md#listtrendingcomics) | **GET** /v1/comics/trending | List trending comics |
+| [**getComicBySlug**](ComicsApi.md#getcomicbyslug) | **GET** /comics/{slug} | Get comic details by slug |
+| [**getTrendingComics**](ComicsApi.md#gettrendingcomics) | **GET** /comics/trending | Get trending comics |
+| [**listComics**](ComicsApi.md#listcomics) | **GET** /comics | List and filter comics |
 
-
-
-## browseComics
-
-> ListComics200Response browseComics(search, q, genre, status, type, sort, page, limit)
-
-Browse and search comics
-
-Filters the public comic catalog and returns paginated results.
-
-### Example
-
-```ts
-import {
-  Configuration,
-  ComicsApi,
-} from '@komikhq/komikhq-typescript';
-import type { BrowseComicsRequest } from '@komikhq/komikhq-typescript';
-
-async function example() {
-  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
-  const api = new ComicsApi();
-
-  const body = {
-    // string (optional)
-    search: search_example,
-    // string (optional)
-    q: q_example,
-    // string (optional)
-    genre: genre_example,
-    // string (optional)
-    status: status_example,
-    // string (optional)
-    type: type_example,
-    // string (optional)
-    sort: sort_example,
-    // string (optional)
-    page: page_example,
-    // string (optional)
-    limit: limit_example,
-  } satisfies BrowseComicsRequest;
-
-  try {
-    const data = await api.browseComics(body);
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// Run the test
-example().catch(console.error);
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **search** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **q** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **genre** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **status** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **type** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **sort** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **page** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **limit** | `string` |  | [Optional] [Defaults to `undefined`] |
-
-### Return type
-
-[**ListComics200Response**](ListComics200Response.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: `application/json`
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | The matching comics and pagination metadata. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## getComicBySlug
 
-> object getComicBySlug(slug)
+> GetComicBySlug200Response getComicBySlug(slug)
 
-Get a comic by slug
+Get comic details by slug
 
-Returns public comic details for the specified slug.
+Returns detailed metadata for a specific comic by slug, including genres, creators, and chapter list.
 
 ### Example
 
@@ -127,7 +32,7 @@ async function example() {
   const api = new ComicsApi();
 
   const body = {
-    // string
+    // string | Unique comic slug identifier
     slug: slug_example,
   } satisfies GetComicBySlugRequest;
 
@@ -148,11 +53,11 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **slug** | `string` |  | [Defaults to `undefined`] |
+| **slug** | `string` | Unique comic slug identifier | [Defaults to `undefined`] |
 
 ### Return type
 
-**object**
+[**GetComicBySlug200Response**](GetComicBySlug200Response.md)
 
 ### Authorization
 
@@ -167,24 +72,86 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Comic details. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Comic details retrieved successfully. |  -  |
+| **404** | Comic not found. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## getTrendingComics
+
+> GetTrendingComics200Response getTrendingComics(limit)
+
+Get trending comics
+
+Returns a list of trending and popular comics ranked by views.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ComicsApi,
+} from '@komikhq/komikhq-typescript';
+import type { GetTrendingComicsRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const api = new ComicsApi();
+
+  const body = {
+    // number | Max comics to return (max 50) (optional)
+    limit: 56,
+  } satisfies GetTrendingComicsRequest;
+
+  try {
+    const data = await api.getTrendingComics(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **limit** | `number` | Max comics to return (max 50) | [Optional] [Defaults to `10`] |
+
+### Return type
+
+[**GetTrendingComics200Response**](GetTrendingComics200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Trending comics list. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## listComics
 
-> ListComics200Response listComics(search, q, genre, status, type, sort, page, limit)
+> ListComics200Response listComics(q, genre, status, type, sort, page, limit)
 
-List comics
+List and filter comics
 
-Returns the public comic catalog with optional filters and pagination.
+Returns a paginated list of comics with optional filters for genre, type, status, and sort.
 
 ### Example
 
@@ -200,22 +167,20 @@ async function example() {
   const api = new ComicsApi();
 
   const body = {
-    // string (optional)
-    search: search_example,
-    // string (optional)
+    // string | Search query string (optional)
     q: q_example,
-    // string (optional)
+    // string | Filter by genre slug (optional)
     genre: genre_example,
-    // string (optional)
+    // 'ongoing' | 'completed' | 'hiatus' (optional)
     status: status_example,
-    // string (optional)
+    // 'manga' | 'manhwa' | 'manhua' (optional)
     type: type_example,
-    // string (optional)
+    // 'latest' | 'popular' | 'updated' (optional)
     sort: sort_example,
-    // string (optional)
-    page: page_example,
-    // string (optional)
-    limit: limit_example,
+    // number (optional)
+    page: 56,
+    // number (optional)
+    limit: 56,
   } satisfies ListComicsRequest;
 
   try {
@@ -235,14 +200,13 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **search** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **q** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **genre** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **status** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **type** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **sort** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **page** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **limit** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **q** | `string` | Search query string | [Optional] [Defaults to `undefined`] |
+| **genre** | `string` | Filter by genre slug | [Optional] [Defaults to `undefined`] |
+| **status** | `ongoing`, `completed`, `hiatus` |  | [Optional] [Defaults to `undefined`] [Enum: ongoing, completed, hiatus] |
+| **type** | `manga`, `manhwa`, `manhua` |  | [Optional] [Defaults to `undefined`] [Enum: manga, manhwa, manhua] |
+| **sort** | `latest`, `popular`, `updated` |  | [Optional] [Defaults to `undefined`] [Enum: latest, popular, updated] |
+| **page** | `number` |  | [Optional] [Defaults to `1`] |
+| **limit** | `number` |  | [Optional] [Defaults to `20`] |
 
 ### Return type
 
@@ -261,89 +225,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The matching comics and pagination metadata. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-
-## listTrendingComics
-
-> ListTrendingComics200Response listTrendingComics(period, limit)
-
-List trending comics
-
-Returns daily, weekly, or all-time popular comics.
-
-### Example
-
-```ts
-import {
-  Configuration,
-  ComicsApi,
-} from '@komikhq/komikhq-typescript';
-import type { ListTrendingComicsRequest } from '@komikhq/komikhq-typescript';
-
-async function example() {
-  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
-  const api = new ComicsApi();
-
-  const body = {
-    // string (optional)
-    period: period_example,
-    // string (optional)
-    limit: limit_example,
-  } satisfies ListTrendingComicsRequest;
-
-  try {
-    const data = await api.listTrendingComics(body);
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// Run the test
-example().catch(console.error);
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **period** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **limit** | `string` |  | [Optional] [Defaults to `undefined`] |
-
-### Return type
-
-[**ListTrendingComics200Response**](ListTrendingComics200Response.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: `application/json`
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Trending comics and the selected period. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Paginated comic list. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

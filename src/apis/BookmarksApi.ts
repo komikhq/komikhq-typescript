@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -14,11 +14,6 @@
 
 import * as runtime from '../runtime';
 import {
-    type DeleteUserAccount200Response,
-    DeleteUserAccount200ResponseFromJSON,
-    DeleteUserAccount200ResponseToJSON,
-} from '../models/DeleteUserAccount200Response';
-import {
     type ErrorResponse,
     ErrorResponseFromJSON,
     ErrorResponseToJSON,
@@ -29,29 +24,94 @@ import {
     ListBookmarks200ResponseToJSON,
 } from '../models/ListBookmarks200Response';
 import {
-    type SaveBookmarkRequest,
-    SaveBookmarkRequestFromJSON,
-    SaveBookmarkRequestToJSON,
-} from '../models/SaveBookmarkRequest';
+    type SuccessResponse,
+    SuccessResponseFromJSON,
+    SuccessResponseToJSON,
+} from '../models/SuccessResponse';
+import {
+    type UpsertBookmark200Response,
+    UpsertBookmark200ResponseFromJSON,
+    UpsertBookmark200ResponseToJSON,
+} from '../models/UpsertBookmark200Response';
+import {
+    type UpsertBookmarkRequest,
+    UpsertBookmarkRequestFromJSON,
+    UpsertBookmarkRequestToJSON,
+} from '../models/UpsertBookmarkRequest';
 
-export interface RemoveBookmarkRequest {
+export interface DeleteBookmarkRequest {
     /**
-     * 
+     * Comic ID
      */
     comicId: string;
 }
 
-export interface SaveBookmarkOperationRequest {
+export interface UpsertBookmarkOperationRequest {
     /**
      * 
      */
-    saveBookmarkRequest?: SaveBookmarkRequest;
+    upsertBookmarkRequest: UpsertBookmarkRequest;
 }
 
 /**
  * 
  */
 export class BookmarksApi extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for deleteBookmark without sending the request
+     */
+    async deleteBookmarkRequestOpts(requestParameters: DeleteBookmarkRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['comicId'] == null) {
+            throw new runtime.RequiredError(
+                'comicId',
+                'Required parameter "comicId" was null or undefined when calling deleteBookmark().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/bookmarks/{comicId}`;
+        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Deletes a comic from the user\'s bookmarks list.
+     * Remove comic bookmark
+     */
+    async deleteBookmarkRaw(requestParameters: DeleteBookmarkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
+        const requestOptions = await this.deleteBookmarkRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Deletes a comic from the user\'s bookmarks list.
+     * Remove comic bookmark
+     */
+    async deleteBookmark(requestParameters: DeleteBookmarkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
+        const response = await this.deleteBookmarkRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates request options for listBookmarks without sending the request
@@ -70,7 +130,7 @@ export class BookmarksApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/bookmarks`;
+        let urlPath = `/bookmarks`;
 
         return {
             path: urlPath,
@@ -81,8 +141,8 @@ export class BookmarksApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns bookmarked comics for the authenticated user.
-     * List the current user\'s bookmarks
+     * Returns all saved comic bookmarks for the authenticated user.
+     * List user bookmarks
      */
     async listBookmarksRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListBookmarks200Response>> {
         const requestOptions = await this.listBookmarksRequestOpts();
@@ -92,8 +152,8 @@ export class BookmarksApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns bookmarked comics for the authenticated user.
-     * List the current user\'s bookmarks
+     * Returns all saved comic bookmarks for the authenticated user.
+     * List user bookmarks
      */
     async listBookmarks(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListBookmarks200Response> {
         const response = await this.listBookmarksRaw(initOverrides);
@@ -101,64 +161,16 @@ export class BookmarksApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates request options for removeBookmark without sending the request
+     * Creates request options for upsertBookmark without sending the request
      */
-    async removeBookmarkRequestOpts(requestParameters: RemoveBookmarkRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['comicId'] == null) {
+    async upsertBookmarkRequestOpts(requestParameters: UpsertBookmarkOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['upsertBookmarkRequest'] == null) {
             throw new runtime.RequiredError(
-                'comicId',
-                'Required parameter "comicId" was null or undefined when calling removeBookmark().'
+                'upsertBookmarkRequest',
+                'Required parameter "upsertBookmarkRequest" was null or undefined when calling upsertBookmark().'
             );
         }
 
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("BearerToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/v1/bookmarks/{comicId}`;
-        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
-
-        return {
-            path: urlPath,
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Removes a comic from the authenticated user\'s bookmarks.
-     * Remove a bookmark
-     */
-    async removeBookmarkRaw(requestParameters: RemoveBookmarkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DeleteUserAccount200Response>> {
-        const requestOptions = await this.removeBookmarkRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteUserAccount200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Removes a comic from the authenticated user\'s bookmarks.
-     * Remove a bookmark
-     */
-    async removeBookmark(requestParameters: RemoveBookmarkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DeleteUserAccount200Response> {
-        const response = await this.removeBookmarkRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for saveBookmark without sending the request
-     */
-    async saveBookmarkRequestOpts(requestParameters: SaveBookmarkOperationRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -174,34 +186,34 @@ export class BookmarksApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/bookmarks`;
+        let urlPath = `/bookmarks`;
 
         return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SaveBookmarkRequestToJSON(requestParameters['saveBookmarkRequest']),
+            body: UpsertBookmarkRequestToJSON(requestParameters['upsertBookmarkRequest']),
         };
     }
 
     /**
-     * Creates or updates a comic bookmark for the authenticated user.
-     * Create or update a bookmark
+     * Saves a comic to user bookmarks with a reading status (reading, completed, plan_to_read, dropped).
+     * Add or update comic bookmark
      */
-    async saveBookmarkRaw(requestParameters: SaveBookmarkOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DeleteUserAccount200Response>> {
-        const requestOptions = await this.saveBookmarkRequestOpts(requestParameters);
+    async upsertBookmarkRaw(requestParameters: UpsertBookmarkOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UpsertBookmark200Response>> {
+        const requestOptions = await this.upsertBookmarkRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteUserAccount200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => UpsertBookmark200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Creates or updates a comic bookmark for the authenticated user.
-     * Create or update a bookmark
+     * Saves a comic to user bookmarks with a reading status (reading, completed, plan_to_read, dropped).
+     * Add or update comic bookmark
      */
-    async saveBookmark(requestParameters: SaveBookmarkOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DeleteUserAccount200Response> {
-        const response = await this.saveBookmarkRaw(requestParameters, initOverrides);
+    async upsertBookmark(requestParameters: UpsertBookmarkOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UpsertBookmark200Response> {
+        const response = await this.upsertBookmarkRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

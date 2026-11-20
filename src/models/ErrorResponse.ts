@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -26,7 +26,7 @@ export interface ErrorResponse {
     /**
      * 
      */
-    details?: any | null;
+    details?: object;
 }
 
 /**
@@ -48,7 +48,7 @@ export function ErrorResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'error': json['error'],
-        'details': json['details'] === undefined ? undefined : json['details'] === null ? null : json['details'],
+        'details': json['details'] == null ? undefined : json['details'],
     };
 }
 

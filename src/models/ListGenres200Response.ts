@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -30,14 +30,17 @@ export interface ListGenres200Response {
     /**
      * 
      */
-    genres: Array<Genre>;
+    status?: string;
+    /**
+     * 
+     */
+    data?: Array<Genre>;
 }
 
 /**
  * Check if a given object implements the ListGenres200Response interface.
  */
 export function instanceOfListGenres200Response(value: object): value is ListGenres200Response {
-    if (!('genres' in value) || value['genres'] === undefined) return false;
     return true;
 }
 
@@ -51,7 +54,8 @@ export function ListGenres200ResponseFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'genres': ((json['genres'] as Array<any>).map(GenreFromJSON)),
+        'status': json['status'] == null ? undefined : json['status'],
+        'data': json['data'] == null ? undefined : ((json['data'] as Array<any>).map(GenreFromJSON)),
     };
 }
 
@@ -66,7 +70,8 @@ export function ListGenres200ResponseToJSONTyped(value?: ListGenres200Response |
 
     return {
         
-        'genres': ((value['genres'] as Array<any>).map(GenreToJSON)),
+        'status': value['status'],
+        'data': value['data'] == null ? undefined : ((value['data'] as Array<any>).map(GenreToJSON)),
     };
 }
 

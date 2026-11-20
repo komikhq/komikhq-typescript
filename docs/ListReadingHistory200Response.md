@@ -6,7 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`history` | Array&lt;any | null&gt;
+`status` | string
+`data` | [Array&lt;ReadingHistory&gt;](ReadingHistory.md)
 
 ## Example
 
@@ -15,7 +16,8 @@ import type { ListReadingHistory200Response } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
-  "history": null,
+  "status": ok,
+  "data": null,
 } satisfies ListReadingHistory200Response
 
 console.log(example)

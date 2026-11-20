@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -18,14 +18,19 @@ import {
     ErrorResponseFromJSON,
     ErrorResponseToJSON,
 } from '../models/ErrorResponse';
+import {
+    type GetChapterReaderPages200Response,
+    GetChapterReaderPages200ResponseFromJSON,
+    GetChapterReaderPages200ResponseToJSON,
+} from '../models/GetChapterReaderPages200Response';
 
-export interface GetPublicChapterRequest {
+export interface GetChapterReaderPagesRequest {
     /**
-     * 
+     * Comic slug
      */
-    slug: string;
+    comicSlug: string;
     /**
-     * 
+     * Chapter slug
      */
     chapterSlug: string;
 }
@@ -36,20 +41,20 @@ export interface GetPublicChapterRequest {
 export class ChaptersApi extends runtime.BaseAPI {
 
     /**
-     * Creates request options for getPublicChapter without sending the request
+     * Creates request options for getChapterReaderPages without sending the request
      */
-    async getPublicChapterRequestOpts(requestParameters: GetPublicChapterRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['slug'] == null) {
+    async getChapterReaderPagesRequestOpts(requestParameters: GetChapterReaderPagesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['comicSlug'] == null) {
             throw new runtime.RequiredError(
-                'slug',
-                'Required parameter "slug" was null or undefined when calling getPublicChapter().'
+                'comicSlug',
+                'Required parameter "comicSlug" was null or undefined when calling getChapterReaderPages().'
             );
         }
 
         if (requestParameters['chapterSlug'] == null) {
             throw new runtime.RequiredError(
                 'chapterSlug',
-                'Required parameter "chapterSlug" was null or undefined when calling getPublicChapter().'
+                'Required parameter "chapterSlug" was null or undefined when calling getChapterReaderPages().'
             );
         }
 
@@ -58,8 +63,8 @@ export class ChaptersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/v1/comics/{slug}/chapters/{chapterSlug}`;
-        urlPath = urlPath.replace('{slug}', encodeURIComponent(String(requestParameters['slug'])));
+        let urlPath = `/comics/{comicSlug}/chapters/{chapterSlug}`;
+        urlPath = urlPath.replace('{comicSlug}', encodeURIComponent(String(requestParameters['comicSlug'])));
         urlPath = urlPath.replace('{chapterSlug}', encodeURIComponent(String(requestParameters['chapterSlug'])));
 
         return {
@@ -71,22 +76,22 @@ export class ChaptersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns chapter reader data for the specified comic and chapter slugs.
-     * Get a public comic chapter
+     * Returns chapter pages with CDN image URLs and previous/next chapter navigation.
+     * Get chapter reader pages and navigation
      */
-    async getPublicChapterRaw(requestParameters: GetPublicChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        const requestOptions = await this.getPublicChapterRequestOpts(requestParameters);
+    async getChapterReaderPagesRaw(requestParameters: GetChapterReaderPagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChapterReaderPages200Response>> {
+        const requestOptions = await this.getChapterReaderPagesRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetChapterReaderPages200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Returns chapter reader data for the specified comic and chapter slugs.
-     * Get a public comic chapter
+     * Returns chapter pages with CDN image URLs and previous/next chapter navigation.
+     * Get chapter reader pages and navigation
      */
-    async getPublicChapter(requestParameters: GetPublicChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
-        const response = await this.getPublicChapterRaw(requestParameters, initOverrides);
+    async getChapterReaderPages(requestParameters: GetChapterReaderPagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChapterReaderPages200Response> {
+        const response = await this.getChapterReaderPagesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

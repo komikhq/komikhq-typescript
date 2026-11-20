@@ -6,8 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`success` | boolean
-`avatarUrl` | string
+`status` | string
+`data` | [UploadUserAvatar200ResponseData](UploadUserAvatar200ResponseData.md)
 
 ## Example
 
@@ -16,8 +16,8 @@ import type { UploadUserAvatar200Response } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
-  "success": null,
-  "avatarUrl": null,
+  "status": ok,
+  "data": null,
 } satisfies UploadUserAvatar200Response
 
 console.log(example)

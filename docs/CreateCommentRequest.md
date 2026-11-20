@@ -9,6 +9,8 @@ Name | Type
 `comicId` | string
 `chapterId` | string
 `content` | string
+`isSpoiler` | boolean
+`parentId` | string
 `guestName` | string
 `guestEmail` | string
 
@@ -22,6 +24,8 @@ const example = {
   "comicId": null,
   "chapterId": null,
   "content": null,
+  "isSpoiler": null,
+  "parentId": null,
   "guestName": null,
   "guestEmail": null,
 } satisfies CreateCommentRequest

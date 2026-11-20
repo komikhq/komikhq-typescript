@@ -1,22 +1,22 @@
 # UsersApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**deleteUserAccount**](UsersApi.md#deleteuseraccountoperation) | **DELETE** /v1/user/profile | Delete the current user\&#39;s account |
-| [**getUserProfile**](UsersApi.md#getuserprofile) | **GET** /v1/user/profile | Get the current user\&#39;s profile |
-| [**uploadUserAvatar**](UsersApi.md#uploaduseravatar) | **POST** /v1/user/avatar | Upload a profile avatar |
+| [**deleteOwnAccount**](UsersApi.md#deleteownaccountoperation) | **DELETE** /users/profile | Delete own account |
+| [**getUserProfile**](UsersApi.md#getuserprofile) | **GET** /users/profile | Get current user profile |
+| [**uploadUserAvatar**](UsersApi.md#uploaduseravatar) | **POST** /users/avatar | Upload profile avatar image |
 
 
 
-## deleteUserAccount
+## deleteOwnAccount
 
-> DeleteUserAccount200Response deleteUserAccount(deleteUserAccountRequest)
+> SuccessResponse deleteOwnAccount(deleteOwnAccountRequest)
 
-Delete the current user\&#39;s account
+Delete own account
 
-Permanently deletes the authenticated user\&#39;s account. Password or email confirmation may be supplied.
+Permanently deletes the authenticated user\&#39;s account with confirmation password or matching email.
 
 ### Example
 
@@ -25,7 +25,7 @@ import {
   Configuration,
   UsersApi,
 } from '@komikhq/komikhq-typescript';
-import type { DeleteUserAccountOperationRequest } from '@komikhq/komikhq-typescript';
+import type { DeleteOwnAccountOperationRequest } from '@komikhq/komikhq-typescript';
 
 async function example() {
   console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
@@ -38,12 +38,12 @@ async function example() {
   const api = new UsersApi(config);
 
   const body = {
-    // DeleteUserAccountRequest (optional)
-    deleteUserAccountRequest: ...,
-  } satisfies DeleteUserAccountOperationRequest;
+    // DeleteOwnAccountRequest (optional)
+    deleteOwnAccountRequest: ...,
+  } satisfies DeleteOwnAccountOperationRequest;
 
   try {
-    const data = await api.deleteUserAccount(body);
+    const data = await api.deleteOwnAccount(body);
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -59,11 +59,11 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **deleteUserAccountRequest** | [DeleteUserAccountRequest](DeleteUserAccountRequest.md) |  | [Optional] |
+| **deleteOwnAccountRequest** | [DeleteOwnAccountRequest](DeleteOwnAccountRequest.md) |  | [Optional] |
 
 ### Return type
 
-[**DeleteUserAccount200Response**](DeleteUserAccount200Response.md)
+[**SuccessResponse**](SuccessResponse.md)
 
 ### Authorization
 
@@ -78,24 +78,20 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The account was deleted. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Account deleted successfully. |  -  |
+| **400** | Verification failed. |  -  |
+| **401** | Unauthorized. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## getUserProfile
 
-> object getUserProfile()
+> AdminUpdateUser200Response getUserProfile()
 
-Get the current user\&#39;s profile
+Get current user profile
 
-Returns profile details for the authenticated user.
+Returns profile details and credential password status for the authenticated user.
 
 ### Example
 
@@ -134,7 +130,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-**object**
+[**AdminUpdateUser200Response**](AdminUpdateUser200Response.md)
 
 ### Authorization
 
@@ -149,13 +145,8 @@ This endpoint does not need any parameter.
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The user profile. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | User profile retrieved successfully. |  -  |
+| **401** | Unauthorized. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -164,9 +155,9 @@ This endpoint does not need any parameter.
 
 > UploadUserAvatar200Response uploadUserAvatar(file)
 
-Upload a profile avatar
+Upload profile avatar image
 
-Uploads a new avatar image for the authenticated user.
+Uploads an image file to R2 storage and updates the user\&#39;s avatar URL.
 
 ### Example
 
@@ -188,7 +179,7 @@ async function example() {
   const api = new UsersApi(config);
 
   const body = {
-    // Blob
+    // Blob | Image file to upload
     file: BINARY_DATA_HERE,
   } satisfies UploadUserAvatarRequest;
 
@@ -209,7 +200,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **file** | `Blob` |  | [Defaults to `undefined`] |
+| **file** | `Blob` | Image file to upload | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -228,13 +219,9 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The avatar was updated. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Avatar updated successfully. |  -  |
+| **400** | Invalid file. |  -  |
+| **401** | Unauthorized. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

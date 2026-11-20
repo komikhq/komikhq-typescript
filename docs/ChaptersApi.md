@@ -1,20 +1,20 @@
 # ChaptersApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getPublicChapter**](ChaptersApi.md#getpublicchapter) | **GET** /v1/comics/{slug}/chapters/{chapterSlug} | Get a public comic chapter |
+| [**getChapterReaderPages**](ChaptersApi.md#getchapterreaderpages) | **GET** /comics/{comicSlug}/chapters/{chapterSlug} | Get chapter reader pages and navigation |
 
 
 
-## getPublicChapter
+## getChapterReaderPages
 
-> object getPublicChapter(slug, chapterSlug)
+> GetChapterReaderPages200Response getChapterReaderPages(comicSlug, chapterSlug)
 
-Get a public comic chapter
+Get chapter reader pages and navigation
 
-Returns chapter reader data for the specified comic and chapter slugs.
+Returns chapter pages with CDN image URLs and previous/next chapter navigation.
 
 ### Example
 
@@ -23,21 +23,21 @@ import {
   Configuration,
   ChaptersApi,
 } from '@komikhq/komikhq-typescript';
-import type { GetPublicChapterRequest } from '@komikhq/komikhq-typescript';
+import type { GetChapterReaderPagesRequest } from '@komikhq/komikhq-typescript';
 
 async function example() {
   console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
   const api = new ChaptersApi();
 
   const body = {
-    // string
-    slug: slug_example,
-    // string
+    // string | Comic slug
+    comicSlug: comicSlug_example,
+    // string | Chapter slug
     chapterSlug: chapterSlug_example,
-  } satisfies GetPublicChapterRequest;
+  } satisfies GetChapterReaderPagesRequest;
 
   try {
-    const data = await api.getPublicChapter(body);
+    const data = await api.getChapterReaderPages(body);
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -53,12 +53,12 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **slug** | `string` |  | [Defaults to `undefined`] |
-| **chapterSlug** | `string` |  | [Defaults to `undefined`] |
+| **comicSlug** | `string` | Comic slug | [Defaults to `undefined`] |
+| **chapterSlug** | `string` | Chapter slug | [Defaults to `undefined`] |
 
 ### Return type
 
-**object**
+[**GetChapterReaderPages200Response**](GetChapterReaderPages200Response.md)
 
 ### Authorization
 
@@ -73,13 +73,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The chapter and reader data. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Chapter reader pages retrieved successfully. |  -  |
+| **404** | Chapter or comic not found. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { Comment } from './Comment';
+import {
+    CommentFromJSON,
+    CommentFromJSONTyped,
+    CommentToJSON,
+    CommentToJSONTyped,
+} from './Comment';
+
 /**
  * 
  * @export
@@ -22,14 +30,17 @@ export interface ListComments200Response {
     /**
      * 
      */
-    comments: Array<object>;
+    status?: string;
+    /**
+     * 
+     */
+    data?: Array<Comment>;
 }
 
 /**
  * Check if a given object implements the ListComments200Response interface.
  */
 export function instanceOfListComments200Response(value: object): value is ListComments200Response {
-    if (!('comments' in value) || value['comments'] === undefined) return false;
     return true;
 }
 
@@ -43,7 +54,8 @@ export function ListComments200ResponseFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
-        'comments': json['comments'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'data': json['data'] == null ? undefined : ((json['data'] as Array<any>).map(CommentFromJSON)),
     };
 }
 
@@ -58,7 +70,8 @@ export function ListComments200ResponseToJSONTyped(value?: ListComments200Respon
 
     return {
         
-        'comments': value['comments'],
+        'status': value['status'],
+        'data': value['data'] == null ? undefined : ((value['data'] as Array<any>).map(CommentToJSON)),
     };
 }
 

@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -14,23 +14,38 @@
 
 import * as runtime from '../runtime';
 import {
-    type ErrorResponse,
-    ErrorResponseFromJSON,
-    ErrorResponseToJSON,
-} from '../models/ErrorResponse';
+    type GetSearchSuggestions200Response,
+    GetSearchSuggestions200ResponseFromJSON,
+    GetSearchSuggestions200ResponseToJSON,
+} from '../models/GetSearchSuggestions200Response';
 import {
-    type GetComicSearchSuggestions200Response,
-    GetComicSearchSuggestions200ResponseFromJSON,
-    GetComicSearchSuggestions200ResponseToJSON,
-} from '../models/GetComicSearchSuggestions200Response';
+    type ListComics200Response,
+    ListComics200ResponseFromJSON,
+    ListComics200ResponseToJSON,
+} from '../models/ListComics200Response';
 
-export interface GetComicSearchSuggestionsRequest {
+export interface GetSearchSuggestionsRequest {
     /**
-     * Search text.
+     * Partial query string
+     */
+    q: string;
+    /**
+     * Max suggestions
+     */
+    limit?: number;
+}
+
+export interface SearchComicsRequest {
+    /**
+     * Search query
      */
     q?: string;
     /**
-     * Maximum number of suggestions. Values are capped at six.
+     * 
+     */
+    page?: number;
+    /**
+     * 
      */
     limit?: number;
 }
@@ -41,9 +56,16 @@ export interface GetComicSearchSuggestionsRequest {
 export class SearchApi extends runtime.BaseAPI {
 
     /**
-     * Creates request options for getComicSearchSuggestions without sending the request
+     * Creates request options for getSearchSuggestions without sending the request
      */
-    async getComicSearchSuggestionsRequestOpts(requestParameters: GetComicSearchSuggestionsRequest): Promise<runtime.RequestOpts> {
+    async getSearchSuggestionsRequestOpts(requestParameters: GetSearchSuggestionsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['q'] == null) {
+            throw new runtime.RequiredError(
+                'q',
+                'Required parameter "q" was null or undefined when calling getSearchSuggestions().'
+            );
+        }
+
         const queryParameters: any = {};
 
         if (requestParameters['q'] != null) {
@@ -57,7 +79,7 @@ export class SearchApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/v1/search/suggestions`;
+        let urlPath = `/search/suggest`;
 
         return {
             path: urlPath,
@@ -68,22 +90,73 @@ export class SearchApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns up to six title suggestions. Queries shorter than two characters return an empty list.
-     * Get comic search suggestions
+     * Returns scored autocomplete search suggestions using CTE matching with KV caching.
+     * Instant search autocomplete suggestions
      */
-    async getComicSearchSuggestionsRaw(requestParameters: GetComicSearchSuggestionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetComicSearchSuggestions200Response>> {
-        const requestOptions = await this.getComicSearchSuggestionsRequestOpts(requestParameters);
+    async getSearchSuggestionsRaw(requestParameters: GetSearchSuggestionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSearchSuggestions200Response>> {
+        const requestOptions = await this.getSearchSuggestionsRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetComicSearchSuggestions200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSearchSuggestions200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Returns up to six title suggestions. Queries shorter than two characters return an empty list.
-     * Get comic search suggestions
+     * Returns scored autocomplete search suggestions using CTE matching with KV caching.
+     * Instant search autocomplete suggestions
      */
-    async getComicSearchSuggestions(requestParameters: GetComicSearchSuggestionsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetComicSearchSuggestions200Response> {
-        const response = await this.getComicSearchSuggestionsRaw(requestParameters, initOverrides);
+    async getSearchSuggestions(requestParameters: GetSearchSuggestionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSearchSuggestions200Response> {
+        const response = await this.getSearchSuggestionsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for searchComics without sending the request
+     */
+    async searchComicsRequestOpts(requestParameters: SearchComicsRequest): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        if (requestParameters['q'] != null) {
+            queryParameters['q'] = requestParameters['q'];
+        }
+
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
+        }
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/search`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Searches comics across titles, alternate titles, and slugs with pagination.
+     * Full text comic search
+     */
+    async searchComicsRaw(requestParameters: SearchComicsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListComics200Response>> {
+        const requestOptions = await this.searchComicsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ListComics200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Searches comics across titles, alternate titles, and slugs with pagination.
+     * Full text comic search
+     */
+    async searchComics(requestParameters: SearchComicsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListComics200Response> {
+        const response = await this.searchComicsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -12,7 +12,7 @@
  * Copyright (c) KomikHQ Platform. All rights reserved.
  */
 
-export const BASE_PATH = "https://api.komikhq.com".replace(/\/+$/, "");
+export const BASE_PATH = "https://nitro.komikhq.dpdns.org".replace(/\/+$/, "");
 
 export interface ConfigurationParameters {
     basePath?: string; // override base path

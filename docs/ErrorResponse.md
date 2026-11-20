@@ -7,7 +7,7 @@
 Name | Type
 ------------ | -------------
 `error` | string
-`details` | any
+`details` | object
 
 ## Example
 

@@ -7,6 +7,7 @@
 Name | Type
 ------------ | -------------
 `name` | string
+`slug` | string
 `description` | string
 
 ## Example
@@ -17,6 +18,7 @@ import type { AdminCreateGenreRequest } from '@komikhq/komikhq-typescript'
 // TODO: Update the object below with actual values
 const example = {
   "name": null,
+  "slug": null,
   "description": null,
 } satisfies AdminCreateGenreRequest
 

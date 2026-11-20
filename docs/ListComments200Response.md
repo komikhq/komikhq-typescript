@@ -6,7 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`comments` | Array&lt;object&gt;
+`status` | string
+`data` | [Array&lt;Comment&gt;](Comment.md)
 
 ## Example
 
@@ -15,7 +16,8 @@ import type { ListComments200Response } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
-  "comments": null,
+  "status": ok,
+  "data": null,
 } satisfies ListComments200Response
 
 console.log(example)

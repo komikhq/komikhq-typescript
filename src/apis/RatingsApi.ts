@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -19,21 +19,28 @@ import {
     ErrorResponseToJSON,
 } from '../models/ErrorResponse';
 import {
-    type SubmitComicRating200Response,
-    SubmitComicRating200ResponseFromJSON,
-    SubmitComicRating200ResponseToJSON,
-} from '../models/SubmitComicRating200Response';
+    type GetComicRating200Response,
+    GetComicRating200ResponseFromJSON,
+    GetComicRating200ResponseToJSON,
+} from '../models/GetComicRating200Response';
 import {
-    type SubmitComicRatingRequest,
-    SubmitComicRatingRequestFromJSON,
-    SubmitComicRatingRequestToJSON,
-} from '../models/SubmitComicRatingRequest';
+    type UpsertComicRatingRequest,
+    UpsertComicRatingRequestFromJSON,
+    UpsertComicRatingRequestToJSON,
+} from '../models/UpsertComicRatingRequest';
 
-export interface SubmitComicRatingOperationRequest {
+export interface GetComicRatingRequest {
+    /**
+     * Comic ID
+     */
+    comicId: string;
+}
+
+export interface UpsertComicRatingOperationRequest {
     /**
      * 
      */
-    submitComicRatingRequest?: SubmitComicRatingRequest;
+    upsertComicRatingRequest: UpsertComicRatingRequest;
 }
 
 /**
@@ -42,9 +49,63 @@ export interface SubmitComicRatingOperationRequest {
 export class RatingsApi extends runtime.BaseAPI {
 
     /**
-     * Creates request options for submitComicRating without sending the request
+     * Creates request options for getComicRating without sending the request
      */
-    async submitComicRatingRequestOpts(requestParameters: SubmitComicRatingOperationRequest): Promise<runtime.RequestOpts> {
+    async getComicRatingRequestOpts(requestParameters: GetComicRatingRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['comicId'] == null) {
+            throw new runtime.RequiredError(
+                'comicId',
+                'Required parameter "comicId" was null or undefined when calling getComicRating().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/ratings/{comicId}`;
+        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns average rating score, total rating count, and user\'s own score if authenticated.
+     * Get comic rating stats and user rating
+     */
+    async getComicRatingRaw(requestParameters: GetComicRatingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetComicRating200Response>> {
+        const requestOptions = await this.getComicRatingRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetComicRating200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns average rating score, total rating count, and user\'s own score if authenticated.
+     * Get comic rating stats and user rating
+     */
+    async getComicRating(requestParameters: GetComicRatingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetComicRating200Response> {
+        const response = await this.getComicRatingRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for upsertComicRating without sending the request
+     */
+    async upsertComicRatingRequestOpts(requestParameters: UpsertComicRatingOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['upsertComicRatingRequest'] == null) {
+            throw new runtime.RequiredError(
+                'upsertComicRatingRequest',
+                'Required parameter "upsertComicRatingRequest" was null or undefined when calling upsertComicRating().'
+            );
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -60,34 +121,34 @@ export class RatingsApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/ratings`;
+        let urlPath = `/ratings`;
 
         return {
             path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SubmitComicRatingRequestToJSON(requestParameters['submitComicRatingRequest']),
+            body: UpsertComicRatingRequestToJSON(requestParameters['upsertComicRatingRequest']),
         };
     }
 
     /**
-     * Creates or updates the authenticated user\'s rating for a comic.
-     * Submit a comic rating
+     * Submits a rating score (1-10) and optional review text for a comic.
+     * Rate a comic
      */
-    async submitComicRatingRaw(requestParameters: SubmitComicRatingOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SubmitComicRating200Response>> {
-        const requestOptions = await this.submitComicRatingRequestOpts(requestParameters);
+    async upsertComicRatingRaw(requestParameters: UpsertComicRatingOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetComicRating200Response>> {
+        const requestOptions = await this.upsertComicRatingRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => SubmitComicRating200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetComicRating200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Creates or updates the authenticated user\'s rating for a comic.
-     * Submit a comic rating
+     * Submits a rating score (1-10) and optional review text for a comic.
+     * Rate a comic
      */
-    async submitComicRating(requestParameters: SubmitComicRatingOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SubmitComicRating200Response> {
-        const response = await this.submitComicRatingRaw(requestParameters, initOverrides);
+    async upsertComicRating(requestParameters: UpsertComicRatingOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetComicRating200Response> {
+        const response = await this.upsertComicRatingRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

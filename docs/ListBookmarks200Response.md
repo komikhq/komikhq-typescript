@@ -6,7 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`bookmarks` | Array&lt;any | null&gt;
+`status` | string
+`data` | [Array&lt;Bookmark&gt;](Bookmark.md)
 
 ## Example
 
@@ -15,7 +16,8 @@ import type { ListBookmarks200Response } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
-  "bookmarks": null,
+  "status": ok,
+  "data": null,
 } satisfies ListBookmarks200Response
 
 console.log(example)

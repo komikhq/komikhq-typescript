@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -14,36 +14,41 @@
 
 import * as runtime from '../runtime';
 import {
-    type DeleteUserAccount200Response,
-    DeleteUserAccount200ResponseFromJSON,
-    DeleteUserAccount200ResponseToJSON,
-} from '../models/DeleteUserAccount200Response';
+    type AdminUpdateUser200Response,
+    AdminUpdateUser200ResponseFromJSON,
+    AdminUpdateUser200ResponseToJSON,
+} from '../models/AdminUpdateUser200Response';
 import {
-    type DeleteUserAccountRequest,
-    DeleteUserAccountRequestFromJSON,
-    DeleteUserAccountRequestToJSON,
-} from '../models/DeleteUserAccountRequest';
+    type DeleteOwnAccountRequest,
+    DeleteOwnAccountRequestFromJSON,
+    DeleteOwnAccountRequestToJSON,
+} from '../models/DeleteOwnAccountRequest';
 import {
     type ErrorResponse,
     ErrorResponseFromJSON,
     ErrorResponseToJSON,
 } from '../models/ErrorResponse';
 import {
+    type SuccessResponse,
+    SuccessResponseFromJSON,
+    SuccessResponseToJSON,
+} from '../models/SuccessResponse';
+import {
     type UploadUserAvatar200Response,
     UploadUserAvatar200ResponseFromJSON,
     UploadUserAvatar200ResponseToJSON,
 } from '../models/UploadUserAvatar200Response';
 
-export interface DeleteUserAccountOperationRequest {
+export interface DeleteOwnAccountOperationRequest {
     /**
      * 
      */
-    deleteUserAccountRequest?: DeleteUserAccountRequest;
+    deleteOwnAccountRequest?: DeleteOwnAccountRequest;
 }
 
 export interface UploadUserAvatarRequest {
     /**
-     * 
+     * Image file to upload
      */
     file: Blob;
 }
@@ -54,9 +59,9 @@ export interface UploadUserAvatarRequest {
 export class UsersApi extends runtime.BaseAPI {
 
     /**
-     * Creates request options for deleteUserAccount without sending the request
+     * Creates request options for deleteOwnAccount without sending the request
      */
-    async deleteUserAccountRequestOpts(requestParameters: DeleteUserAccountOperationRequest): Promise<runtime.RequestOpts> {
+    async deleteOwnAccountRequestOpts(requestParameters: DeleteOwnAccountOperationRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -72,34 +77,34 @@ export class UsersApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/user/profile`;
+        let urlPath = `/users/profile`;
 
         return {
             path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-            body: DeleteUserAccountRequestToJSON(requestParameters['deleteUserAccountRequest']),
+            body: DeleteOwnAccountRequestToJSON(requestParameters['deleteOwnAccountRequest']),
         };
     }
 
     /**
-     * Permanently deletes the authenticated user\'s account. Password or email confirmation may be supplied.
-     * Delete the current user\'s account
+     * Permanently deletes the authenticated user\'s account with confirmation password or matching email.
+     * Delete own account
      */
-    async deleteUserAccountRaw(requestParameters: DeleteUserAccountOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DeleteUserAccount200Response>> {
-        const requestOptions = await this.deleteUserAccountRequestOpts(requestParameters);
+    async deleteOwnAccountRaw(requestParameters: DeleteOwnAccountOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
+        const requestOptions = await this.deleteOwnAccountRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteUserAccount200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResponseFromJSON(jsonValue));
     }
 
     /**
-     * Permanently deletes the authenticated user\'s account. Password or email confirmation may be supplied.
-     * Delete the current user\'s account
+     * Permanently deletes the authenticated user\'s account with confirmation password or matching email.
+     * Delete own account
      */
-    async deleteUserAccount(requestParameters: DeleteUserAccountOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DeleteUserAccount200Response> {
-        const response = await this.deleteUserAccountRaw(requestParameters, initOverrides);
+    async deleteOwnAccount(requestParameters: DeleteOwnAccountOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
+        const response = await this.deleteOwnAccountRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -120,7 +125,7 @@ export class UsersApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/user/profile`;
+        let urlPath = `/users/profile`;
 
         return {
             path: urlPath,
@@ -131,21 +136,21 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns profile details for the authenticated user.
-     * Get the current user\'s profile
+     * Returns profile details and credential password status for the authenticated user.
+     * Get current user profile
      */
-    async getUserProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async getUserProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateUser200Response>> {
         const requestOptions = await this.getUserProfileRequestOpts();
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminUpdateUser200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Returns profile details for the authenticated user.
-     * Get the current user\'s profile
+     * Returns profile details and credential password status for the authenticated user.
+     * Get current user profile
      */
-    async getUserProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async getUserProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateUser200Response> {
         const response = await this.getUserProfileRaw(initOverrides);
         return await response.value();
     }
@@ -194,7 +199,7 @@ export class UsersApi extends runtime.BaseAPI {
         }
 
 
-        let urlPath = `/v1/user/avatar`;
+        let urlPath = `/users/avatar`;
 
         return {
             path: urlPath,
@@ -206,8 +211,8 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Uploads a new avatar image for the authenticated user.
-     * Upload a profile avatar
+     * Uploads an image file to R2 storage and updates the user\'s avatar URL.
+     * Upload profile avatar image
      */
     async uploadUserAvatarRaw(requestParameters: UploadUserAvatarRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UploadUserAvatar200Response>> {
         const requestOptions = await this.uploadUserAvatarRequestOpts(requestParameters);
@@ -217,8 +222,8 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Uploads a new avatar image for the authenticated user.
-     * Upload a profile avatar
+     * Uploads an image file to R2 storage and updates the user\'s avatar URL.
+     * Upload profile avatar image
      */
     async uploadUserAvatar(requestParameters: UploadUserAvatarRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UploadUserAvatar200Response> {
         const response = await this.uploadUserAvatarRaw(requestParameters, initOverrides);

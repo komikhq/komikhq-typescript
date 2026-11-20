@@ -10,8 +10,6 @@ Name | Type
 `name` | string
 `slug` | string
 `description` | string
-`createdAt` | Date
-`updatedAt` | Date
 
 ## Example
 
@@ -24,8 +22,6 @@ const example = {
   "name": null,
   "slug": null,
   "description": null,
-  "createdAt": null,
-  "updatedAt": null,
 } satisfies Genre
 
 console.log(example)

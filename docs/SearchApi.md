@@ -1,20 +1,21 @@
 # SearchApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getComicSearchSuggestions**](SearchApi.md#getcomicsearchsuggestions) | **GET** /v1/search/suggestions | Get comic search suggestions |
+| [**getSearchSuggestions**](SearchApi.md#getsearchsuggestions) | **GET** /search/suggest | Instant search autocomplete suggestions |
+| [**searchComics**](SearchApi.md#searchcomics) | **GET** /search | Full text comic search |
 
 
 
-## getComicSearchSuggestions
+## getSearchSuggestions
 
-> GetComicSearchSuggestions200Response getComicSearchSuggestions(q, limit)
+> GetSearchSuggestions200Response getSearchSuggestions(q, limit)
 
-Get comic search suggestions
+Instant search autocomplete suggestions
 
-Returns up to six title suggestions. Queries shorter than two characters return an empty list.
+Returns scored autocomplete search suggestions using CTE matching with KV caching.
 
 ### Example
 
@@ -23,21 +24,21 @@ import {
   Configuration,
   SearchApi,
 } from '@komikhq/komikhq-typescript';
-import type { GetComicSearchSuggestionsRequest } from '@komikhq/komikhq-typescript';
+import type { GetSearchSuggestionsRequest } from '@komikhq/komikhq-typescript';
 
 async function example() {
   console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
   const api = new SearchApi();
 
   const body = {
-    // string | Search text. (optional)
-    q: solo leveling,
-    // number | Maximum number of suggestions. Values are capped at six. (optional)
-    limit: 6,
-  } satisfies GetComicSearchSuggestionsRequest;
+    // string | Partial query string
+    q: q_example,
+    // number | Max suggestions (optional)
+    limit: 56,
+  } satisfies GetSearchSuggestionsRequest;
 
   try {
-    const data = await api.getComicSearchSuggestions(body);
+    const data = await api.getSearchSuggestions(body);
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -53,12 +54,12 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **q** | `string` | Search text. | [Optional] [Defaults to `undefined`] |
-| **limit** | `number` | Maximum number of suggestions. Values are capped at six. | [Optional] [Defaults to `undefined`] |
+| **q** | `string` | Partial query string | [Defaults to `undefined`] |
+| **limit** | `number` | Max suggestions | [Optional] [Defaults to `8`] |
 
 ### Return type
 
-[**GetComicSearchSuggestions200Response**](GetComicSearchSuggestions200Response.md)
+[**GetSearchSuggestions200Response**](GetSearchSuggestions200Response.md)
 
 ### Authorization
 
@@ -73,13 +74,80 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Matching comic suggestions. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Search suggestions list. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## searchComics
+
+> ListComics200Response searchComics(q, page, limit)
+
+Full text comic search
+
+Searches comics across titles, alternate titles, and slugs with pagination.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SearchApi,
+} from '@komikhq/komikhq-typescript';
+import type { SearchComicsRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const api = new SearchApi();
+
+  const body = {
+    // string | Search query (optional)
+    q: q_example,
+    // number (optional)
+    page: 56,
+    // number (optional)
+    limit: 56,
+  } satisfies SearchComicsRequest;
+
+  try {
+    const data = await api.searchComics(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **q** | `string` | Search query | [Optional] [Defaults to `undefined`] |
+| **page** | `number` |  | [Optional] [Defaults to `1`] |
+| **limit** | `number` |  | [Optional] [Defaults to `20`] |
+
+### Return type
+
+[**ListComics200Response**](ListComics200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Search results list. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

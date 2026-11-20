@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -14,10 +14,10 @@
 
 import * as runtime from '../runtime';
 import {
-    type CreateComment201Response,
-    CreateComment201ResponseFromJSON,
-    CreateComment201ResponseToJSON,
-} from '../models/CreateComment201Response';
+    type CreateComment200Response,
+    CreateComment200ResponseFromJSON,
+    CreateComment200ResponseToJSON,
+} from '../models/CreateComment200Response';
 import {
     type CreateCommentRequest,
     CreateCommentRequestFromJSON,
@@ -34,62 +34,62 @@ import {
     ListComments200ResponseToJSON,
 } from '../models/ListComments200Response';
 import {
-    type PurgeOrphanedStorageFiles200Response,
-    PurgeOrphanedStorageFiles200ResponseFromJSON,
-    PurgeOrphanedStorageFiles200ResponseToJSON,
-} from '../models/PurgeOrphanedStorageFiles200Response';
-import {
-    type ReportComment201Response,
-    ReportComment201ResponseFromJSON,
-    ReportComment201ResponseToJSON,
-} from '../models/ReportComment201Response';
-import {
     type ReportCommentRequest,
     ReportCommentRequestFromJSON,
     ReportCommentRequestToJSON,
 } from '../models/ReportCommentRequest';
+import {
+    type SuccessResponse,
+    SuccessResponseFromJSON,
+    SuccessResponseToJSON,
+} from '../models/SuccessResponse';
+import {
+    type ToggleCommentLike200Response,
+    ToggleCommentLike200ResponseFromJSON,
+    ToggleCommentLike200ResponseToJSON,
+} from '../models/ToggleCommentLike200Response';
 
 export interface CreateCommentOperationRequest {
     /**
      * 
      */
-    createCommentRequest?: CreateCommentRequest;
+    createCommentRequest: CreateCommentRequest;
 }
 
 export interface DeleteCommentRequest {
     /**
-     * 
+     * Comment ID
      */
-    commentId: string;
+    id: string;
 }
 
 export interface ListCommentsRequest {
     /**
-     * 
+     * Comic ID
      */
-    comicId?: string;
+    comicId: string;
     /**
-     * 
+     * Optional chapter ID filter
      */
     chapterId?: string;
 }
 
 export interface ReportCommentOperationRequest {
     /**
-     * 
+     * Comment ID
      */
-    commentId: string;
+    id: string;
     /**
      * 
      */
-    reportCommentRequest?: ReportCommentRequest;
+    reportCommentRequest: ReportCommentRequest;
 }
 
 export interface ToggleCommentLikeRequest {
     /**
-     * 
+     * Comment ID
      */
-    commentId: string;
+    id: string;
 }
 
 /**
@@ -101,6 +101,13 @@ export class CommentsApi extends runtime.BaseAPI {
      * Creates request options for createComment without sending the request
      */
     async createCommentRequestOpts(requestParameters: CreateCommentOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['createCommentRequest'] == null) {
+            throw new runtime.RequiredError(
+                'createCommentRequest',
+                'Required parameter "createCommentRequest" was null or undefined when calling createComment().'
+            );
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -108,7 +115,7 @@ export class CommentsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
 
-        let urlPath = `/v1/comments`;
+        let urlPath = `/comments`;
 
         return {
             path: urlPath,
@@ -120,21 +127,21 @@ export class CommentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a comment as an authenticated user or as a guest with guestName and guestEmail.
-     * Post a comment
+     * Posts a new comment or nested reply for a comic or specific chapter.
+     * Post a comment or reply
      */
-    async createCommentRaw(requestParameters: CreateCommentOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateComment201Response>> {
+    async createCommentRaw(requestParameters: CreateCommentOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateComment200Response>> {
         const requestOptions = await this.createCommentRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateComment201ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateComment200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Creates a comment as an authenticated user or as a guest with guestName and guestEmail.
-     * Post a comment
+     * Posts a new comment or nested reply for a comic or specific chapter.
+     * Post a comment or reply
      */
-    async createComment(requestParameters: CreateCommentOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateComment201Response> {
+    async createComment(requestParameters: CreateCommentOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateComment200Response> {
         const response = await this.createCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -143,10 +150,10 @@ export class CommentsApi extends runtime.BaseAPI {
      * Creates request options for deleteComment without sending the request
      */
     async deleteCommentRequestOpts(requestParameters: DeleteCommentRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['commentId'] == null) {
+        if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
-                'commentId',
-                'Required parameter "commentId" was null or undefined when calling deleteComment().'
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteComment().'
             );
         }
 
@@ -163,8 +170,8 @@ export class CommentsApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/comments/{commentId}`;
-        urlPath = urlPath.replace('{commentId}', encodeURIComponent(String(requestParameters['commentId'])));
+        let urlPath = `/comments/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -175,21 +182,21 @@ export class CommentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a comment owned by the authenticated user or an administrator.
-     * Delete a comment
+     * Deletes a comment. Only the author or an administrator can perform this action.
+     * Delete comment
      */
-    async deleteCommentRaw(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateComment201Response>> {
+    async deleteCommentRaw(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
         const requestOptions = await this.deleteCommentRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateComment201ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResponseFromJSON(jsonValue));
     }
 
     /**
-     * Deletes a comment owned by the authenticated user or an administrator.
-     * Delete a comment
+     * Deletes a comment. Only the author or an administrator can perform this action.
+     * Delete comment
      */
-    async deleteComment(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateComment201Response> {
+    async deleteComment(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
         const response = await this.deleteCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -198,6 +205,13 @@ export class CommentsApi extends runtime.BaseAPI {
      * Creates request options for listComments without sending the request
      */
     async listCommentsRequestOpts(requestParameters: ListCommentsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['comicId'] == null) {
+            throw new runtime.RequiredError(
+                'comicId',
+                'Required parameter "comicId" was null or undefined when calling listComments().'
+            );
+        }
+
         const queryParameters: any = {};
 
         if (requestParameters['comicId'] != null) {
@@ -211,7 +225,7 @@ export class CommentsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/v1/comments`;
+        let urlPath = `/comments`;
 
         return {
             path: urlPath,
@@ -222,8 +236,8 @@ export class CommentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns comments for a comic or chapter.
-     * List comments
+     * Returns nested threaded comments with like states and author information.
+     * List comments for comic or chapter
      */
     async listCommentsRaw(requestParameters: ListCommentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListComments200Response>> {
         const requestOptions = await this.listCommentsRequestOpts(requestParameters);
@@ -233,10 +247,10 @@ export class CommentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns comments for a comic or chapter.
-     * List comments
+     * Returns nested threaded comments with like states and author information.
+     * List comments for comic or chapter
      */
-    async listComments(requestParameters: ListCommentsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListComments200Response> {
+    async listComments(requestParameters: ListCommentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListComments200Response> {
         const response = await this.listCommentsRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -245,10 +259,17 @@ export class CommentsApi extends runtime.BaseAPI {
      * Creates request options for reportComment without sending the request
      */
     async reportCommentRequestOpts(requestParameters: ReportCommentOperationRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['commentId'] == null) {
+        if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
-                'commentId',
-                'Required parameter "commentId" was null or undefined when calling reportComment().'
+                'id',
+                'Required parameter "id" was null or undefined when calling reportComment().'
+            );
+        }
+
+        if (requestParameters['reportCommentRequest'] == null) {
+            throw new runtime.RequiredError(
+                'reportCommentRequest',
+                'Required parameter "reportCommentRequest" was null or undefined when calling reportComment().'
             );
         }
 
@@ -259,8 +280,8 @@ export class CommentsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
 
-        let urlPath = `/v1/comments/{commentId}/report`;
-        urlPath = urlPath.replace('{commentId}', encodeURIComponent(String(requestParameters['commentId'])));
+        let urlPath = `/comments/{id}/report`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -272,21 +293,21 @@ export class CommentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Submits a moderation report. Guest reporter details may be supplied.
-     * Report a comment
+     * Submits a moderation report for a comment with a specific violation reason.
+     * Report an inappropriate comment
      */
-    async reportCommentRaw(requestParameters: ReportCommentOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ReportComment201Response>> {
+    async reportCommentRaw(requestParameters: ReportCommentOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
         const requestOptions = await this.reportCommentRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ReportComment201ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResponseFromJSON(jsonValue));
     }
 
     /**
-     * Submits a moderation report. Guest reporter details may be supplied.
-     * Report a comment
+     * Submits a moderation report for a comment with a specific violation reason.
+     * Report an inappropriate comment
      */
-    async reportComment(requestParameters: ReportCommentOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ReportComment201Response> {
+    async reportComment(requestParameters: ReportCommentOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
         const response = await this.reportCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -295,10 +316,10 @@ export class CommentsApi extends runtime.BaseAPI {
      * Creates request options for toggleCommentLike without sending the request
      */
     async toggleCommentLikeRequestOpts(requestParameters: ToggleCommentLikeRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['commentId'] == null) {
+        if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
-                'commentId',
-                'Required parameter "commentId" was null or undefined when calling toggleCommentLike().'
+                'id',
+                'Required parameter "id" was null or undefined when calling toggleCommentLike().'
             );
         }
 
@@ -315,8 +336,8 @@ export class CommentsApi extends runtime.BaseAPI {
             }
         }
 
-        let urlPath = `/v1/comments/{commentId}/like`;
-        urlPath = urlPath.replace('{commentId}', encodeURIComponent(String(requestParameters['commentId'])));
+        let urlPath = `/comments/{id}/like`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
         return {
             path: urlPath,
@@ -327,21 +348,21 @@ export class CommentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Adds or removes the authenticated user\'s like on a comment.
-     * Toggle a comment like
+     * Adds or removes a like on the specified comment for the authenticated user.
+     * Toggle like on comment
      */
-    async toggleCommentLikeRaw(requestParameters: ToggleCommentLikeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PurgeOrphanedStorageFiles200Response>> {
+    async toggleCommentLikeRaw(requestParameters: ToggleCommentLikeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToggleCommentLike200Response>> {
         const requestOptions = await this.toggleCommentLikeRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => PurgeOrphanedStorageFiles200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ToggleCommentLike200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Adds or removes the authenticated user\'s like on a comment.
-     * Toggle a comment like
+     * Adds or removes a like on the specified comment for the authenticated user.
+     * Toggle like on comment
      */
-    async toggleCommentLike(requestParameters: ToggleCommentLikeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PurgeOrphanedStorageFiles200Response> {
+    async toggleCommentLike(requestParameters: ToggleCommentLikeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToggleCommentLike200Response> {
         const response = await this.toggleCommentLikeRaw(requestParameters, initOverrides);
         return await response.value();
     }

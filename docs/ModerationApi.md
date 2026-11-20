@@ -1,21 +1,21 @@
 # ModerationApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**adminListModerationReports**](ModerationApi.md#adminlistmoderationreports) | **GET** /v1/admin/reports | List moderation reports |
-| [**adminResolveModerationReport**](ModerationApi.md#adminresolvemoderationreportoperation) | **POST** /v1/admin/reports/{id}/action | Resolve a moderation report |
+| [**adminListReports**](ModerationApi.md#adminlistreports) | **GET** /admin/reports | List user reports (Admin only) |
+| [**adminUpdateReport**](ModerationApi.md#adminupdatereportoperation) | **PATCH** /admin/reports/{id} | Update report status (Admin only) |
 
 
 
-## adminListModerationReports
+## adminListReports
 
-> object adminListModerationReports(page, limit, status)
+> AdminListReports200Response adminListReports(status)
 
-List moderation reports
+List user reports (Admin only)
 
-Returns paginated moderation reports, optionally filtered by status.
+Fetch reported comments and issues filtered by status.
 
 ### Example
 
@@ -24,7 +24,7 @@ import {
   Configuration,
   ModerationApi,
 } from '@komikhq/komikhq-typescript';
-import type { AdminListModerationReportsRequest } from '@komikhq/komikhq-typescript';
+import type { AdminListReportsRequest } from '@komikhq/komikhq-typescript';
 
 async function example() {
   console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
@@ -37,16 +37,12 @@ async function example() {
   const api = new ModerationApi(config);
 
   const body = {
-    // number (optional)
-    page: 56,
-    // number (optional)
-    limit: 56,
-    // string (optional)
+    // 'PENDING' | 'RESOLVED' | 'REJECTED' | Report review status (optional)
     status: status_example,
-  } satisfies AdminListModerationReportsRequest;
+  } satisfies AdminListReportsRequest;
 
   try {
-    const data = await api.adminListModerationReports(body);
+    const data = await api.adminListReports(body);
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -62,13 +58,11 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **page** | `number` |  | [Optional] [Defaults to `undefined`] |
-| **limit** | `number` |  | [Optional] [Defaults to `undefined`] |
-| **status** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **status** | `PENDING`, `RESOLVED`, `REJECTED` | Report review status | [Optional] [Defaults to `&#39;PENDING&#39;`] [Enum: PENDING, RESOLVED, REJECTED] |
 
 ### Return type
 
-**object**
+[**AdminListReports200Response**](AdminListReports200Response.md)
 
 ### Authorization
 
@@ -83,24 +77,20 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Matching reports and pagination metadata. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | List of reports |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden - Admin access required |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
-## adminResolveModerationReport
+## adminUpdateReport
 
-> object adminResolveModerationReport(id, adminResolveModerationReportRequest)
+> AdminUpdateReport200Response adminUpdateReport(id, adminUpdateReportRequest)
 
-Resolve a moderation report
+Update report status (Admin only)
 
-Performs a moderation action on a report. Requires administrator access.
+Update resolution status of a reported item.
 
 ### Example
 
@@ -109,7 +99,7 @@ import {
   Configuration,
   ModerationApi,
 } from '@komikhq/komikhq-typescript';
-import type { AdminResolveModerationReportOperationRequest } from '@komikhq/komikhq-typescript';
+import type { AdminUpdateReportOperationRequest } from '@komikhq/komikhq-typescript';
 
 async function example() {
   console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
@@ -122,14 +112,14 @@ async function example() {
   const api = new ModerationApi(config);
 
   const body = {
-    // string
+    // string | Report ID
     id: id_example,
-    // AdminResolveModerationReportRequest (optional)
-    adminResolveModerationReportRequest: ...,
-  } satisfies AdminResolveModerationReportOperationRequest;
+    // AdminUpdateReportRequest
+    adminUpdateReportRequest: ...,
+  } satisfies AdminUpdateReportOperationRequest;
 
   try {
-    const data = await api.adminResolveModerationReport(body);
+    const data = await api.adminUpdateReport(body);
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -145,12 +135,12 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | `string` |  | [Defaults to `undefined`] |
-| **adminResolveModerationReportRequest** | [AdminResolveModerationReportRequest](AdminResolveModerationReportRequest.md) |  | [Optional] |
+| **id** | `string` | Report ID | [Defaults to `undefined`] |
+| **adminUpdateReportRequest** | [AdminUpdateReportRequest](AdminUpdateReportRequest.md) |  | |
 
 ### Return type
 
-**object**
+[**AdminUpdateReport200Response**](AdminUpdateReport200Response.md)
 
 ### Authorization
 
@@ -165,13 +155,11 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | The report action was completed. |  -  |
-| **400** | The request contains invalid input. |  -  |
-| **401** | Authentication is required or the session is invalid. |  -  |
-| **403** | The authenticated user is not permitted to perform this operation. |  -  |
-| **404** | The requested resource was not found. |  -  |
-| **409** | The request conflicts with the current resource state. |  -  |
-| **500** | An unexpected server error occurred. |  -  |
+| **200** | Report status updated successfully |  -  |
+| **400** | Bad request - invalid status |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden - Admin access required |  -  |
+| **404** | Report not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

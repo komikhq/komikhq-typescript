@@ -1,20 +1,20 @@
 # HealthApi
 
-All URIs are relative to *https://api.komikhq.com*
+All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getHealth**](HealthApi.md#gethealth) | **GET** /health | Check API health |
+| [**getHealthStatus**](HealthApi.md#gethealthstatus) | **GET** /health | Service health and runtime environment check |
 
 
 
-## getHealth
+## getHealthStatus
 
-> GetHealth200Response getHealth()
+> GetHealthStatus200Response getHealthStatus()
 
-Check API health
+Service health and runtime environment check
 
-Checks the database, cache binding, and media storage binding.
+Returns database latency, Node.js runtime compatibility, and Cloudflare resource binding connectivity status.
 
 ### Example
 
@@ -23,14 +23,14 @@ import {
   Configuration,
   HealthApi,
 } from '@komikhq/komikhq-typescript';
-import type { GetHealthRequest } from '@komikhq/komikhq-typescript';
+import type { GetHealthStatusRequest } from '@komikhq/komikhq-typescript';
 
 async function example() {
   console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
   const api = new HealthApi();
 
   try {
-    const data = await api.getHealth();
+    const data = await api.getHealthStatus();
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -47,7 +47,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**GetHealth200Response**](GetHealth200Response.md)
+[**GetHealthStatus200Response**](GetHealthStatus200Response.md)
 
 ### Authorization
 
@@ -62,8 +62,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | All checked services are available. |  -  |
-| **503** | One or more checked services are unavailable. |  -  |
+| **200** | Health and environment diagnostic details. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

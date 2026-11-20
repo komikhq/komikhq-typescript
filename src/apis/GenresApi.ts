@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,11 +13,6 @@
  */
 
 import * as runtime from '../runtime';
-import {
-    type ErrorResponse,
-    ErrorResponseFromJSON,
-    ErrorResponseToJSON,
-} from '../models/ErrorResponse';
 import {
     type ListGenres200Response,
     ListGenres200ResponseFromJSON,
@@ -38,7 +33,7 @@ export class GenresApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/v1/genres`;
+        let urlPath = `/genres`;
 
         return {
             path: urlPath,
@@ -49,8 +44,8 @@ export class GenresApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns the public comic genre catalog.
-     * List comic genres
+     * Returns the full catalog of available comic genres.
+     * List all comic genres
      */
     async listGenresRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListGenres200Response>> {
         const requestOptions = await this.listGenresRequestOpts();
@@ -60,8 +55,8 @@ export class GenresApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns the public comic genre catalog.
-     * List comic genres
+     * Returns the full catalog of available comic genres.
+     * List all comic genres
      */
     async listGenres(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListGenres200Response> {
         const response = await this.listGenresRaw(initOverrides);
