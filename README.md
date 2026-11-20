@@ -1,4 +1,4 @@
-# @komikhq/komikhq-typescript@1.2.0
+# @komikhq/komikhq-typescript@1.2.1
 
 A TypeScript SDK client for the nitro.komikhq.dpdns.org API.
 
@@ -58,18 +58,23 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 | ----- | ------ | ------------ | -------------
 *AdministrationApi* | [**adminCreateChapter**](docs/AdministrationApi.md#admincreatechapteroperation) | **POST** /admin/chapters | Create comic chapter
 *AdministrationApi* | [**adminCreateChapterPages**](docs/AdministrationApi.md#admincreatechapterpagesoperation) | **POST** /admin/chapters/{id}/pages | Set chapter pages
-*AdministrationApi* | [**adminCreateComic**](docs/AdministrationApi.md#admincreatecomicoperation) | **POST** /admin/comics | Create a new comic
+*AdministrationApi* | [**adminCreateComic**](docs/AdministrationApi.md#admincreatecomic) | **POST** /admin/comics | Create a new comic
 *AdministrationApi* | [**adminCreateGenre**](docs/AdministrationApi.md#admincreategenreoperation) | **POST** /admin/genres | Create a new genre
 *AdministrationApi* | [**adminCreateUser**](docs/AdministrationApi.md#admincreateuseroperation) | **POST** /admin/users | Create new user account (Admin only)
 *AdministrationApi* | [**adminDeleteChapter**](docs/AdministrationApi.md#admindeletechapter) | **DELETE** /admin/chapters/{id} | Delete chapter by ID
 *AdministrationApi* | [**adminDeleteComic**](docs/AdministrationApi.md#admindeletecomic) | **DELETE** /admin/comics/{id} | Delete comic by ID
 *AdministrationApi* | [**adminDeleteGenre**](docs/AdministrationApi.md#admindeletegenre) | **DELETE** /admin/genres/{id} | Delete genre (Admin only)
 *AdministrationApi* | [**adminDeleteUser**](docs/AdministrationApi.md#admindeleteuser) | **DELETE** /admin/users/{id} | Delete user account (Admin only)
+*AdministrationApi* | [**adminFinalizeChapter**](docs/AdministrationApi.md#adminfinalizechapteroperation) | **POST** /admin/chapters/{id}/finalize | Finalize a chapter
 *AdministrationApi* | [**adminGetStats**](docs/AdministrationApi.md#admingetstats) | **GET** /admin/stats | System overview stats (Admin only)
+*AdministrationApi* | [**adminInitializeChapter**](docs/AdministrationApi.md#admininitializechapteroperation) | **POST** /admin/chapters/init | Initialize a new chapter
+*AdministrationApi* | [**adminListChapters**](docs/AdministrationApi.md#adminlistchapters) | **GET** /admin/comics/{comicId}/chapters | List chapters for a comic
 *AdministrationApi* | [**adminListUsers**](docs/AdministrationApi.md#adminlistusers) | **GET** /admin/users | List registered users (Admin only)
-*AdministrationApi* | [**adminUpdateComic**](docs/AdministrationApi.md#adminupdatecomicoperation) | **PUT** /admin/comics/{id} | Update comic by ID
+*AdministrationApi* | [**adminUpdateChapter**](docs/AdministrationApi.md#adminupdatechapteroperation) | **PUT** /admin/chapters/{id} | Update a chapter
+*AdministrationApi* | [**adminUpdateComic**](docs/AdministrationApi.md#adminupdatecomic) | **PUT** /admin/comics/{id} | Update comic by ID
 *AdministrationApi* | [**adminUpdateGenre**](docs/AdministrationApi.md#adminupdategenreoperation) | **PUT** /admin/genres/{id} | Update genre by ID
 *AdministrationApi* | [**adminUpdateUser**](docs/AdministrationApi.md#adminupdateuseroperation) | **PUT** /admin/users/{id} | Update user account (Admin only)
+*AdministrationApi* | [**adminUploadChapterPage**](docs/AdministrationApi.md#adminuploadchapterpage) | **POST** /admin/chapters/{id}/pages/upload | Upload chapter page image
 *BookmarksApi* | [**deleteBookmark**](docs/BookmarksApi.md#deletebookmark) | **DELETE** /bookmarks/{comicId} | Remove comic bookmark
 *BookmarksApi* | [**listBookmarks**](docs/BookmarksApi.md#listbookmarks) | **GET** /bookmarks | List user bookmarks
 *BookmarksApi* | [**upsertBookmark**](docs/BookmarksApi.md#upsertbookmarkoperation) | **POST** /bookmarks | Add or update comic bookmark
@@ -93,7 +98,11 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 *ReadingHistoryApi* | [**recordReadingHistory**](docs/ReadingHistoryApi.md#recordreadinghistoryoperation) | **POST** /history | Record chapter reading progress
 *SearchApi* | [**getSearchSuggestions**](docs/SearchApi.md#getsearchsuggestions) | **GET** /search/suggest | Instant search autocomplete suggestions
 *SearchApi* | [**searchComics**](docs/SearchApi.md#searchcomics) | **GET** /search | Full text comic search
-*SitemapsApi* | [**getComicSitemapXml**](docs/SitemapsApi.md#getcomicsitemapxml) | **GET** /sitemap | XML sitemap generator
+*SitemapsApi* | [**getChaptersSitemapXml**](docs/SitemapsApi.md#getchapterssitemapxml) | **GET** /sitemaps/sitemap-chapters.xml | Chapters XML sitemap
+*SitemapsApi* | [**getComicsSitemapXml**](docs/SitemapsApi.md#getcomicssitemapxml) | **GET** /sitemaps/sitemap-comics.xml | Comics XML sitemap
+*SitemapsApi* | [**getSitemapSummary**](docs/SitemapsApi.md#getsitemapsummary) | **GET** /sitemaps/summary | Sitemap summary statistics
+*SitemapsApi* | [**listSitemapChapters**](docs/SitemapsApi.md#listsitemapchapters) | **GET** /sitemaps/chapters | List chapters for sitemap
+*SitemapsApi* | [**listSitemapComics**](docs/SitemapsApi.md#listsitemapcomics) | **GET** /sitemaps/comics | List comics for sitemap
 *SystemApi* | [**clearSystemCache**](docs/SystemApi.md#clearsystemcache) | **POST** /admin/system/clear-cache | Clear search cache (Admin only)
 *SystemApi* | [**getSystemStatus**](docs/SystemApi.md#getsystemstatus) | **GET** /admin/system/status | System infrastructure status (Admin only)
 *SystemApi* | [**purgeSystemStorage**](docs/SystemApi.md#purgesystemstorage) | **POST** /admin/system/purge-storage | Purge orphan files from R2 storage (Admin only)
@@ -106,23 +115,25 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 ### Models
 
-- [AdminCreateChapter200Response](docs/AdminCreateChapter200Response.md)
 - [AdminCreateChapterPages200Response](docs/AdminCreateChapterPages200Response.md)
 - [AdminCreateChapterPages200ResponseData](docs/AdminCreateChapterPages200ResponseData.md)
 - [AdminCreateChapterPagesRequest](docs/AdminCreateChapterPagesRequest.md)
 - [AdminCreateChapterPagesRequestPagesInner](docs/AdminCreateChapterPagesRequestPagesInner.md)
 - [AdminCreateChapterRequest](docs/AdminCreateChapterRequest.md)
-- [AdminCreateComicRequest](docs/AdminCreateComicRequest.md)
 - [AdminCreateGenreRequest](docs/AdminCreateGenreRequest.md)
 - [AdminCreateUserRequest](docs/AdminCreateUserRequest.md)
+- [AdminFinalizeChapter200Response](docs/AdminFinalizeChapter200Response.md)
+- [AdminFinalizeChapterRequest](docs/AdminFinalizeChapterRequest.md)
 - [AdminGetStats200Response](docs/AdminGetStats200Response.md)
 - [AdminGetStats200ResponseData](docs/AdminGetStats200ResponseData.md)
+- [AdminInitializeChapterRequest](docs/AdminInitializeChapterRequest.md)
+- [AdminListChapters200Response](docs/AdminListChapters200Response.md)
 - [AdminListReports200Response](docs/AdminListReports200Response.md)
 - [AdminListReports200ResponseDataInner](docs/AdminListReports200ResponseDataInner.md)
 - [AdminListUsers200Response](docs/AdminListUsers200Response.md)
 - [AdminListUsers200ResponseData](docs/AdminListUsers200ResponseData.md)
+- [AdminUpdateChapterRequest](docs/AdminUpdateChapterRequest.md)
 - [AdminUpdateComic200Response](docs/AdminUpdateComic200Response.md)
-- [AdminUpdateComicRequest](docs/AdminUpdateComicRequest.md)
 - [AdminUpdateGenre200Response](docs/AdminUpdateGenre200Response.md)
 - [AdminUpdateGenreRequest](docs/AdminUpdateGenreRequest.md)
 - [AdminUpdateReport200Response](docs/AdminUpdateReport200Response.md)
@@ -130,6 +141,8 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 - [AdminUpdateReportRequest](docs/AdminUpdateReportRequest.md)
 - [AdminUpdateUser200Response](docs/AdminUpdateUser200Response.md)
 - [AdminUpdateUserRequest](docs/AdminUpdateUserRequest.md)
+- [AdminUploadChapterPage200Response](docs/AdminUploadChapterPage200Response.md)
+- [AdminUploadChapterPage200ResponseData](docs/AdminUploadChapterPage200ResponseData.md)
 - [Bookmark](docs/Bookmark.md)
 - [Chapter](docs/Chapter.md)
 - [ChapterPage](docs/ChapterPage.md)
@@ -150,14 +163,22 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 - [GetChapterReaderPages200Response](docs/GetChapterReaderPages200Response.md)
 - [GetChapterReaderPages200ResponseData](docs/GetChapterReaderPages200ResponseData.md)
 - [GetChapterReaderPages200ResponseDataPrevChapter](docs/GetChapterReaderPages200ResponseDataPrevChapter.md)
+- [GetChaptersSitemapXml200Response](docs/GetChaptersSitemapXml200Response.md)
+- [GetChaptersSitemapXml200ResponseData](docs/GetChaptersSitemapXml200ResponseData.md)
+- [GetChaptersSitemapXml200ResponseDataChaptersInner](docs/GetChaptersSitemapXml200ResponseDataChaptersInner.md)
 - [GetComicBySlug200Response](docs/GetComicBySlug200Response.md)
 - [GetComicRating200Response](docs/GetComicRating200Response.md)
+- [GetComicsSitemapXml200Response](docs/GetComicsSitemapXml200Response.md)
+- [GetComicsSitemapXml200ResponseData](docs/GetComicsSitemapXml200ResponseData.md)
+- [GetComicsSitemapXml200ResponseDataComicsInner](docs/GetComicsSitemapXml200ResponseDataComicsInner.md)
 - [GetHealthStatus200Response](docs/GetHealthStatus200Response.md)
 - [GetHealthStatus200ResponseBindings](docs/GetHealthStatus200ResponseBindings.md)
 - [GetHealthStatus200ResponseDatabase](docs/GetHealthStatus200ResponseDatabase.md)
 - [GetHealthStatus200ResponseNodeCompat](docs/GetHealthStatus200ResponseNodeCompat.md)
 - [GetSearchSuggestions200Response](docs/GetSearchSuggestions200Response.md)
 - [GetSearchSuggestions200ResponseDataInner](docs/GetSearchSuggestions200ResponseDataInner.md)
+- [GetSitemapSummary200Response](docs/GetSitemapSummary200Response.md)
+- [GetSitemapSummary200ResponseData](docs/GetSitemapSummary200ResponseData.md)
 - [GetSystemStatus200Response](docs/GetSystemStatus200Response.md)
 - [GetSystemStatus200ResponseData](docs/GetSystemStatus200ResponseData.md)
 - [GetTrendingComics200Response](docs/GetTrendingComics200Response.md)
@@ -167,6 +188,12 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 - [ListComments200Response](docs/ListComments200Response.md)
 - [ListGenres200Response](docs/ListGenres200Response.md)
 - [ListReadingHistory200Response](docs/ListReadingHistory200Response.md)
+- [ListSitemapChapters200Response](docs/ListSitemapChapters200Response.md)
+- [ListSitemapChapters200ResponseData](docs/ListSitemapChapters200ResponseData.md)
+- [ListSitemapChapters200ResponseDataChaptersInner](docs/ListSitemapChapters200ResponseDataChaptersInner.md)
+- [ListSitemapComics200Response](docs/ListSitemapComics200Response.md)
+- [ListSitemapComics200ResponseData](docs/ListSitemapComics200ResponseData.md)
+- [ListSitemapComics200ResponseDataComicsInner](docs/ListSitemapComics200ResponseDataComicsInner.md)
 - [Pagination](docs/Pagination.md)
 - [PurgeSystemStorage200Response](docs/PurgeSystemStorage200Response.md)
 - [PurgeSystemStorage200ResponseData](docs/PurgeSystemStorage200ResponseData.md)
@@ -212,7 +239,7 @@ This TypeScript SDK client supports the [Fetch API](https://fetch.spec.whatwg.or
 Maintained by the KomikHQ Platform Team.
 
 - API version: `1.0.0`
-- Package version: `1.2.0`
+- Package version: `1.2.1`
 
 The generated npm module supports the following:
 

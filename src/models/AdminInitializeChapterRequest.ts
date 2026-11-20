@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,14 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { AdminInitializeChapterRequestChapterNumber } from './AdminInitializeChapterRequestChapterNumber';
-import {
-    AdminInitializeChapterRequestChapterNumberFromJSON,
-    AdminInitializeChapterRequestChapterNumberFromJSONTyped,
-    AdminInitializeChapterRequestChapterNumberToJSON,
-    AdminInitializeChapterRequestChapterNumberToJSONTyped,
-} from './AdminInitializeChapterRequestChapterNumber';
-
 /**
  * 
  * @export
@@ -30,7 +22,11 @@ export interface AdminInitializeChapterRequest {
     /**
      * 
      */
-    chapterNumber: AdminInitializeChapterRequestChapterNumber;
+    comicId: string;
+    /**
+     * 
+     */
+    chapterNumber: string;
     /**
      * 
      */
@@ -53,6 +49,7 @@ export interface AdminInitializeChapterRequest {
  * Check if a given object implements the AdminInitializeChapterRequest interface.
  */
 export function instanceOfAdminInitializeChapterRequest(value: object): value is AdminInitializeChapterRequest {
+    if (!('comicId' in value) || value['comicId'] === undefined) return false;
     if (!('chapterNumber' in value) || value['chapterNumber'] === undefined) return false;
     return true;
 }
@@ -67,7 +64,8 @@ export function AdminInitializeChapterRequestFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'chapterNumber': AdminInitializeChapterRequestChapterNumberFromJSON(json['chapterNumber']),
+        'comicId': json['comicId'],
+        'chapterNumber': json['chapterNumber'],
         'title': json['title'] == null ? undefined : json['title'],
         'accessTier': json['accessTier'] == null ? undefined : json['accessTier'],
         'isEarlyAccess': json['isEarlyAccess'] == null ? undefined : json['isEarlyAccess'],
@@ -86,7 +84,8 @@ export function AdminInitializeChapterRequestToJSONTyped(value?: AdminInitialize
 
     return {
         
-        'chapterNumber': AdminInitializeChapterRequestChapterNumberToJSON(value['chapterNumber']),
+        'comicId': value['comicId'],
+        'chapterNumber': value['chapterNumber'],
         'title': value['title'],
         'accessTier': value['accessTier'],
         'isEarlyAccess': value['isEarlyAccess'],

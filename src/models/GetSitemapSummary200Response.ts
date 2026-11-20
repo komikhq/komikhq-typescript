@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { GetSitemapSummary200ResponseData } from './GetSitemapSummary200ResponseData';
+import {
+    GetSitemapSummary200ResponseDataFromJSON,
+    GetSitemapSummary200ResponseDataFromJSONTyped,
+    GetSitemapSummary200ResponseDataToJSON,
+    GetSitemapSummary200ResponseDataToJSONTyped,
+} from './GetSitemapSummary200ResponseData';
+
 /**
  * 
  * @export
@@ -22,11 +30,11 @@ export interface GetSitemapSummary200Response {
     /**
      * 
      */
-    latestComicUpdate?: any | null;
+    status?: string;
     /**
      * 
      */
-    latestChapterUpdate?: any | null;
+    data?: GetSitemapSummary200ResponseData;
 }
 
 /**
@@ -46,8 +54,8 @@ export function GetSitemapSummary200ResponseFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'latestComicUpdate': json['latestComicUpdate'] === undefined ? undefined : json['latestComicUpdate'] === null ? null : json['latestComicUpdate'],
-        'latestChapterUpdate': json['latestChapterUpdate'] === undefined ? undefined : json['latestChapterUpdate'] === null ? null : json['latestChapterUpdate'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'data': json['data'] == null ? undefined : GetSitemapSummary200ResponseDataFromJSON(json['data']),
     };
 }
 
@@ -62,8 +70,8 @@ export function GetSitemapSummary200ResponseToJSONTyped(value?: GetSitemapSummar
 
     return {
         
-        'latestComicUpdate': value['latestComicUpdate'],
-        'latestChapterUpdate': value['latestChapterUpdate'],
+        'status': value['status'],
+        'data': GetSitemapSummary200ResponseDataToJSON(value['data']),
     };
 }
 

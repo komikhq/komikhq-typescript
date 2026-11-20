@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ListSitemapChapters200ResponseData } from './ListSitemapChapters200ResponseData';
+import {
+    ListSitemapChapters200ResponseDataFromJSON,
+    ListSitemapChapters200ResponseDataFromJSONTyped,
+    ListSitemapChapters200ResponseDataToJSON,
+    ListSitemapChapters200ResponseDataToJSONTyped,
+} from './ListSitemapChapters200ResponseData';
+
 /**
  * 
  * @export
@@ -22,29 +30,17 @@ export interface ListSitemapChapters200Response {
     /**
      * 
      */
-    page: number;
+    status?: string;
     /**
      * 
      */
-    limit: number;
-    /**
-     * 
-     */
-    chapters: Array<object>;
-    /**
-     * 
-     */
-    total: number;
+    data?: ListSitemapChapters200ResponseData;
 }
 
 /**
  * Check if a given object implements the ListSitemapChapters200Response interface.
  */
 export function instanceOfListSitemapChapters200Response(value: object): value is ListSitemapChapters200Response {
-    if (!('page' in value) || value['page'] === undefined) return false;
-    if (!('limit' in value) || value['limit'] === undefined) return false;
-    if (!('chapters' in value) || value['chapters'] === undefined) return false;
-    if (!('total' in value) || value['total'] === undefined) return false;
     return true;
 }
 
@@ -58,10 +54,8 @@ export function ListSitemapChapters200ResponseFromJSONTyped(json: any, ignoreDis
     }
     return {
         
-        'page': json['page'],
-        'limit': json['limit'],
-        'chapters': json['chapters'],
-        'total': json['total'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'data': json['data'] == null ? undefined : ListSitemapChapters200ResponseDataFromJSON(json['data']),
     };
 }
 
@@ -76,10 +70,8 @@ export function ListSitemapChapters200ResponseToJSONTyped(value?: ListSitemapCha
 
     return {
         
-        'page': value['page'],
-        'limit': value['limit'],
-        'chapters': value['chapters'],
-        'total': value['total'],
+        'status': value['status'],
+        'data': ListSitemapChapters200ResponseDataToJSON(value['data']),
     };
 }
 

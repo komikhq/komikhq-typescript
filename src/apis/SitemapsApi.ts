@@ -13,6 +13,63 @@
  */
 
 import * as runtime from '../runtime';
+import {
+    type GetChaptersSitemapXml200Response,
+    GetChaptersSitemapXml200ResponseFromJSON,
+    GetChaptersSitemapXml200ResponseToJSON,
+} from '../models/GetChaptersSitemapXml200Response';
+import {
+    type GetComicsSitemapXml200Response,
+    GetComicsSitemapXml200ResponseFromJSON,
+    GetComicsSitemapXml200ResponseToJSON,
+} from '../models/GetComicsSitemapXml200Response';
+import {
+    type GetSitemapSummary200Response,
+    GetSitemapSummary200ResponseFromJSON,
+    GetSitemapSummary200ResponseToJSON,
+} from '../models/GetSitemapSummary200Response';
+import {
+    type ListSitemapChapters200Response,
+    ListSitemapChapters200ResponseFromJSON,
+    ListSitemapChapters200ResponseToJSON,
+} from '../models/ListSitemapChapters200Response';
+import {
+    type ListSitemapComics200Response,
+    ListSitemapComics200ResponseFromJSON,
+    ListSitemapComics200ResponseToJSON,
+} from '../models/ListSitemapComics200Response';
+
+export interface GetChaptersSitemapXmlRequest {
+    /**
+     * Output format (xml or json)
+     */
+    format?: GetChaptersSitemapXmlFormatEnum;
+}
+
+export interface GetComicsSitemapXmlRequest {
+    /**
+     * Output format (xml or json)
+     */
+    format?: GetComicsSitemapXmlFormatEnum;
+}
+
+export interface ListSitemapChaptersRequest {
+    /**
+     * Page number.
+     */
+    page?: number;
+    /**
+     * Number of chapters per page.
+     */
+    limit?: number;
+}
+
+export interface ListSitemapComicsRequest {
+    /**
+     * Maximum number of comics to return.
+     */
+    limit?: number;
+}
 
 /**
  * 
@@ -20,15 +77,19 @@ import * as runtime from '../runtime';
 export class SitemapsApi extends runtime.BaseAPI {
 
     /**
-     * Creates request options for getComicSitemapXml without sending the request
+     * Creates request options for getChaptersSitemapXml without sending the request
      */
-    async getComicSitemapXmlRequestOpts(): Promise<runtime.RequestOpts> {
+    async getChaptersSitemapXmlRequestOpts(requestParameters: GetChaptersSitemapXmlRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
+
+        if (requestParameters['format'] != null) {
+            queryParameters['format'] = requestParameters['format'];
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/sitemap`;
+        let urlPath = `/sitemaps/sitemap-chapters.xml`;
 
         return {
             path: urlPath,
@@ -39,22 +100,210 @@ export class SitemapsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Generates dynamic XML sitemap of all indexed comics for search engine bots.
-     * XML sitemap generator
+     * Generates XML sitemap of all published comic chapters for search engine bots. Supports JSON output via ?format=json or Accept: application/json.
+     * Chapters XML sitemap
      */
-    async getComicSitemapXmlRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        const requestOptions = await this.getComicSitemapXmlRequestOpts();
+    async getChaptersSitemapXmlRaw(requestParameters: GetChaptersSitemapXmlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.getChaptersSitemapXmlRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
 
     /**
-     * Generates dynamic XML sitemap of all indexed comics for search engine bots.
-     * XML sitemap generator
+     * Generates XML sitemap of all published comic chapters for search engine bots. Supports JSON output via ?format=json or Accept: application/json.
+     * Chapters XML sitemap
      */
-    async getComicSitemapXml(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.getComicSitemapXmlRaw(initOverrides);
+    async getChaptersSitemapXml(requestParameters: GetChaptersSitemapXmlRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.getChaptersSitemapXmlRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates request options for getComicsSitemapXml without sending the request
+     */
+    async getComicsSitemapXmlRequestOpts(requestParameters: GetComicsSitemapXmlRequest): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        if (requestParameters['format'] != null) {
+            queryParameters['format'] = requestParameters['format'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/sitemaps/sitemap-comics.xml`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Generates XML sitemap of all published comics for search engine bots. Supports JSON output via ?format=json or Accept: application/json.
+     * Comics XML sitemap
+     */
+    async getComicsSitemapXmlRaw(requestParameters: GetComicsSitemapXmlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.getComicsSitemapXmlRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Generates XML sitemap of all published comics for search engine bots. Supports JSON output via ?format=json or Accept: application/json.
+     * Comics XML sitemap
+     */
+    async getComicsSitemapXml(requestParameters: GetComicsSitemapXmlRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.getComicsSitemapXmlRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates request options for getSitemapSummary without sending the request
+     */
+    async getSitemapSummaryRequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/sitemaps/summary`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns the latest update timestamps and total counts for comics and chapters, useful for sitemap index generation.
+     * Sitemap summary statistics
+     */
+    async getSitemapSummaryRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSitemapSummary200Response>> {
+        const requestOptions = await this.getSitemapSummaryRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSitemapSummary200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns the latest update timestamps and total counts for comics and chapters, useful for sitemap index generation.
+     * Sitemap summary statistics
+     */
+    async getSitemapSummary(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSitemapSummary200Response> {
+        const response = await this.getSitemapSummaryRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for listSitemapChapters without sending the request
+     */
+    async listSitemapChaptersRequestOpts(requestParameters: ListSitemapChaptersRequest): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
+        }
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/sitemaps/chapters`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns a paginated list of chapters with their comic slug for sitemap generation.
+     * List chapters for sitemap
+     */
+    async listSitemapChaptersRaw(requestParameters: ListSitemapChaptersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListSitemapChapters200Response>> {
+        const requestOptions = await this.listSitemapChaptersRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ListSitemapChapters200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns a paginated list of chapters with their comic slug for sitemap generation.
+     * List chapters for sitemap
+     */
+    async listSitemapChapters(requestParameters: ListSitemapChaptersRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListSitemapChapters200Response> {
+        const response = await this.listSitemapChaptersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for listSitemapComics without sending the request
+     */
+    async listSitemapComicsRequestOpts(requestParameters: ListSitemapComicsRequest): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/sitemaps/comics`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns a list of comic slugs and their last update timestamps for sitemap generation.
+     * List comics for sitemap
+     */
+    async listSitemapComicsRaw(requestParameters: ListSitemapComicsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListSitemapComics200Response>> {
+        const requestOptions = await this.listSitemapComicsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ListSitemapComics200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns a list of comic slugs and their last update timestamps for sitemap generation.
+     * List comics for sitemap
+     */
+    async listSitemapComics(requestParameters: ListSitemapComicsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListSitemapComics200Response> {
+        const response = await this.listSitemapComicsRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }
+
+/**
+ * @export
+ */
+export const GetChaptersSitemapXmlFormatEnum = {
+    Xml: 'xml',
+    Json: 'json',
+} as const;
+export type GetChaptersSitemapXmlFormatEnum = typeof GetChaptersSitemapXmlFormatEnum[keyof typeof GetChaptersSitemapXmlFormatEnum];
+/**
+ * @export
+ */
+export const GetComicsSitemapXmlFormatEnum = {
+    Xml: 'xml',
+    Json: 'json',
+} as const;
+export type GetComicsSitemapXmlFormatEnum = typeof GetComicsSitemapXmlFormatEnum[keyof typeof GetComicsSitemapXmlFormatEnum];

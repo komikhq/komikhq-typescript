@@ -6,10 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`page` | number
-`limit` | number
-`chapters` | Array&lt;object&gt;
-`total` | number
+`status` | string
+`data` | [ListSitemapChapters200ResponseData](ListSitemapChapters200ResponseData.md)
 
 ## Example
 
@@ -18,10 +16,8 @@ import type { ListSitemapChapters200Response } from '@komikhq/komikhq-typescript
 
 // TODO: Update the object below with actual values
 const example = {
-  "page": null,
-  "limit": null,
-  "chapters": null,
-  "total": null,
+  "status": ok,
+  "data": null,
 } satisfies ListSitemapChapters200Response
 
 console.log(example)

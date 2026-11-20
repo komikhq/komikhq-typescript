@@ -6,8 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`latestComicUpdate` | any
-`latestChapterUpdate` | any
+`status` | string
+`data` | [GetSitemapSummary200ResponseData](GetSitemapSummary200ResponseData.md)
 
 ## Example
 
@@ -16,8 +16,8 @@ import type { GetSitemapSummary200Response } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
-  "latestComicUpdate": null,
-  "latestChapterUpdate": null,
+  "status": ok,
+  "data": null,
 } satisfies GetSitemapSummary200Response
 
 console.log(example)

@@ -6,7 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`chapterNumber` | [AdminInitializeChapterRequestChapterNumber](AdminInitializeChapterRequestChapterNumber.md)
+`comicId` | string
+`chapterNumber` | string
 `title` | string
 `accessTier` | string
 `isEarlyAccess` | boolean
@@ -19,6 +20,7 @@ import type { AdminInitializeChapterRequest } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
+  "comicId": null,
   "chapterNumber": null,
   "title": null,
   "accessTier": null,

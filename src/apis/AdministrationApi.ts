@@ -14,11 +14,6 @@
 
 import * as runtime from '../runtime';
 import {
-    type AdminCreateChapter200Response,
-    AdminCreateChapter200ResponseFromJSON,
-    AdminCreateChapter200ResponseToJSON,
-} from '../models/AdminCreateChapter200Response';
-import {
     type AdminCreateChapterPages200Response,
     AdminCreateChapterPages200ResponseFromJSON,
     AdminCreateChapterPages200ResponseToJSON,
@@ -34,11 +29,6 @@ import {
     AdminCreateChapterRequestToJSON,
 } from '../models/AdminCreateChapterRequest';
 import {
-    type AdminCreateComicRequest,
-    AdminCreateComicRequestFromJSON,
-    AdminCreateComicRequestToJSON,
-} from '../models/AdminCreateComicRequest';
-import {
     type AdminCreateGenreRequest,
     AdminCreateGenreRequestFromJSON,
     AdminCreateGenreRequestToJSON,
@@ -49,25 +39,45 @@ import {
     AdminCreateUserRequestToJSON,
 } from '../models/AdminCreateUserRequest';
 import {
+    type AdminFinalizeChapter200Response,
+    AdminFinalizeChapter200ResponseFromJSON,
+    AdminFinalizeChapter200ResponseToJSON,
+} from '../models/AdminFinalizeChapter200Response';
+import {
+    type AdminFinalizeChapterRequest,
+    AdminFinalizeChapterRequestFromJSON,
+    AdminFinalizeChapterRequestToJSON,
+} from '../models/AdminFinalizeChapterRequest';
+import {
     type AdminGetStats200Response,
     AdminGetStats200ResponseFromJSON,
     AdminGetStats200ResponseToJSON,
 } from '../models/AdminGetStats200Response';
+import {
+    type AdminInitializeChapterRequest,
+    AdminInitializeChapterRequestFromJSON,
+    AdminInitializeChapterRequestToJSON,
+} from '../models/AdminInitializeChapterRequest';
+import {
+    type AdminListChapters200Response,
+    AdminListChapters200ResponseFromJSON,
+    AdminListChapters200ResponseToJSON,
+} from '../models/AdminListChapters200Response';
 import {
     type AdminListUsers200Response,
     AdminListUsers200ResponseFromJSON,
     AdminListUsers200ResponseToJSON,
 } from '../models/AdminListUsers200Response';
 import {
+    type AdminUpdateChapterRequest,
+    AdminUpdateChapterRequestFromJSON,
+    AdminUpdateChapterRequestToJSON,
+} from '../models/AdminUpdateChapterRequest';
+import {
     type AdminUpdateComic200Response,
     AdminUpdateComic200ResponseFromJSON,
     AdminUpdateComic200ResponseToJSON,
 } from '../models/AdminUpdateComic200Response';
-import {
-    type AdminUpdateComicRequest,
-    AdminUpdateComicRequestFromJSON,
-    AdminUpdateComicRequestToJSON,
-} from '../models/AdminUpdateComicRequest';
 import {
     type AdminUpdateGenre200Response,
     AdminUpdateGenre200ResponseFromJSON,
@@ -88,6 +98,11 @@ import {
     AdminUpdateUserRequestFromJSON,
     AdminUpdateUserRequestToJSON,
 } from '../models/AdminUpdateUserRequest';
+import {
+    type AdminUploadChapterPage200Response,
+    AdminUploadChapterPage200ResponseFromJSON,
+    AdminUploadChapterPage200ResponseToJSON,
+} from '../models/AdminUploadChapterPage200Response';
 import {
     type ErrorResponse,
     ErrorResponseFromJSON,
@@ -117,11 +132,59 @@ export interface AdminCreateChapterPagesOperationRequest {
     adminCreateChapterPagesRequest: AdminCreateChapterPagesRequest;
 }
 
-export interface AdminCreateComicOperationRequest {
+export interface AdminCreateComicRequest {
     /**
      * 
      */
-    adminCreateComicRequest: AdminCreateComicRequest;
+    title: string;
+    /**
+     * 
+     */
+    slug: string;
+    /**
+     * 
+     */
+    synopsis?: string;
+    /**
+     * Cover image file
+     */
+    cover?: Blob;
+    /**
+     * External cover image URL to download
+     */
+    coverUrlSource?: string;
+    /**
+     * Pre-existing storage object key
+     */
+    coverUrl?: string;
+    /**
+     * Banner image file
+     */
+    banner?: Blob;
+    /**
+     * External banner image URL to download
+     */
+    bannerUrlSource?: string;
+    /**
+     * Pre-existing storage object key
+     */
+    bannerUrl?: string;
+    /**
+     * 
+     */
+    type?: AdminCreateComicTypeEnum;
+    /**
+     * 
+     */
+    status?: AdminCreateComicStatusEnum;
+    /**
+     * 
+     */
+    accessTier?: string;
+    /**
+     * JSON stringified array of genre IDs
+     */
+    genreIds?: string;
 }
 
 export interface AdminCreateGenreOperationRequest {
@@ -166,6 +229,31 @@ export interface AdminDeleteUserRequest {
     id: string;
 }
 
+export interface AdminFinalizeChapterOperationRequest {
+    /**
+     * Chapter ID
+     */
+    id: string;
+    /**
+     * 
+     */
+    adminFinalizeChapterRequest: AdminFinalizeChapterRequest;
+}
+
+export interface AdminInitializeChapterOperationRequest {
+    /**
+     * 
+     */
+    adminInitializeChapterRequest: AdminInitializeChapterRequest;
+}
+
+export interface AdminListChaptersRequest {
+    /**
+     * Comic ID
+     */
+    comicId: string;
+}
+
 export interface AdminListUsersRequest {
     /**
      * Search keyword for name or email
@@ -181,7 +269,18 @@ export interface AdminListUsersRequest {
     limit?: number;
 }
 
-export interface AdminUpdateComicOperationRequest {
+export interface AdminUpdateChapterOperationRequest {
+    /**
+     * Chapter ID
+     */
+    id: string;
+    /**
+     * 
+     */
+    adminUpdateChapterRequest: AdminUpdateChapterRequest;
+}
+
+export interface AdminUpdateComicRequest {
     /**
      * Comic ID
      */
@@ -189,7 +288,55 @@ export interface AdminUpdateComicOperationRequest {
     /**
      * 
      */
-    adminUpdateComicRequest?: AdminUpdateComicRequest;
+    title?: string;
+    /**
+     * 
+     */
+    slug?: string;
+    /**
+     * 
+     */
+    synopsis?: string;
+    /**
+     * Cover image file
+     */
+    cover?: Blob;
+    /**
+     * External cover image URL to download
+     */
+    coverUrlSource?: string;
+    /**
+     * Pre-existing storage object key
+     */
+    coverUrl?: string;
+    /**
+     * Banner image file
+     */
+    banner?: Blob;
+    /**
+     * External banner image URL to download
+     */
+    bannerUrlSource?: string;
+    /**
+     * Pre-existing storage object key
+     */
+    bannerUrl?: string;
+    /**
+     * 
+     */
+    type?: AdminUpdateComicTypeEnum;
+    /**
+     * 
+     */
+    status?: AdminUpdateComicStatusEnum;
+    /**
+     * 
+     */
+    accessTier?: string;
+    /**
+     * JSON stringified array of genre IDs
+     */
+    genreIds?: string;
 }
 
 export interface AdminUpdateGenreOperationRequest {
@@ -212,6 +359,29 @@ export interface AdminUpdateUserOperationRequest {
      * 
      */
     adminUpdateUserRequest: AdminUpdateUserRequest;
+}
+
+export interface AdminUploadChapterPageRequest {
+    /**
+     * Chapter ID
+     */
+    id: string;
+    /**
+     * Image file
+     */
+    file: Blob;
+    /**
+     * Page order index
+     */
+    pageNumber: number;
+    /**
+     * Optional image width
+     */
+    width?: number;
+    /**
+     * Optional image height
+     */
+    height?: number;
 }
 
 /**
@@ -260,18 +430,18 @@ export class AdministrationApi extends runtime.BaseAPI {
      * Inserts a new comic chapter into the database. Requires administrator privileges.
      * Create comic chapter
      */
-    async adminCreateChapterRaw(requestParameters: AdminCreateChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminCreateChapter200Response>> {
+    async adminCreateChapterRaw(requestParameters: AdminCreateChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminFinalizeChapter200Response>> {
         const requestOptions = await this.adminCreateChapterRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AdminCreateChapter200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminFinalizeChapter200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Inserts a new comic chapter into the database. Requires administrator privileges.
      * Create comic chapter
      */
-    async adminCreateChapter(requestParameters: AdminCreateChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminCreateChapter200Response> {
+    async adminCreateChapter(requestParameters: AdminCreateChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminFinalizeChapter200Response> {
         const response = await this.adminCreateChapterRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -344,19 +514,24 @@ export class AdministrationApi extends runtime.BaseAPI {
     /**
      * Creates request options for adminCreateComic without sending the request
      */
-    async adminCreateComicRequestOpts(requestParameters: AdminCreateComicOperationRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['adminCreateComicRequest'] == null) {
+    async adminCreateComicRequestOpts(requestParameters: AdminCreateComicRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['title'] == null) {
             throw new runtime.RequiredError(
-                'adminCreateComicRequest',
-                'Required parameter "adminCreateComicRequest" was null or undefined when calling adminCreateComic().'
+                'title',
+                'Required parameter "title" was null or undefined when calling adminCreateComic().'
+            );
+        }
+
+        if (requestParameters['slug'] == null) {
+            throw new runtime.RequiredError(
+                'slug',
+                'Required parameter "slug" was null or undefined when calling adminCreateComic().'
             );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -366,6 +541,76 @@ export class AdministrationApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
+        const consumes: runtime.Consume[] = [
+            { contentType: 'multipart/form-data' },
+        ];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters['title'] != null) {
+            formParams.append('title', requestParameters['title'] as any);
+        }
+
+        if (requestParameters['slug'] != null) {
+            formParams.append('slug', requestParameters['slug'] as any);
+        }
+
+        if (requestParameters['synopsis'] != null) {
+            formParams.append('synopsis', requestParameters['synopsis'] as any);
+        }
+
+        if (requestParameters['cover'] != null) {
+            formParams.append('cover', requestParameters['cover'] as any);
+        }
+
+        if (requestParameters['coverUrlSource'] != null) {
+            formParams.append('coverUrlSource', requestParameters['coverUrlSource'] as any);
+        }
+
+        if (requestParameters['coverUrl'] != null) {
+            formParams.append('coverUrl', requestParameters['coverUrl'] as any);
+        }
+
+        if (requestParameters['banner'] != null) {
+            formParams.append('banner', requestParameters['banner'] as any);
+        }
+
+        if (requestParameters['bannerUrlSource'] != null) {
+            formParams.append('bannerUrlSource', requestParameters['bannerUrlSource'] as any);
+        }
+
+        if (requestParameters['bannerUrl'] != null) {
+            formParams.append('bannerUrl', requestParameters['bannerUrl'] as any);
+        }
+
+        if (requestParameters['type'] != null) {
+            formParams.append('type', requestParameters['type'] as any);
+        }
+
+        if (requestParameters['status'] != null) {
+            formParams.append('status', requestParameters['status'] as any);
+        }
+
+        if (requestParameters['accessTier'] != null) {
+            formParams.append('accessTier', requestParameters['accessTier'] as any);
+        }
+
+        if (requestParameters['genreIds'] != null) {
+            formParams.append('genreIds', requestParameters['genreIds'] as any);
+        }
+
 
         let urlPath = `/admin/comics`;
 
@@ -374,15 +619,15 @@ export class AdministrationApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AdminCreateComicRequestToJSON(requestParameters['adminCreateComicRequest']),
+            body: formParams,
         };
     }
 
     /**
-     * Inserts a new comic record into the catalog. Requires administrator privileges.
+     * Inserts a new comic record into the catalog with support for direct file uploads or URLs. Requires administrator privileges.
      * Create a new comic
      */
-    async adminCreateComicRaw(requestParameters: AdminCreateComicOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateComic200Response>> {
+    async adminCreateComicRaw(requestParameters: AdminCreateComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateComic200Response>> {
         const requestOptions = await this.adminCreateComicRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
@@ -390,10 +635,10 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Inserts a new comic record into the catalog. Requires administrator privileges.
+     * Inserts a new comic record into the catalog with support for direct file uploads or URLs. Requires administrator privileges.
      * Create a new comic
      */
-    async adminCreateComic(requestParameters: AdminCreateComicOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateComic200Response> {
+    async adminCreateComic(requestParameters: AdminCreateComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateComic200Response> {
         const response = await this.adminCreateComicRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -733,6 +978,71 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for adminFinalizeChapter without sending the request
+     */
+    async adminFinalizeChapterRequestOpts(requestParameters: AdminFinalizeChapterOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling adminFinalizeChapter().'
+            );
+        }
+
+        if (requestParameters['adminFinalizeChapterRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminFinalizeChapterRequest',
+                'Required parameter "adminFinalizeChapterRequest" was null or undefined when calling adminFinalizeChapter().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/chapters/{id}/finalize`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminFinalizeChapterRequestToJSON(requestParameters['adminFinalizeChapterRequest']),
+        };
+    }
+
+    /**
+     * Updates the chapter total pages count and refreshes the parent comic total chapters. Requires administrator privileges.
+     * Finalize a chapter
+     */
+    async adminFinalizeChapterRaw(requestParameters: AdminFinalizeChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminFinalizeChapter200Response>> {
+        const requestOptions = await this.adminFinalizeChapterRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminFinalizeChapter200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Updates the chapter total pages count and refreshes the parent comic total chapters. Requires administrator privileges.
+     * Finalize a chapter
+     */
+    async adminFinalizeChapter(requestParameters: AdminFinalizeChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminFinalizeChapter200Response> {
+        const response = await this.adminFinalizeChapterRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for adminGetStats without sending the request
      */
     async adminGetStatsRequestOpts(): Promise<runtime.RequestOpts> {
@@ -776,6 +1086,118 @@ export class AdministrationApi extends runtime.BaseAPI {
      */
     async adminGetStats(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminGetStats200Response> {
         const response = await this.adminGetStatsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for adminInitializeChapter without sending the request
+     */
+    async adminInitializeChapterRequestOpts(requestParameters: AdminInitializeChapterOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['adminInitializeChapterRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminInitializeChapterRequest',
+                'Required parameter "adminInitializeChapterRequest" was null or undefined when calling adminInitializeChapter().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/chapters/init`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminInitializeChapterRequestToJSON(requestParameters['adminInitializeChapterRequest']),
+        };
+    }
+
+    /**
+     * Creates a new chapter with an auto-generated slug. Requires administrator privileges.
+     * Initialize a new chapter
+     */
+    async adminInitializeChapterRaw(requestParameters: AdminInitializeChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminFinalizeChapter200Response>> {
+        const requestOptions = await this.adminInitializeChapterRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminFinalizeChapter200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates a new chapter with an auto-generated slug. Requires administrator privileges.
+     * Initialize a new chapter
+     */
+    async adminInitializeChapter(requestParameters: AdminInitializeChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminFinalizeChapter200Response> {
+        const response = await this.adminInitializeChapterRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for adminListChapters without sending the request
+     */
+    async adminListChaptersRequestOpts(requestParameters: AdminListChaptersRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['comicId'] == null) {
+            throw new runtime.RequiredError(
+                'comicId',
+                'Required parameter "comicId" was null or undefined when calling adminListChapters().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/comics/{comicId}/chapters`;
+        urlPath = urlPath.replace('{comicId}', encodeURIComponent(String(requestParameters['comicId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns all chapters for a given comic, ordered by chapter number. Requires administrator privileges.
+     * List chapters for a comic
+     */
+    async adminListChaptersRaw(requestParameters: AdminListChaptersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminListChapters200Response>> {
+        const requestOptions = await this.adminListChaptersRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminListChapters200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns all chapters for a given comic, ordered by chapter number. Requires administrator privileges.
+     * List chapters for a comic
+     */
+    async adminListChapters(requestParameters: AdminListChaptersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListChapters200Response> {
+        const response = await this.adminListChaptersRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -839,13 +1261,20 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates request options for adminUpdateComic without sending the request
+     * Creates request options for adminUpdateChapter without sending the request
      */
-    async adminUpdateComicRequestOpts(requestParameters: AdminUpdateComicOperationRequest): Promise<runtime.RequestOpts> {
+    async adminUpdateChapterRequestOpts(requestParameters: AdminUpdateChapterOperationRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
-                'Required parameter "id" was null or undefined when calling adminUpdateComic().'
+                'Required parameter "id" was null or undefined when calling adminUpdateChapter().'
+            );
+        }
+
+        if (requestParameters['adminUpdateChapterRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminUpdateChapterRequest',
+                'Required parameter "adminUpdateChapterRequest" was null or undefined when calling adminUpdateChapter().'
             );
         }
 
@@ -864,6 +1293,132 @@ export class AdministrationApi extends runtime.BaseAPI {
             }
         }
 
+        let urlPath = `/admin/chapters/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminUpdateChapterRequestToJSON(requestParameters['adminUpdateChapterRequest']),
+        };
+    }
+
+    /**
+     * Updates chapter details. Requires administrator privileges.
+     * Update a chapter
+     */
+    async adminUpdateChapterRaw(requestParameters: AdminUpdateChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminFinalizeChapter200Response>> {
+        const requestOptions = await this.adminUpdateChapterRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminFinalizeChapter200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Updates chapter details. Requires administrator privileges.
+     * Update a chapter
+     */
+    async adminUpdateChapter(requestParameters: AdminUpdateChapterOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminFinalizeChapter200Response> {
+        const response = await this.adminUpdateChapterRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for adminUpdateComic without sending the request
+     */
+    async adminUpdateComicRequestOpts(requestParameters: AdminUpdateComicRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling adminUpdateComic().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const consumes: runtime.Consume[] = [
+            { contentType: 'multipart/form-data' },
+        ];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters['title'] != null) {
+            formParams.append('title', requestParameters['title'] as any);
+        }
+
+        if (requestParameters['slug'] != null) {
+            formParams.append('slug', requestParameters['slug'] as any);
+        }
+
+        if (requestParameters['synopsis'] != null) {
+            formParams.append('synopsis', requestParameters['synopsis'] as any);
+        }
+
+        if (requestParameters['cover'] != null) {
+            formParams.append('cover', requestParameters['cover'] as any);
+        }
+
+        if (requestParameters['coverUrlSource'] != null) {
+            formParams.append('coverUrlSource', requestParameters['coverUrlSource'] as any);
+        }
+
+        if (requestParameters['coverUrl'] != null) {
+            formParams.append('coverUrl', requestParameters['coverUrl'] as any);
+        }
+
+        if (requestParameters['banner'] != null) {
+            formParams.append('banner', requestParameters['banner'] as any);
+        }
+
+        if (requestParameters['bannerUrlSource'] != null) {
+            formParams.append('bannerUrlSource', requestParameters['bannerUrlSource'] as any);
+        }
+
+        if (requestParameters['bannerUrl'] != null) {
+            formParams.append('bannerUrl', requestParameters['bannerUrl'] as any);
+        }
+
+        if (requestParameters['type'] != null) {
+            formParams.append('type', requestParameters['type'] as any);
+        }
+
+        if (requestParameters['status'] != null) {
+            formParams.append('status', requestParameters['status'] as any);
+        }
+
+        if (requestParameters['accessTier'] != null) {
+            formParams.append('accessTier', requestParameters['accessTier'] as any);
+        }
+
+        if (requestParameters['genreIds'] != null) {
+            formParams.append('genreIds', requestParameters['genreIds'] as any);
+        }
+
+
         let urlPath = `/admin/comics/{id}`;
         urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
 
@@ -872,15 +1427,15 @@ export class AdministrationApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: AdminUpdateComicRequestToJSON(requestParameters['adminUpdateComicRequest']),
+            body: formParams,
         };
     }
 
     /**
-     * Updates comic metadata by ID. Requires administrator privileges.
+     * Updates comic metadata by ID with support for direct file uploads or JSON. Requires administrator privileges.
      * Update comic by ID
      */
-    async adminUpdateComicRaw(requestParameters: AdminUpdateComicOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateComic200Response>> {
+    async adminUpdateComicRaw(requestParameters: AdminUpdateComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUpdateComic200Response>> {
         const requestOptions = await this.adminUpdateComicRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
@@ -888,10 +1443,10 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates comic metadata by ID. Requires administrator privileges.
+     * Updates comic metadata by ID with support for direct file uploads or JSON. Requires administrator privileges.
      * Update comic by ID
      */
-    async adminUpdateComic(requestParameters: AdminUpdateComicOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateComic200Response> {
+    async adminUpdateComic(requestParameters: AdminUpdateComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUpdateComic200Response> {
         const response = await this.adminUpdateComicRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -1019,4 +1574,143 @@ export class AdministrationApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+    /**
+     * Creates request options for adminUploadChapterPage without sending the request
+     */
+    async adminUploadChapterPageRequestOpts(requestParameters: AdminUploadChapterPageRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling adminUploadChapterPage().'
+            );
+        }
+
+        if (requestParameters['file'] == null) {
+            throw new runtime.RequiredError(
+                'file',
+                'Required parameter "file" was null or undefined when calling adminUploadChapterPage().'
+            );
+        }
+
+        if (requestParameters['pageNumber'] == null) {
+            throw new runtime.RequiredError(
+                'pageNumber',
+                'Required parameter "pageNumber" was null or undefined when calling adminUploadChapterPage().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const consumes: runtime.Consume[] = [
+            { contentType: 'multipart/form-data' },
+        ];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters['file'] != null) {
+            formParams.append('file', requestParameters['file'] as any);
+        }
+
+        if (requestParameters['pageNumber'] != null) {
+            formParams.append('pageNumber', requestParameters['pageNumber'] as any);
+        }
+
+        if (requestParameters['width'] != null) {
+            formParams.append('width', requestParameters['width'] as any);
+        }
+
+        if (requestParameters['height'] != null) {
+            formParams.append('height', requestParameters['height'] as any);
+        }
+
+
+        let urlPath = `/admin/chapters/{id}/pages/upload`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: formParams,
+        };
+    }
+
+    /**
+     * Uploads a single page image file directly to R2 storage and associates it with the specified chapter. Requires administrator privileges.
+     * Upload chapter page image
+     */
+    async adminUploadChapterPageRaw(requestParameters: AdminUploadChapterPageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminUploadChapterPage200Response>> {
+        const requestOptions = await this.adminUploadChapterPageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminUploadChapterPage200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Uploads a single page image file directly to R2 storage and associates it with the specified chapter. Requires administrator privileges.
+     * Upload chapter page image
+     */
+    async adminUploadChapterPage(requestParameters: AdminUploadChapterPageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminUploadChapterPage200Response> {
+        const response = await this.adminUploadChapterPageRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
 }
+
+/**
+ * @export
+ */
+export const AdminCreateComicTypeEnum = {
+    Manga: 'manga',
+    Manhwa: 'manhwa',
+    Manhua: 'manhua',
+} as const;
+export type AdminCreateComicTypeEnum = typeof AdminCreateComicTypeEnum[keyof typeof AdminCreateComicTypeEnum];
+/**
+ * @export
+ */
+export const AdminCreateComicStatusEnum = {
+    Ongoing: 'ongoing',
+    Completed: 'completed',
+    Hiatus: 'hiatus',
+} as const;
+export type AdminCreateComicStatusEnum = typeof AdminCreateComicStatusEnum[keyof typeof AdminCreateComicStatusEnum];
+/**
+ * @export
+ */
+export const AdminUpdateComicTypeEnum = {
+    Manga: 'manga',
+    Manhwa: 'manhwa',
+    Manhua: 'manhua',
+} as const;
+export type AdminUpdateComicTypeEnum = typeof AdminUpdateComicTypeEnum[keyof typeof AdminUpdateComicTypeEnum];
+/**
+ * @export
+ */
+export const AdminUpdateComicStatusEnum = {
+    Ongoing: 'ongoing',
+    Completed: 'completed',
+    Hiatus: 'hiatus',
+} as const;
+export type AdminUpdateComicStatusEnum = typeof AdminUpdateComicStatusEnum[keyof typeof AdminUpdateComicStatusEnum];

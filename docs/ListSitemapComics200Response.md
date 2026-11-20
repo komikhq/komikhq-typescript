@@ -6,8 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`comics` | Array&lt;object&gt;
-`total` | number
+`status` | string
+`data` | [ListSitemapComics200ResponseData](ListSitemapComics200ResponseData.md)
 
 ## Example
 
@@ -16,8 +16,8 @@ import type { ListSitemapComics200Response } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
-  "comics": null,
-  "total": null,
+  "status": ok,
+  "data": null,
 } satisfies ListSitemapComics200Response
 
 console.log(example)

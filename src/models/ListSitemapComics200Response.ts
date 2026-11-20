@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ListSitemapComics200ResponseData } from './ListSitemapComics200ResponseData';
+import {
+    ListSitemapComics200ResponseDataFromJSON,
+    ListSitemapComics200ResponseDataFromJSONTyped,
+    ListSitemapComics200ResponseDataToJSON,
+    ListSitemapComics200ResponseDataToJSONTyped,
+} from './ListSitemapComics200ResponseData';
+
 /**
  * 
  * @export
@@ -22,19 +30,17 @@ export interface ListSitemapComics200Response {
     /**
      * 
      */
-    comics: Array<object>;
+    status?: string;
     /**
      * 
      */
-    total: number;
+    data?: ListSitemapComics200ResponseData;
 }
 
 /**
  * Check if a given object implements the ListSitemapComics200Response interface.
  */
 export function instanceOfListSitemapComics200Response(value: object): value is ListSitemapComics200Response {
-    if (!('comics' in value) || value['comics'] === undefined) return false;
-    if (!('total' in value) || value['total'] === undefined) return false;
     return true;
 }
 
@@ -48,8 +54,8 @@ export function ListSitemapComics200ResponseFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'comics': json['comics'],
-        'total': json['total'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'data': json['data'] == null ? undefined : ListSitemapComics200ResponseDataFromJSON(json['data']),
     };
 }
 
@@ -64,8 +70,8 @@ export function ListSitemapComics200ResponseToJSONTyped(value?: ListSitemapComic
 
     return {
         
-        'comics': value['comics'],
-        'total': value['total'],
+        'status': value['status'],
+        'data': ListSitemapComics200ResponseDataToJSON(value['data']),
     };
 }
 
