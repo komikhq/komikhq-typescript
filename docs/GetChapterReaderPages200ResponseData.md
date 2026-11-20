@@ -6,8 +6,10 @@
 
 Name | Type
 ------------ | -------------
+`comic` | [GetChapterReaderPages200ResponseDataComic](GetChapterReaderPages200ResponseDataComic.md)
 `chapter` | [Chapter](Chapter.md)
 `pages` | [Array&lt;ChapterPage&gt;](ChapterPage.md)
+`allChapters` | [Array&lt;GetChapterReaderPages200ResponseDataAllChaptersInner&gt;](GetChapterReaderPages200ResponseDataAllChaptersInner.md)
 `prevChapter` | [GetChapterReaderPages200ResponseDataPrevChapter](GetChapterReaderPages200ResponseDataPrevChapter.md)
 `nextChapter` | [GetChapterReaderPages200ResponseDataPrevChapter](GetChapterReaderPages200ResponseDataPrevChapter.md)
 
@@ -18,8 +20,10 @@ import type { GetChapterReaderPages200ResponseData } from '@komikhq/komikhq-type
 
 // TODO: Update the object below with actual values
 const example = {
+  "comic": null,
   "chapter": null,
   "pages": null,
+  "allChapters": null,
   "prevChapter": null,
   "nextChapter": null,
 } satisfies GetChapterReaderPages200ResponseData

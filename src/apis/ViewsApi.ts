@@ -14,15 +14,15 @@
 
 import * as runtime from '../runtime';
 import {
+    type AdminRevokeApiToken200Response,
+    AdminRevokeApiToken200ResponseFromJSON,
+    AdminRevokeApiToken200ResponseToJSON,
+} from '../models/AdminRevokeApiToken200Response';
+import {
     type ErrorResponse,
     ErrorResponseFromJSON,
     ErrorResponseToJSON,
 } from '../models/ErrorResponse';
-import {
-    type RecordComicView200Response,
-    RecordComicView200ResponseFromJSON,
-    RecordComicView200ResponseToJSON,
-} from '../models/RecordComicView200Response';
 import {
     type RecordComicViewRequest,
     RecordComicViewRequestFromJSON,
@@ -74,18 +74,18 @@ export class ViewsApi extends runtime.BaseAPI {
      * Logs a view data point into Cloudflare Analytics Engine dataset.
      * Record comic/chapter view
      */
-    async recordComicViewRaw(requestParameters: RecordComicViewOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RecordComicView200Response>> {
+    async recordComicViewRaw(requestParameters: RecordComicViewOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminRevokeApiToken200Response>> {
         const requestOptions = await this.recordComicViewRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => RecordComicView200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminRevokeApiToken200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Logs a view data point into Cloudflare Analytics Engine dataset.
      * Record comic/chapter view
      */
-    async recordComicView(requestParameters: RecordComicViewOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RecordComicView200Response> {
+    async recordComicView(requestParameters: RecordComicViewOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminRevokeApiToken200Response> {
         const response = await this.recordComicViewRaw(requestParameters, initOverrides);
         return await response.value();
     }

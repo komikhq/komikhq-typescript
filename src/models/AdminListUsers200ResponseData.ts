@@ -41,6 +41,10 @@ export interface AdminListUsers200ResponseData {
     /**
      * 
      */
+    users?: Array<UserProfile>;
+    /**
+     * 
+     */
     pagination?: Pagination;
 }
 
@@ -62,6 +66,7 @@ export function AdminListUsers200ResponseDataFromJSONTyped(json: any, ignoreDisc
     return {
         
         'items': json['items'] == null ? undefined : ((json['items'] as Array<any>).map(UserProfileFromJSON)),
+        'users': json['users'] == null ? undefined : ((json['users'] as Array<any>).map(UserProfileFromJSON)),
         'pagination': json['pagination'] == null ? undefined : PaginationFromJSON(json['pagination']),
     };
 }
@@ -78,6 +83,7 @@ export function AdminListUsers200ResponseDataToJSONTyped(value?: AdminListUsers2
     return {
         
         'items': value['items'] == null ? undefined : ((value['items'] as Array<any>).map(UserProfileToJSON)),
+        'users': value['users'] == null ? undefined : ((value['users'] as Array<any>).map(UserProfileToJSON)),
         'pagination': PaginationToJSON(value['pagination']),
     };
 }

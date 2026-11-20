@@ -7,6 +7,7 @@
 Name | Type
 ------------ | -------------
 `items` | [Array&lt;UserProfile&gt;](UserProfile.md)
+`users` | [Array&lt;UserProfile&gt;](UserProfile.md)
 `pagination` | [Pagination](Pagination.md)
 
 ## Example
@@ -17,6 +18,7 @@ import type { AdminListUsers200ResponseData } from '@komikhq/komikhq-typescript'
 // TODO: Update the object below with actual values
 const example = {
   "items": null,
+  "users": null,
   "pagination": null,
 } satisfies AdminListUsers200ResponseData
 

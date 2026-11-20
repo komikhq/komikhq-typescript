@@ -6,7 +6,8 @@
 
 Name | Type
 ------------ | -------------
-`genres` | Array&lt;any | null&gt;
+`status` | string
+`genres` | [Array&lt;Genre&gt;](Genre.md)
 
 ## Example
 
@@ -15,6 +16,7 @@ import type { AdminListGenres200Response } from '@komikhq/komikhq-typescript'
 
 // TODO: Update the object below with actual values
 const example = {
+  "status": ok,
   "genres": null,
 } satisfies AdminListGenres200Response
 

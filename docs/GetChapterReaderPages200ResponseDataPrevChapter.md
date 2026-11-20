@@ -6,8 +6,10 @@
 
 Name | Type
 ------------ | -------------
+`id` | string
 `slug` | string
 `chapterNumber` | string
+`title` | string
 
 ## Example
 
@@ -16,8 +18,10 @@ import type { GetChapterReaderPages200ResponseDataPrevChapter } from '@komikhq/k
 
 // TODO: Update the object below with actual values
 const example = {
+  "id": null,
   "slug": null,
   "chapterNumber": null,
+  "title": null,
 } satisfies GetChapterReaderPages200ResponseDataPrevChapter
 
 console.log(example)

@@ -14,15 +14,15 @@
 
 import * as runtime from '../runtime';
 import {
+    type AdminListComics200Response,
+    AdminListComics200ResponseFromJSON,
+    AdminListComics200ResponseToJSON,
+} from '../models/AdminListComics200Response';
+import {
     type GetSearchSuggestions200Response,
     GetSearchSuggestions200ResponseFromJSON,
     GetSearchSuggestions200ResponseToJSON,
 } from '../models/GetSearchSuggestions200Response';
-import {
-    type ListComics200Response,
-    ListComics200ResponseFromJSON,
-    ListComics200ResponseToJSON,
-} from '../models/ListComics200Response';
 
 export interface GetSearchSuggestionsRequest {
     /**
@@ -144,18 +144,18 @@ export class SearchApi extends runtime.BaseAPI {
      * Searches comics across titles, alternate titles, and slugs with pagination.
      * Full text comic search
      */
-    async searchComicsRaw(requestParameters: SearchComicsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListComics200Response>> {
+    async searchComicsRaw(requestParameters: SearchComicsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminListComics200Response>> {
         const requestOptions = await this.searchComicsRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ListComics200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminListComics200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Searches comics across titles, alternate titles, and slugs with pagination.
      * Full text comic search
      */
-    async searchComics(requestParameters: SearchComicsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListComics200Response> {
+    async searchComics(requestParameters: SearchComicsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListComics200Response> {
         const response = await this.searchComicsRaw(requestParameters, initOverrides);
         return await response.value();
     }

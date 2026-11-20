@@ -14,25 +14,25 @@
 
 import * as runtime from '../runtime';
 import {
+    type AdminGetComic200Response,
+    AdminGetComic200ResponseFromJSON,
+    AdminGetComic200ResponseToJSON,
+} from '../models/AdminGetComic200Response';
+import {
+    type AdminListComics200Response,
+    AdminListComics200ResponseFromJSON,
+    AdminListComics200ResponseToJSON,
+} from '../models/AdminListComics200Response';
+import {
     type ErrorResponse,
     ErrorResponseFromJSON,
     ErrorResponseToJSON,
 } from '../models/ErrorResponse';
 import {
-    type GetComicBySlug200Response,
-    GetComicBySlug200ResponseFromJSON,
-    GetComicBySlug200ResponseToJSON,
-} from '../models/GetComicBySlug200Response';
-import {
     type GetTrendingComics200Response,
     GetTrendingComics200ResponseFromJSON,
     GetTrendingComics200ResponseToJSON,
 } from '../models/GetTrendingComics200Response';
-import {
-    type ListComics200Response,
-    ListComics200ResponseFromJSON,
-    ListComics200ResponseToJSON,
-} from '../models/ListComics200Response';
 
 export interface GetComicBySlugRequest {
     /**
@@ -115,18 +115,18 @@ export class ComicsApi extends runtime.BaseAPI {
      * Returns detailed metadata for a specific comic by slug, including genres, creators, and chapter list.
      * Get comic details by slug
      */
-    async getComicBySlugRaw(requestParameters: GetComicBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetComicBySlug200Response>> {
+    async getComicBySlugRaw(requestParameters: GetComicBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminGetComic200Response>> {
         const requestOptions = await this.getComicBySlugRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetComicBySlug200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminGetComic200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Returns detailed metadata for a specific comic by slug, including genres, creators, and chapter list.
      * Get comic details by slug
      */
-    async getComicBySlug(requestParameters: GetComicBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetComicBySlug200Response> {
+    async getComicBySlug(requestParameters: GetComicBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminGetComic200Response> {
         const response = await this.getComicBySlugRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -225,18 +225,18 @@ export class ComicsApi extends runtime.BaseAPI {
      * Returns a paginated list of comics with optional filters for genre, type, status, and sort.
      * List and filter comics
      */
-    async listComicsRaw(requestParameters: ListComicsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ListComics200Response>> {
+    async listComicsRaw(requestParameters: ListComicsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminListComics200Response>> {
         const requestOptions = await this.listComicsRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ListComics200ResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminListComics200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Returns a paginated list of comics with optional filters for genre, type, status, and sort.
      * List and filter comics
      */
-    async listComics(requestParameters: ListComicsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ListComics200Response> {
+    async listComics(requestParameters: ListComicsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListComics200Response> {
         const response = await this.listComicsRaw(requestParameters, initOverrides);
         return await response.value();
     }

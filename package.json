@@ -1,6 +1,6 @@
 {
   "name": "@komikhq/komikhq-typescript",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Official REST and Realtime WebSocket API for KomikHQ Platform",
   "author": "KomikHQ Team <dev@komikhq.com>",
   "homepage": "https://komikhq.com",

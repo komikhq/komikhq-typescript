@@ -12,7 +12,7 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 ## getComicBySlug
 
-> GetComicBySlug200Response getComicBySlug(slug)
+> AdminGetComic200Response getComicBySlug(slug)
 
 Get comic details by slug
 
@@ -57,7 +57,7 @@ example().catch(console.error);
 
 ### Return type
 
-[**GetComicBySlug200Response**](GetComicBySlug200Response.md)
+[**AdminGetComic200Response**](AdminGetComic200Response.md)
 
 ### Authorization
 
@@ -147,7 +147,7 @@ No authorization required
 
 ## listComics
 
-> ListComics200Response listComics(q, genre, status, type, sort, page, limit)
+> AdminListComics200Response listComics(q, genre, status, type, sort, page, limit)
 
 List and filter comics
 
@@ -210,7 +210,7 @@ example().catch(console.error);
 
 ### Return type
 
-[**ListComics200Response**](ListComics200Response.md)
+[**AdminListComics200Response**](AdminListComics200Response.md)
 
 ### Authorization
 

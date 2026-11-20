@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './AdministrationApi';
+export * from './AppRoutesApi';
 export * from './BookmarksApi';
 export * from './ChaptersApi';
 export * from './ComicsApi';

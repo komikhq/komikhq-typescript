@@ -14,6 +14,16 @@
 
 import * as runtime from '../runtime';
 import {
+    type AdminCreateApiToken201Response,
+    AdminCreateApiToken201ResponseFromJSON,
+    AdminCreateApiToken201ResponseToJSON,
+} from '../models/AdminCreateApiToken201Response';
+import {
+    type AdminCreateApiTokenRequest,
+    AdminCreateApiTokenRequestFromJSON,
+    AdminCreateApiTokenRequestToJSON,
+} from '../models/AdminCreateApiTokenRequest';
+import {
     type AdminCreateChapterPages200Response,
     AdminCreateChapterPages200ResponseFromJSON,
     AdminCreateChapterPages200ResponseToJSON,
@@ -49,6 +59,11 @@ import {
     AdminFinalizeChapterRequestToJSON,
 } from '../models/AdminFinalizeChapterRequest';
 import {
+    type AdminGetComic200Response,
+    AdminGetComic200ResponseFromJSON,
+    AdminGetComic200ResponseToJSON,
+} from '../models/AdminGetComic200Response';
+import {
     type AdminGetStats200Response,
     AdminGetStats200ResponseFromJSON,
     AdminGetStats200ResponseToJSON,
@@ -59,15 +74,35 @@ import {
     AdminInitializeChapterRequestToJSON,
 } from '../models/AdminInitializeChapterRequest';
 import {
+    type AdminListApiTokens200Response,
+    AdminListApiTokens200ResponseFromJSON,
+    AdminListApiTokens200ResponseToJSON,
+} from '../models/AdminListApiTokens200Response';
+import {
     type AdminListChapters200Response,
     AdminListChapters200ResponseFromJSON,
     AdminListChapters200ResponseToJSON,
 } from '../models/AdminListChapters200Response';
 import {
+    type AdminListComics200Response,
+    AdminListComics200ResponseFromJSON,
+    AdminListComics200ResponseToJSON,
+} from '../models/AdminListComics200Response';
+import {
+    type AdminListGenres200Response,
+    AdminListGenres200ResponseFromJSON,
+    AdminListGenres200ResponseToJSON,
+} from '../models/AdminListGenres200Response';
+import {
     type AdminListUsers200Response,
     AdminListUsers200ResponseFromJSON,
     AdminListUsers200ResponseToJSON,
 } from '../models/AdminListUsers200Response';
+import {
+    type AdminRevokeApiToken200Response,
+    AdminRevokeApiToken200ResponseFromJSON,
+    AdminRevokeApiToken200ResponseToJSON,
+} from '../models/AdminRevokeApiToken200Response';
 import {
     type AdminUpdateChapterRequest,
     AdminUpdateChapterRequestFromJSON,
@@ -114,6 +149,13 @@ import {
     SuccessResponseToJSON,
 } from '../models/SuccessResponse';
 
+export interface AdminCreateApiTokenOperationRequest {
+    /**
+     * 
+     */
+    adminCreateApiTokenRequest: AdminCreateApiTokenRequest;
+}
+
 export interface AdminCreateChapterOperationRequest {
     /**
      * 
@@ -140,11 +182,15 @@ export interface AdminCreateComicRequest {
     /**
      * 
      */
-    slug: string;
+    slug?: string;
     /**
      * 
      */
     synopsis?: string;
+    /**
+     * Author / creator name
+     */
+    creator?: string;
     /**
      * Cover image file
      */
@@ -240,6 +286,20 @@ export interface AdminFinalizeChapterOperationRequest {
     adminFinalizeChapterRequest: AdminFinalizeChapterRequest;
 }
 
+export interface AdminGetChapterRequest {
+    /**
+     * Chapter ID
+     */
+    id: string;
+}
+
+export interface AdminGetComicRequest {
+    /**
+     * Comic ID
+     */
+    id: string;
+}
+
 export interface AdminInitializeChapterOperationRequest {
     /**
      * 
@@ -252,6 +312,25 @@ export interface AdminListChaptersRequest {
      * Comic ID
      */
     comicId: string;
+}
+
+export interface AdminListComicsRequest {
+    /**
+     * Search query string
+     */
+    q?: string;
+    /**
+     * Filter by status
+     */
+    status?: string;
+    /**
+     * 
+     */
+    page?: number;
+    /**
+     * 
+     */
+    limit?: number;
 }
 
 export interface AdminListUsersRequest {
@@ -267,6 +346,13 @@ export interface AdminListUsersRequest {
      * Items per page
      */
     limit?: number;
+}
+
+export interface AdminRevokeApiTokenRequest {
+    /**
+     * Token ID
+     */
+    id: string;
 }
 
 export interface AdminUpdateChapterOperationRequest {
@@ -297,6 +383,10 @@ export interface AdminUpdateComicRequest {
      * 
      */
     synopsis?: string;
+    /**
+     * 
+     */
+    creator?: string;
     /**
      * Cover image file
      */
@@ -388,6 +478,63 @@ export interface AdminUploadChapterPageRequest {
  * 
  */
 export class AdministrationApi extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for adminCreateApiToken without sending the request
+     */
+    async adminCreateApiTokenRequestOpts(requestParameters: AdminCreateApiTokenOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['adminCreateApiTokenRequest'] == null) {
+            throw new runtime.RequiredError(
+                'adminCreateApiTokenRequest',
+                'Required parameter "adminCreateApiTokenRequest" was null or undefined when calling adminCreateApiToken().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/api-tokens`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminCreateApiTokenRequestToJSON(requestParameters['adminCreateApiTokenRequest']),
+        };
+    }
+
+    /**
+     * Generates a new API token with specified scopes. Requires administrator privileges.
+     * Create a new API token
+     */
+    async adminCreateApiTokenRaw(requestParameters: AdminCreateApiTokenOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminCreateApiToken201Response>> {
+        const requestOptions = await this.adminCreateApiTokenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminCreateApiToken201ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Generates a new API token with specified scopes. Requires administrator privileges.
+     * Create a new API token
+     */
+    async adminCreateApiToken(requestParameters: AdminCreateApiTokenOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminCreateApiToken201Response> {
+        const response = await this.adminCreateApiTokenRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates request options for adminCreateChapter without sending the request
@@ -522,13 +669,6 @@ export class AdministrationApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['slug'] == null) {
-            throw new runtime.RequiredError(
-                'slug',
-                'Required parameter "slug" was null or undefined when calling adminCreateComic().'
-            );
-        }
-
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -569,6 +709,10 @@ export class AdministrationApi extends runtime.BaseAPI {
 
         if (requestParameters['synopsis'] != null) {
             formParams.append('synopsis', requestParameters['synopsis'] as any);
+        }
+
+        if (requestParameters['creator'] != null) {
+            formParams.append('creator', requestParameters['creator'] as any);
         }
 
         if (requestParameters['cover'] != null) {
@@ -848,7 +992,7 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Permanently deletes a comic record and all its associated chapters. Requires administrator privileges.
+     * Permanently deletes a comic record, cascade deletes chapters/pages, and purges storage assets. Requires administrator privileges.
      * Delete comic by ID
      */
     async adminDeleteComicRaw(requestParameters: AdminDeleteComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResponse>> {
@@ -859,7 +1003,7 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
-     * Permanently deletes a comic record and all its associated chapters. Requires administrator privileges.
+     * Permanently deletes a comic record, cascade deletes chapters/pages, and purges storage assets. Requires administrator privileges.
      * Delete comic by ID
      */
     async adminDeleteComic(requestParameters: AdminDeleteComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResponse> {
@@ -1043,6 +1187,115 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for adminGetChapter without sending the request
+     */
+    async adminGetChapterRequestOpts(requestParameters: AdminGetChapterRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling adminGetChapter().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/chapters/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns chapter metadata and ordered pages. Requires administrator privileges.
+     * Get chapter details with pages
+     */
+    async adminGetChapterRaw(requestParameters: AdminGetChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.adminGetChapterRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Returns chapter metadata and ordered pages. Requires administrator privileges.
+     * Get chapter details with pages
+     */
+    async adminGetChapter(requestParameters: AdminGetChapterRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.adminGetChapterRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates request options for adminGetComic without sending the request
+     */
+    async adminGetComicRequestOpts(requestParameters: AdminGetComicRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling adminGetComic().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/comics/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Gets comic details by ID or slug with full genres, creators, and chapter list. Requires administrator privileges.
+     * Get comic details (Admin)
+     */
+    async adminGetComicRaw(requestParameters: AdminGetComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminGetComic200Response>> {
+        const requestOptions = await this.adminGetComicRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminGetComic200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets comic details by ID or slug with full genres, creators, and chapter list. Requires administrator privileges.
+     * Get comic details (Admin)
+     */
+    async adminGetComic(requestParameters: AdminGetComicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminGetComic200Response> {
+        const response = await this.adminGetComicRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for adminGetStats without sending the request
      */
     async adminGetStatsRequestOpts(): Promise<runtime.RequestOpts> {
@@ -1147,6 +1400,53 @@ export class AdministrationApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for adminListApiTokens without sending the request
+     */
+    async adminListApiTokensRequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/api-tokens`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Lists active and revoked API tokens. Requires administrator privileges.
+     * List API tokens
+     */
+    async adminListApiTokensRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminListApiTokens200Response>> {
+        const requestOptions = await this.adminListApiTokensRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminListApiTokens200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Lists active and revoked API tokens. Requires administrator privileges.
+     * List API tokens
+     */
+    async adminListApiTokens(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListApiTokens200Response> {
+        const response = await this.adminListApiTokensRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for adminListChapters without sending the request
      */
     async adminListChaptersRequestOpts(requestParameters: AdminListChaptersRequest): Promise<runtime.RequestOpts> {
@@ -1198,6 +1498,116 @@ export class AdministrationApi extends runtime.BaseAPI {
      */
     async adminListChapters(requestParameters: AdminListChaptersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListChapters200Response> {
         const response = await this.adminListChaptersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for adminListComics without sending the request
+     */
+    async adminListComicsRequestOpts(requestParameters: AdminListComicsRequest): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        if (requestParameters['q'] != null) {
+            queryParameters['q'] = requestParameters['q'];
+        }
+
+        if (requestParameters['status'] != null) {
+            queryParameters['status'] = requestParameters['status'];
+        }
+
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
+        }
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/comics`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Lists comics with search, status filtering, and pagination. Requires administrator privileges.
+     * List comics (Admin)
+     */
+    async adminListComicsRaw(requestParameters: AdminListComicsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminListComics200Response>> {
+        const requestOptions = await this.adminListComicsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminListComics200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Lists comics with search, status filtering, and pagination. Requires administrator privileges.
+     * List comics (Admin)
+     */
+    async adminListComics(requestParameters: AdminListComicsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListComics200Response> {
+        const response = await this.adminListComicsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for adminListGenres without sending the request
+     */
+    async adminListGenresRequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/genres`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns all genres. Requires administrator privileges.
+     * List all genres (Admin)
+     */
+    async adminListGenresRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminListGenres200Response>> {
+        const requestOptions = await this.adminListGenresRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminListGenres200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns all genres. Requires administrator privileges.
+     * List all genres (Admin)
+     */
+    async adminListGenres(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListGenres200Response> {
+        const response = await this.adminListGenresRaw(initOverrides);
         return await response.value();
     }
 
@@ -1257,6 +1667,61 @@ export class AdministrationApi extends runtime.BaseAPI {
      */
     async adminListUsers(requestParameters: AdminListUsersRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminListUsers200Response> {
         const response = await this.adminListUsersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for adminRevokeApiToken without sending the request
+     */
+    async adminRevokeApiTokenRequestOpts(requestParameters: AdminRevokeApiTokenRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling adminRevokeApiToken().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/admin/api-tokens/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Revokes and deletes an API token by ID. Requires administrator privileges.
+     * Revoke an API token
+     */
+    async adminRevokeApiTokenRaw(requestParameters: AdminRevokeApiTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AdminRevokeApiToken200Response>> {
+        const requestOptions = await this.adminRevokeApiTokenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AdminRevokeApiToken200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Revokes and deletes an API token by ID. Requires administrator privileges.
+     * Revoke an API token
+     */
+    async adminRevokeApiToken(requestParameters: AdminRevokeApiTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AdminRevokeApiToken200Response> {
+        const response = await this.adminRevokeApiTokenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -1376,6 +1841,10 @@ export class AdministrationApi extends runtime.BaseAPI {
 
         if (requestParameters['synopsis'] != null) {
             formParams.append('synopsis', requestParameters['synopsis'] as any);
+        }
+
+        if (requestParameters['creator'] != null) {
+            formParams.append('creator', requestParameters['creator'] as any);
         }
 
         if (requestParameters['cover'] != null) {

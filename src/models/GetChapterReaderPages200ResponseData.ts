@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { GetChapterReaderPages200ResponseDataComic } from './GetChapterReaderPages200ResponseDataComic';
+import {
+    GetChapterReaderPages200ResponseDataComicFromJSON,
+    GetChapterReaderPages200ResponseDataComicFromJSONTyped,
+    GetChapterReaderPages200ResponseDataComicToJSON,
+    GetChapterReaderPages200ResponseDataComicToJSONTyped,
+} from './GetChapterReaderPages200ResponseDataComic';
 import type { GetChapterReaderPages200ResponseDataPrevChapter } from './GetChapterReaderPages200ResponseDataPrevChapter';
 import {
     GetChapterReaderPages200ResponseDataPrevChapterFromJSON,
@@ -34,6 +41,13 @@ import {
     ChapterToJSON,
     ChapterToJSONTyped,
 } from './Chapter';
+import type { GetChapterReaderPages200ResponseDataAllChaptersInner } from './GetChapterReaderPages200ResponseDataAllChaptersInner';
+import {
+    GetChapterReaderPages200ResponseDataAllChaptersInnerFromJSON,
+    GetChapterReaderPages200ResponseDataAllChaptersInnerFromJSONTyped,
+    GetChapterReaderPages200ResponseDataAllChaptersInnerToJSON,
+    GetChapterReaderPages200ResponseDataAllChaptersInnerToJSONTyped,
+} from './GetChapterReaderPages200ResponseDataAllChaptersInner';
 
 /**
  * 
@@ -44,11 +58,19 @@ export interface GetChapterReaderPages200ResponseData {
     /**
      * 
      */
+    comic?: GetChapterReaderPages200ResponseDataComic;
+    /**
+     * 
+     */
     chapter?: Chapter;
     /**
      * 
      */
     pages?: Array<ChapterPage>;
+    /**
+     * 
+     */
+    allChapters?: Array<GetChapterReaderPages200ResponseDataAllChaptersInner>;
     /**
      * 
      */
@@ -76,8 +98,10 @@ export function GetChapterReaderPages200ResponseDataFromJSONTyped(json: any, ign
     }
     return {
         
+        'comic': json['comic'] == null ? undefined : GetChapterReaderPages200ResponseDataComicFromJSON(json['comic']),
         'chapter': json['chapter'] == null ? undefined : ChapterFromJSON(json['chapter']),
         'pages': json['pages'] == null ? undefined : ((json['pages'] as Array<any>).map(ChapterPageFromJSON)),
+        'allChapters': json['allChapters'] == null ? undefined : ((json['allChapters'] as Array<any>).map(GetChapterReaderPages200ResponseDataAllChaptersInnerFromJSON)),
         'prevChapter': json['prevChapter'] == null ? undefined : GetChapterReaderPages200ResponseDataPrevChapterFromJSON(json['prevChapter']),
         'nextChapter': json['nextChapter'] == null ? undefined : GetChapterReaderPages200ResponseDataPrevChapterFromJSON(json['nextChapter']),
     };
@@ -94,8 +118,10 @@ export function GetChapterReaderPages200ResponseDataToJSONTyped(value?: GetChapt
 
     return {
         
+        'comic': GetChapterReaderPages200ResponseDataComicToJSON(value['comic']),
         'chapter': ChapterToJSON(value['chapter']),
         'pages': value['pages'] == null ? undefined : ((value['pages'] as Array<any>).map(ChapterPageToJSON)),
+        'allChapters': value['allChapters'] == null ? undefined : ((value['allChapters'] as Array<any>).map(GetChapterReaderPages200ResponseDataAllChaptersInnerToJSON)),
         'prevChapter': GetChapterReaderPages200ResponseDataPrevChapterToJSON(value['prevChapter']),
         'nextChapter': GetChapterReaderPages200ResponseDataPrevChapterToJSON(value['nextChapter']),
     };

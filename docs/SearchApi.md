@@ -81,7 +81,7 @@ No authorization required
 
 ## searchComics
 
-> ListComics200Response searchComics(q, page, limit)
+> AdminListComics200Response searchComics(q, page, limit)
 
 Full text comic search
 
@@ -132,7 +132,7 @@ example().catch(console.error);
 
 ### Return type
 
-[**ListComics200Response**](ListComics200Response.md)
+[**AdminListComics200Response**](AdminListComics200Response.md)
 
 ### Authorization
 

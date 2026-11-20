@@ -22,11 +22,19 @@ export interface GetChapterReaderPages200ResponseDataPrevChapter {
     /**
      * 
      */
+    id?: string;
+    /**
+     * 
+     */
     slug?: string;
     /**
      * 
      */
     chapterNumber?: string;
+    /**
+     * 
+     */
+    title?: string;
 }
 
 /**
@@ -46,8 +54,10 @@ export function GetChapterReaderPages200ResponseDataPrevChapterFromJSONTyped(jso
     }
     return {
         
+        'id': json['id'] == null ? undefined : json['id'],
         'slug': json['slug'] == null ? undefined : json['slug'],
         'chapterNumber': json['chapterNumber'] == null ? undefined : json['chapterNumber'],
+        'title': json['title'] == null ? undefined : json['title'],
     };
 }
 
@@ -62,8 +72,10 @@ export function GetChapterReaderPages200ResponseDataPrevChapterToJSONTyped(value
 
     return {
         
+        'id': value['id'],
         'slug': value['slug'],
         'chapterNumber': value['chapterNumber'],
+        'title': value['title'],
     };
 }
 

@@ -4,6 +4,7 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
+| [**adminCreateApiToken**](AdministrationApi.md#admincreateapitokenoperation) | **POST** /admin/api-tokens | Create a new API token |
 | [**adminCreateChapter**](AdministrationApi.md#admincreatechapteroperation) | **POST** /admin/chapters | Create comic chapter |
 | [**adminCreateChapterPages**](AdministrationApi.md#admincreatechapterpagesoperation) | **POST** /admin/chapters/{id}/pages | Set chapter pages |
 | [**adminCreateComic**](AdministrationApi.md#admincreatecomic) | **POST** /admin/comics | Create a new comic |
@@ -14,16 +15,95 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 | [**adminDeleteGenre**](AdministrationApi.md#admindeletegenre) | **DELETE** /admin/genres/{id} | Delete genre (Admin only) |
 | [**adminDeleteUser**](AdministrationApi.md#admindeleteuser) | **DELETE** /admin/users/{id} | Delete user account (Admin only) |
 | [**adminFinalizeChapter**](AdministrationApi.md#adminfinalizechapteroperation) | **POST** /admin/chapters/{id}/finalize | Finalize a chapter |
+| [**adminGetChapter**](AdministrationApi.md#admingetchapter) | **GET** /admin/chapters/{id} | Get chapter details with pages |
+| [**adminGetComic**](AdministrationApi.md#admingetcomic) | **GET** /admin/comics/{id} | Get comic details (Admin) |
 | [**adminGetStats**](AdministrationApi.md#admingetstats) | **GET** /admin/stats | System overview stats (Admin only) |
 | [**adminInitializeChapter**](AdministrationApi.md#admininitializechapteroperation) | **POST** /admin/chapters/init | Initialize a new chapter |
+| [**adminListApiTokens**](AdministrationApi.md#adminlistapitokens) | **GET** /admin/api-tokens | List API tokens |
 | [**adminListChapters**](AdministrationApi.md#adminlistchapters) | **GET** /admin/comics/{comicId}/chapters | List chapters for a comic |
+| [**adminListComics**](AdministrationApi.md#adminlistcomics) | **GET** /admin/comics | List comics (Admin) |
+| [**adminListGenres**](AdministrationApi.md#adminlistgenres) | **GET** /admin/genres | List all genres (Admin) |
 | [**adminListUsers**](AdministrationApi.md#adminlistusers) | **GET** /admin/users | List registered users (Admin only) |
+| [**adminRevokeApiToken**](AdministrationApi.md#adminrevokeapitoken) | **DELETE** /admin/api-tokens/{id} | Revoke an API token |
 | [**adminUpdateChapter**](AdministrationApi.md#adminupdatechapteroperation) | **PUT** /admin/chapters/{id} | Update a chapter |
 | [**adminUpdateComic**](AdministrationApi.md#adminupdatecomic) | **PUT** /admin/comics/{id} | Update comic by ID |
 | [**adminUpdateGenre**](AdministrationApi.md#adminupdategenreoperation) | **PUT** /admin/genres/{id} | Update genre by ID |
 | [**adminUpdateUser**](AdministrationApi.md#adminupdateuseroperation) | **PUT** /admin/users/{id} | Update user account (Admin only) |
 | [**adminUploadChapterPage**](AdministrationApi.md#adminuploadchapterpage) | **POST** /admin/chapters/{id}/pages/upload | Upload chapter page image |
 
+
+
+## adminCreateApiToken
+
+> AdminCreateApiToken201Response adminCreateApiToken(adminCreateApiTokenRequest)
+
+Create a new API token
+
+Generates a new API token with specified scopes. Requires administrator privileges.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AdministrationApi,
+} from '@komikhq/komikhq-typescript';
+import type { AdminCreateApiTokenOperationRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const config = new Configuration({ 
+    // To configure API key authorization: SessionCookie
+    apiKey: "YOUR API KEY",
+    // Configure HTTP bearer authorization: BearerToken
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new AdministrationApi(config);
+
+  const body = {
+    // AdminCreateApiTokenRequest
+    adminCreateApiTokenRequest: ...,
+  } satisfies AdminCreateApiTokenOperationRequest;
+
+  try {
+    const data = await api.adminCreateApiToken(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **adminCreateApiTokenRequest** | [AdminCreateApiTokenRequest](AdminCreateApiTokenRequest.md) |  | |
+
+### Return type
+
+[**AdminCreateApiToken201Response**](AdminCreateApiToken201Response.md)
+
+### Authorization
+
+[SessionCookie](../README.md#SessionCookie), [BearerToken](../README.md#BearerToken)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | API token created. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## adminCreateChapter
@@ -183,7 +263,7 @@ example().catch(console.error);
 
 ## adminCreateComic
 
-> AdminUpdateComic200Response adminCreateComic(title, slug, synopsis, cover, coverUrlSource, coverUrl, banner, bannerUrlSource, bannerUrl, type, status, accessTier, genreIds)
+> AdminUpdateComic200Response adminCreateComic(title, slug, synopsis, creator, cover, coverUrlSource, coverUrl, banner, bannerUrlSource, bannerUrl, type, status, accessTier, genreIds)
 
 Create a new comic
 
@@ -211,10 +291,12 @@ async function example() {
   const body = {
     // string
     title: title_example,
-    // string
+    // string (optional)
     slug: slug_example,
     // string (optional)
     synopsis: synopsis_example,
+    // string | Author / creator name (optional)
+    creator: creator_example,
     // Blob | Cover image file (optional)
     cover: BINARY_DATA_HERE,
     // string | External cover image URL to download (optional)
@@ -255,8 +337,9 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **title** | `string` |  | [Defaults to `undefined`] |
-| **slug** | `string` |  | [Defaults to `undefined`] |
+| **slug** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **synopsis** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **creator** | `string` | Author / creator name | [Optional] [Defaults to `undefined`] |
 | **cover** | `Blob` | Cover image file | [Optional] [Defaults to `undefined`] |
 | **coverUrlSource** | `string` | External cover image URL to download | [Optional] [Defaults to `undefined`] |
 | **coverUrl** | `string` | Pre-existing storage object key | [Optional] [Defaults to `undefined`] |
@@ -527,7 +610,7 @@ example().catch(console.error);
 
 Delete comic by ID
 
-Permanently deletes a comic record and all its associated chapters. Requires administrator privileges.
+Permanently deletes a comic record, cascade deletes chapters/pages, and purges storage assets. Requires administrator privileges.
 
 ### Example
 
@@ -830,6 +913,154 @@ example().catch(console.error);
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## adminGetChapter
+
+> adminGetChapter(id)
+
+Get chapter details with pages
+
+Returns chapter metadata and ordered pages. Requires administrator privileges.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AdministrationApi,
+} from '@komikhq/komikhq-typescript';
+import type { AdminGetChapterRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const config = new Configuration({ 
+    // To configure API key authorization: SessionCookie
+    apiKey: "YOUR API KEY",
+    // Configure HTTP bearer authorization: BearerToken
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new AdministrationApi(config);
+
+  const body = {
+    // string | Chapter ID
+    id: id_example,
+  } satisfies AdminGetChapterRequest;
+
+  try {
+    const data = await api.adminGetChapter(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` | Chapter ID | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[SessionCookie](../README.md#SessionCookie), [BearerToken](../README.md#BearerToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Chapter details retrieved successfully. |  -  |
+| **404** | Chapter not found. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## adminGetComic
+
+> AdminGetComic200Response adminGetComic(id)
+
+Get comic details (Admin)
+
+Gets comic details by ID or slug with full genres, creators, and chapter list. Requires administrator privileges.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AdministrationApi,
+} from '@komikhq/komikhq-typescript';
+import type { AdminGetComicRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const config = new Configuration({ 
+    // To configure API key authorization: SessionCookie
+    apiKey: "YOUR API KEY",
+    // Configure HTTP bearer authorization: BearerToken
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new AdministrationApi(config);
+
+  const body = {
+    // string | Comic ID
+    id: id_example,
+  } satisfies AdminGetComicRequest;
+
+  try {
+    const data = await api.adminGetComic(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` | Comic ID | [Defaults to `undefined`] |
+
+### Return type
+
+[**AdminGetComic200Response**](AdminGetComic200Response.md)
+
+### Authorization
+
+[SessionCookie](../README.md#SessionCookie), [BearerToken](../README.md#BearerToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The comic and its details. |  -  |
+| **404** | Comic not found. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## adminGetStats
 
 > AdminGetStats200Response adminGetStats()
@@ -973,6 +1204,71 @@ example().catch(console.error);
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## adminListApiTokens
+
+> AdminListApiTokens200Response adminListApiTokens()
+
+List API tokens
+
+Lists active and revoked API tokens. Requires administrator privileges.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AdministrationApi,
+} from '@komikhq/komikhq-typescript';
+import type { AdminListApiTokensRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const config = new Configuration({ 
+    // To configure API key authorization: SessionCookie
+    apiKey: "YOUR API KEY",
+    // Configure HTTP bearer authorization: BearerToken
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new AdministrationApi(config);
+
+  try {
+    const data = await api.adminListApiTokens();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**AdminListApiTokens200Response**](AdminListApiTokens200Response.md)
+
+### Authorization
+
+[SessionCookie](../README.md#SessionCookie), [BearerToken](../README.md#BearerToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | List of API tokens. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## adminListChapters
 
 > AdminListChapters200Response adminListChapters(comicId)
@@ -1045,6 +1341,153 @@ example().catch(console.error);
 | **400** | Invalid input. |  -  |
 | **401** | Unauthorized. |  -  |
 | **403** | Forbidden. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## adminListComics
+
+> AdminListComics200Response adminListComics(q, status, page, limit)
+
+List comics (Admin)
+
+Lists comics with search, status filtering, and pagination. Requires administrator privileges.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AdministrationApi,
+} from '@komikhq/komikhq-typescript';
+import type { AdminListComicsRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const config = new Configuration({ 
+    // To configure API key authorization: SessionCookie
+    apiKey: "YOUR API KEY",
+    // Configure HTTP bearer authorization: BearerToken
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new AdministrationApi(config);
+
+  const body = {
+    // string | Search query string (optional)
+    q: q_example,
+    // string | Filter by status (optional)
+    status: status_example,
+    // number (optional)
+    page: 56,
+    // number (optional)
+    limit: 56,
+  } satisfies AdminListComicsRequest;
+
+  try {
+    const data = await api.adminListComics(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **q** | `string` | Search query string | [Optional] [Defaults to `undefined`] |
+| **status** | `string` | Filter by status | [Optional] [Defaults to `undefined`] |
+| **page** | `number` |  | [Optional] [Defaults to `1`] |
+| **limit** | `number` |  | [Optional] [Defaults to `15`] |
+
+### Return type
+
+[**AdminListComics200Response**](AdminListComics200Response.md)
+
+### Authorization
+
+[SessionCookie](../README.md#SessionCookie), [BearerToken](../README.md#BearerToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Matching comics and pagination metadata. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## adminListGenres
+
+> AdminListGenres200Response adminListGenres()
+
+List all genres (Admin)
+
+Returns all genres. Requires administrator privileges.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AdministrationApi,
+} from '@komikhq/komikhq-typescript';
+import type { AdminListGenresRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const config = new Configuration({ 
+    // To configure API key authorization: SessionCookie
+    apiKey: "YOUR API KEY",
+    // Configure HTTP bearer authorization: BearerToken
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new AdministrationApi(config);
+
+  try {
+    const data = await api.adminListGenres();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**AdminListGenres200Response**](AdminListGenres200Response.md)
+
+### Authorization
+
+[SessionCookie](../README.md#SessionCookie), [BearerToken](../README.md#BearerToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The genre catalog. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -1126,6 +1569,79 @@ example().catch(console.error);
 | **200** | Paginated list of users |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden - Admin access required |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## adminRevokeApiToken
+
+> AdminRevokeApiToken200Response adminRevokeApiToken(id)
+
+Revoke an API token
+
+Revokes and deletes an API token by ID. Requires administrator privileges.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AdministrationApi,
+} from '@komikhq/komikhq-typescript';
+import type { AdminRevokeApiTokenRequest } from '@komikhq/komikhq-typescript';
+
+async function example() {
+  console.log("🚀 Testing @komikhq/komikhq-typescript SDK...");
+  const config = new Configuration({ 
+    // To configure API key authorization: SessionCookie
+    apiKey: "YOUR API KEY",
+    // Configure HTTP bearer authorization: BearerToken
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new AdministrationApi(config);
+
+  const body = {
+    // string | Token ID
+    id: id_example,
+  } satisfies AdminRevokeApiTokenRequest;
+
+  try {
+    const data = await api.adminRevokeApiToken(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` | Token ID | [Defaults to `undefined`] |
+
+### Return type
+
+[**AdminRevokeApiToken200Response**](AdminRevokeApiToken200Response.md)
+
+### Authorization
+
+[SessionCookie](../README.md#SessionCookie), [BearerToken](../README.md#BearerToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Token revoked successfully. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -1212,7 +1728,7 @@ example().catch(console.error);
 
 ## adminUpdateComic
 
-> AdminUpdateComic200Response adminUpdateComic(id, title, slug, synopsis, cover, coverUrlSource, coverUrl, banner, bannerUrlSource, bannerUrl, type, status, accessTier, genreIds)
+> AdminUpdateComic200Response adminUpdateComic(id, title, slug, synopsis, creator, cover, coverUrlSource, coverUrl, banner, bannerUrlSource, bannerUrl, type, status, accessTier, genreIds)
 
 Update comic by ID
 
@@ -1246,6 +1762,8 @@ async function example() {
     slug: slug_example,
     // string (optional)
     synopsis: synopsis_example,
+    // string (optional)
+    creator: creator_example,
     // Blob | Cover image file (optional)
     cover: BINARY_DATA_HERE,
     // string | External cover image URL to download (optional)
@@ -1289,6 +1807,7 @@ example().catch(console.error);
 | **title** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **slug** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **synopsis** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **creator** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **cover** | `Blob` | Cover image file | [Optional] [Defaults to `undefined`] |
 | **coverUrlSource** | `string` | External cover image URL to download | [Optional] [Defaults to `undefined`] |
 | **coverUrl** | `string` | Pre-existing storage object key | [Optional] [Defaults to `undefined`] |

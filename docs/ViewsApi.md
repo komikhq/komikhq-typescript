@@ -10,7 +10,7 @@ All URIs are relative to *https://nitro.komikhq.dpdns.org*
 
 ## recordComicView
 
-> RecordComicView200Response recordComicView(recordComicViewRequest)
+> AdminRevokeApiToken200Response recordComicView(recordComicViewRequest)
 
 Record comic/chapter view
 
@@ -55,7 +55,7 @@ example().catch(console.error);
 
 ### Return type
 
-[**RecordComicView200Response**](RecordComicView200Response.md)
+[**AdminRevokeApiToken200Response**](AdminRevokeApiToken200Response.md)
 
 ### Authorization
 

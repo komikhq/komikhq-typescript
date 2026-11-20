@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * KomikHQ API
- * The KomikHQ platform API. Request and response contracts are defined alongside their route handlers.
+ * Official REST and Realtime WebSocket API for KomikHQ Platform
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { Genre } from './Genre';
+import {
+    GenreFromJSON,
+    GenreFromJSONTyped,
+    GenreToJSON,
+    GenreToJSONTyped,
+} from './Genre';
+
 /**
  * 
  * @export
@@ -22,14 +30,17 @@ export interface AdminListGenres200Response {
     /**
      * 
      */
-    genres: Array<any | null>;
+    status?: string;
+    /**
+     * 
+     */
+    genres?: Array<Genre>;
 }
 
 /**
  * Check if a given object implements the AdminListGenres200Response interface.
  */
 export function instanceOfAdminListGenres200Response(value: object): value is AdminListGenres200Response {
-    if (!('genres' in value) || value['genres'] === undefined) return false;
     return true;
 }
 
@@ -43,7 +54,8 @@ export function AdminListGenres200ResponseFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
-        'genres': json['genres'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'genres': json['genres'] == null ? undefined : ((json['genres'] as Array<any>).map(GenreFromJSON)),
     };
 }
 
@@ -58,7 +70,8 @@ export function AdminListGenres200ResponseToJSONTyped(value?: AdminListGenres200
 
     return {
         
-        'genres': value['genres'],
+        'status': value['status'],
+        'genres': value['genres'] == null ? undefined : ((value['genres'] as Array<any>).map(GenreToJSON)),
     };
 }
 
